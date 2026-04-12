@@ -10,7 +10,7 @@ class CategoriaAdmin(admin.ModelAdmin):
     list_display  = ('nombre', 'descripcion')
     search_fields = ('nombre',)
     ordering      = ('nombre',)
-
+#admin.py
 
 @admin.register(Producto)
 class ProductoAdmin(admin.ModelAdmin):
