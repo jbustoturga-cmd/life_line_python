@@ -8,3 +8,4 @@ urlpatterns = [
     path('cancelar/<int:cita_id>/',    views.vista_cancelar_cita,   name='cancelar_cita'),
     path('eliminar/<int:cita_id>/',    views.vista_eliminar_cita,   name='eliminar_cita'),
 ]
+#urls.py
