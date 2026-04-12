@@ -1,0 +1,887 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LifeLine — Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+<style>
+/* ══ VARIABLES ══ */
+:root{
+  --cp:#3d5273; --cs:#5b6e94; --ca:#142ea0; --cmb:#526eaa; --cmh:#2d3c7e;
+  --ctb:linear-gradient(135deg,#040418,#102468);
+  --ctd:#1a1a1a; --ctl:#555; --bs:#e8edf8; --bg:rgba(20,46,160,.12);
+  --sv:#dce3f0; --cr:#f7f9fc; --gd:#f1c40f; --gs:#fdf6da;
+  --ok:#27ae60; --er:#e74c3c; --warn:#f39c12;
+  --rxl:20px; --rmd:12px; --rsm:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:var(--cr);background-image:radial-gradient(ellipse at 0% 0%,rgba(20,46,160,.07) 0%,transparent 50%),radial-gradient(ellipse at 100% 100%,rgba(61,82,115,.05) 0%,transparent 50%);color:var(--ctd);min-height:100vh}
+a{text-decoration:none}
+
+/* ══ HEADER ══ */
+.header-bar{background:white;border-bottom:4px solid var(--ca);padding:11px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(20,46,160,.1)}
+.header-logo-section{display:flex;align-items:center;gap:10px}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--cp);line-height:1.1}
+.logo-mark{width:42px;height:42px;background:var(--ctb);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--gd);font-size:18px;position:relative;overflow:hidden;flex-shrink:0}
+.logo-mark::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--gd)}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--cp);line-height:1.1}
+.logo-tag{font-size:10px;color:var(--cs);font-weight:500;letter-spacing:1.4px;text-transform:uppercase}
+.search-box{background:var(--bs);border-radius:30px;padding:9px 18px;display:flex;align-items:center;border:1.5px solid var(--sv);width:280px;transition:border-color .2s,box-shadow .2s}
+.search-box:focus-within{border-color:var(--ca);box-shadow:0 0 0 3px var(--bg)}
+.search-box i{color:var(--ca);font-size:14px}
+.search-box input{border:none;background:none;outline:none;font-size:14px;color:var(--ctd);width:100%;margin-left:8px;font-family:'Outfit',sans-serif}
+.search-box input::placeholder{color:var(--ctl)}
+.hright{display:flex;align-items:center;gap:12px}
+.hbtn{width:38px;height:38px;border-radius:50%;background:var(--bs);display:flex;align-items:center;justify-content:center;color:var(--cp);font-size:15px;border:1.5px solid var(--sv);cursor:pointer;transition:background .2s,color .2s;position:relative}
+.hbtn:hover{background:var(--ca);color:white;border-color:var(--ca)}
+.notif-dot{position:absolute;top:-3px;right:-3px;width:10px;height:10px;background:var(--er);border-radius:50%;border:2px solid white}
+.user-chip{display:flex;align-items:center;gap:8px;background:var(--bs);border:1.5px solid var(--sv);border-radius:30px;padding:5px 14px 5px 5px;cursor:pointer;transition:border-color .2s}
+.user-chip:hover{border-color:var(--ca)}
+.user-chip-av{width:28px;height:28px;border-radius:50%;background:var(--ctb);display:flex;align-items:center;justify-content:center;color:var(--gd);font-size:12px;overflow:hidden}
+.user-chip-av img{width:100%;height:100%;object-fit:cover}
+.user-chip span{font-size:13px;font-weight:600;color:var(--cp)}
+
+/* ══ NAV TABS ══ */
+.main-tabs{background:var(--cp);display:flex;padding:0 24px;overflow-x:auto;gap:2px}
+.main-tabs a{color:rgba(255,255,255,.7);padding:12px 16px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;white-space:nowrap;border-bottom:3px solid transparent;transition:color .2s,border-color .2s,background .2s}
+.main-tabs a:hover{color:white;background:rgba(255,255,255,.08);border-bottom-color:rgba(255,255,255,.3)}
+.main-tabs a.active{color:var(--gd);border-bottom-color:var(--gd);font-weight:700}
+
+/* ══ DASHBOARD LAYOUT ══ */
+.dash-wrap{max-width:1380px;margin:0 auto;padding:28px 20px 40px}
+
+/* Saludo hero */
+.dash-hero{background:var(--ctb);border-radius:var(--rxl);padding:28px 32px;margin-bottom:26px;display:flex;align-items:center;justify-content:space-between;gap:20px;position:relative;overflow:hidden}
+.dash-hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='%23ffffff' fill-opacity='0.05'/%3E%3C/svg%3E")}
+.dash-hero::after{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(241,196,15,.12),transparent 70%);border-radius:50%}
+.hero-text{position:relative;z-index:1}
+.hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gd);margin-bottom:6px;display:flex;align-items:center;gap:7px}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;color:white;line-height:1.15;margin-bottom:6px}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.65);max-width:480px;line-height:1.6}
+.hero-actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;position:relative;z-index:1}
+.btn-hero-pri{background:var(--gd);color:#0a0a0a;border:none;border-radius:var(--rmd);padding:11px 22px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;font-family:'Outfit',sans-serif;transition:opacity .2s,transform .15s;box-shadow:0 4px 14px rgba(241,196,15,.35)}
+.btn-hero-pri:hover{opacity:.9;transform:translateY(-1px)}
+.btn-hero-sec{background:rgba(255,255,255,.1);color:white;border:1px solid rgba(255,255,255,.2);border-radius:var(--rmd);padding:11px 22px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;font-family:'Outfit',sans-serif;transition:background .2s}
+.btn-hero-sec:hover{background:rgba(255,255,255,.18)}
+.hero-stats{display:flex;gap:16px;position:relative;z-index:1;flex-shrink:0}
+.hstat{text-align:center;padding:14px 20px;background:rgba(255,255,255,.07);border-radius:var(--rmd);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(6px)}
+.hstat strong{display:block;font-size:24px;font-weight:700;color:var(--gd);font-family:'Cormorant Garamond',serif}
+.hstat span{font-size:11px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.5px}
+
+/* ══ GRID PRINCIPAL ══ */
+.dash-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:20px}
+
+/* ══ STAT CARDS ROW ══ */
+.stat-row{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.scard{background:white;border-radius:var(--rxl);padding:20px;border:1px solid var(--sv);box-shadow:0 2px 14px rgba(20,46,160,.07);position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;cursor:default;animation:fadeUp .4s ease both}
+.scard:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(20,46,160,.12)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.scard:nth-child(1){animation-delay:.05s}.scard:nth-child(2){animation-delay:.1s}.scard:nth-child(3){animation-delay:.15s}.scard:nth-child(4){animation-delay:.2s}.scard:nth-child(5){animation-delay:.25s}.scard:nth-child(6){animation-delay:.3s}
+.scard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.scard.azul::before{background:linear-gradient(90deg,var(--ca),var(--cmb))}
+.scard.verde::before{background:linear-gradient(90deg,var(--ok),#52c77a)}
+.scard.rojo::before{background:linear-gradient(90deg,var(--er),#e97070)}
+.scard.oro::before{background:linear-gradient(90deg,var(--gd),#e8b800)}
+.scard.lila::before{background:linear-gradient(90deg,#8e44ad,#a569bd)}
+.scard.teal::before{background:linear-gradient(90deg,#16a085,#1abc9c)}
+.sc-icon{width:44px;height:44px;border-radius:var(--rmd);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:14px;border:1px solid var(--sv)}
+.scard.azul .sc-icon{background:rgba(20,46,160,.08);color:var(--ca)}
+.scard.verde .sc-icon{background:rgba(39,174,96,.1);color:var(--ok)}
+.scard.rojo .sc-icon{background:rgba(231,76,60,.08);color:var(--er)}
+.scard.oro .sc-icon{background:rgba(241,196,15,.12);color:#b8860b}
+.scard.lila .sc-icon{background:rgba(142,68,173,.08);color:#8e44ad}
+.scard.teal .sc-icon{background:rgba(22,160,133,.08);color:#16a085}
+.sc-num{font-size:32px;font-weight:700;line-height:1;margin-bottom:4px}
+.scard.azul .sc-num{color:var(--ca)}
+.scard.verde .sc-num{color:var(--ok)}
+.scard.rojo .sc-num{color:var(--er)}
+.scard.oro .sc-num{color:#b8860b}
+.scard.lila .sc-num{color:#8e44ad}
+.scard.teal .sc-num{color:#16a085}
+.sc-label{font-size:12px;color:var(--ctl);font-weight:500;text-transform:uppercase;letter-spacing:.5px}
+.sc-trend{font-size:11px;font-weight:600;margin-top:8px;display:flex;align-items:center;gap:4px}
+.trend-up{color:var(--ok)}.trend-down{color:var(--er)}.trend-neutral{color:var(--ctl)}
+
+/* ══ SECCIÓN TÍTULOS ══ */
+.section-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--cp);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.section-title i{color:var(--ca);font-size:17px}
+
+/* ══ ACTIVIDAD RECIENTE ══ */
+.col-8{grid-column:span 8}
+.col-4{grid-column:span 4}
+.col-6{grid-column:span 6}
+.col-12{grid-column:1/-1}
+
+.panel{background:white;border-radius:var(--rxl);border:1px solid var(--sv);box-shadow:0 2px 18px rgba(20,46,160,.07);overflow:hidden}
+.panel-hdr{padding:16px 22px;border-bottom:1px solid var(--bs);display:flex;align-items:center;justify-content:space-between}
+.panel-hdr-left{display:flex;align-items:center;gap:8px}
+.panel-hdr h3{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--cp)}
+.panel-hdr i{color:var(--ca);font-size:15px}
+.panel-link{font-size:12px;font-weight:700;color:var(--ca);display:flex;align-items:center;gap:4px;transition:opacity .2s}
+.panel-link:hover{opacity:.7}
+.panel-body{padding:0}
+
+/* Actividad feed */
+.act-item{display:flex;align-items:flex-start;gap:12px;padding:14px 22px;border-bottom:1px solid var(--bs);transition:background .15s}
+.act-item:last-child{border-bottom:none}
+.act-item:hover{background:#f9fbff}
+.act-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;color:white;flex-shrink:0}
+.av-azul{background:var(--ctb)}.av-verde{background:linear-gradient(135deg,var(--ok),#1e8449)}.av-oro{background:linear-gradient(135deg,#f39c12,#d68910)}.av-rojo{background:linear-gradient(135deg,var(--er),#c0392b)}.av-lila{background:linear-gradient(135deg,#8e44ad,#7d3c98)}.av-teal{background:linear-gradient(135deg,#16a085,#0e6655)}
+.act-content{flex:1;min-width:0}
+.act-msg{font-size:13.5px;color:var(--ctd);line-height:1.4}
+.act-msg strong{color:var(--cp)}
+.act-time{font-size:11px;color:var(--ctl);margin-top:3px}
+.act-badge{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;flex-shrink:0}
+.ab-pub{background:var(--bs);color:var(--ca)}
+.ab-venta{background:#d4edda;color:#155724}
+.ab-alarma{background:#fff3cd;color:#856404}
+.ab-user{background:#e8d5f5;color:#6c3483}
+.ab-stock{background:#f8d7da;color:#721c24}
+
+/* ══ MURAL PREVIEW ══ */
+.mural-item{padding:14px 22px;border-bottom:1px solid var(--bs);display:flex;gap:12px;align-items:flex-start;transition:background .15s}
+.mural-item:last-child{border-bottom:none}
+.mural-item:hover{background:#f9fbff}
+.mural-av{width:36px;height:36px;border-radius:50%;background:var(--ctb);display:flex;align-items:center;justify-content:center;color:var(--gd);font-size:13px;flex-shrink:0;overflow:hidden}
+.mural-av img{width:100%;height:100%;object-fit:cover}
+.mural-meta{flex:1;min-width:0}
+.mural-user{font-weight:700;font-size:13px;color:var(--cp)}
+.mural-text{font-size:13px;color:var(--ctl);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mural-foot{display:flex;align-items:center;gap:10px;margin-top:5px;font-size:11px;color:var(--ctl)}
+.mural-foot i{font-size:11px}
+.mural-tipo{padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700}
+.mural-tipo.apoyo{background:var(--gs);color:#7a5c00}
+.mural-tipo.exp{background:#d4edda;color:#155724}
+.mural-tipo.consejo{background:#cce5ff;color:#004085}
+.mural-tipo.pregunta{background:#f8d7da;color:#721c24}
+
+/* ══ PRODUCTOS STOCK BAJO ══ */
+.stock-item{display:flex;align-items:center;gap:12px;padding:12px 22px;border-bottom:1px solid var(--bs);transition:background .15s}
+.stock-item:last-child{border-bottom:none}
+.stock-item:hover{background:#f9fbff}
+.stock-img{width:40px;height:40px;border-radius:var(--rsm);background:var(--bs);display:flex;align-items:center;justify-content:center;color:var(--sv);font-size:16px;overflow:hidden;flex-shrink:0}
+.stock-img img{width:100%;height:100%;object-fit:cover}
+.stock-info{flex:1;min-width:0}
+.stock-nombre{font-size:13px;font-weight:600;color:var(--ctd);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stock-cat{font-size:11px;color:var(--ctl)}
+.stock-badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;flex-shrink:0}
+.badge-agotado{background:#f8d7da;color:#721c24}
+.badge-bajo{background:#fff3cd;color:#856404}
+.btn-reponer{background:linear-gradient(135deg,var(--ca),var(--cmh));color:white;border:none;border-radius:var(--rsm);padding:5px 11px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:opacity .2s}
+.btn-reponer:hover{opacity:.85}
+
+/* ══ ACCESOS RÁPIDOS ══ */
+.quick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;padding:18px 22px}
+.qlink{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 12px;background:var(--bs);border-radius:var(--rmd);border:1.5px solid var(--sv);transition:all .2s;cursor:pointer}
+.qlink:hover{background:white;border-color:var(--ca);transform:translateY(-2px);box-shadow:0 6px 18px rgba(20,46,160,.1)}
+.qlink i{font-size:22px}
+.qlink span{font-size:12px;font-weight:600;color:var(--cp);text-align:center}
+.ql-azul i{color:var(--ca)}.ql-verde i{color:var(--ok)}.ql-oro i{color:#b8860b}.ql-rojo i{color:var(--er)}.ql-lila i{color:#8e44ad}.ql-teal i{color:#16a085}.ql-gris i{color:var(--cs)}
+
+/* ══ MEDICAMENTOS / ALARMAS ══ */
+.alarma-item{display:flex;align-items:center;gap:12px;padding:12px 22px;border-bottom:1px solid var(--bs);transition:background .15s}
+.alarma-item:last-child{border-bottom:none}
+.alarma-item:hover{background:#f9fbff}
+.al-hora{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--cp);min-width:58px;flex-shrink:0}
+.al-info{flex:1}
+.al-med{font-size:13px;font-weight:700;color:var(--ctd)}
+.al-det{font-size:11px;color:var(--ctl)}
+.al-badge{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;flex-shrink:0}
+.al-pend{background:#fff3cd;color:#856404}
+.al-ok{background:#d4edda;color:#155724}
+.al-omit{background:#f8d7da;color:#721c24}
+
+/* ══ MINI CHART (CSS barras) ══ */
+.chart-wrap{padding:18px 22px}
+.chart-bars{display:flex;align-items:flex-end;gap:8px;height:100px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px}
+.bar-fill{width:100%;border-radius:4px 4px 0 0;transition:height .5s ease;min-height:4px}
+.bar-fill.azul{background:linear-gradient(to top,var(--ca),var(--cmb))}
+.bar-fill.verde{background:linear-gradient(to top,var(--ok),#52c77a)}
+.bar-label{font-size:10px;color:var(--ctl);font-weight:600;white-space:nowrap}
+.chart-legend{display:flex;gap:16px;padding:0 22px 16px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ctl)}
+.legend-dot{width:10px;height:10px;border-radius:50%}
+.legend-dot.azul{background:var(--ca)}.legend-dot.verde{background:var(--ok)}
+
+/* ══ USUARIOS RECIENTES ══ */
+.user-item{display:flex;align-items:center;gap:12px;padding:12px 22px;border-bottom:1px solid var(--bs);transition:background .15s}
+.user-item:last-child{border-bottom:none}
+.user-item:hover{background:#f9fbff}
+.user-av{width:36px;height:36px;border-radius:50%;background:var(--ctb);display:flex;align-items:center;justify-content:center;color:var(--gd);font-size:13px;font-weight:700;flex-shrink:0}
+.user-info{flex:1}
+.user-name{font-size:13px;font-weight:700;color:var(--ctd)}
+.user-rol{font-size:11px;color:var(--ctl)}
+.user-date{font-size:11px;color:var(--ctl)}
+.rol-badge{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700}
+.rol-paciente{background:#d4edda;color:#155724}
+.rol-cuidador{background:#fff3cd;color:#856404}
+.rol-profesional{background:#cce5ff;color:#004085}
+.rol-user{background:var(--bs);color:var(--cp)}
+
+/* ══ PCT BAR ══ */
+.pct-row{padding:10px 22px;border-bottom:1px solid var(--bs)}
+.pct-row:last-child{border-bottom:none}
+.pct-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:13px}
+.pct-label{color:var(--ctd);font-weight:500}
+.pct-val{font-weight:700;color:var(--ca)}
+.pct-bar{background:var(--bs);border-radius:20px;height:7px;overflow:hidden}
+.pct-fill{height:100%;border-radius:20px;transition:width .6s ease}
+.pf-azul{background:linear-gradient(90deg,var(--ca),var(--cmb))}
+.pf-verde{background:linear-gradient(90deg,var(--ok),#52c77a)}
+.pf-oro{background:linear-gradient(90deg,#f39c12,#d68910)}
+.pf-lila{background:linear-gradient(90deg,#8e44ad,#a569bd)}
+
+/* ══ ALERTA GLOBAL ══ */
+.dash-alert{background:var(--gs);border:2px solid var(--gd);border-radius:var(--rmd);padding:12px 18px;display:flex;align-items:center;gap:12px;font-size:13px;font-weight:600;color:#7a5c00;margin-bottom:20px;grid-column:1/-1}
+.dash-alert i{font-size:18px;color:var(--gd);flex-shrink:0}
+.dash-alert a{color:var(--ca);font-weight:700;margin-left:8px}
+
+/* ══ SIDEBAR ══ */
+.page-layout{display:flex;gap:0;align-items:flex-start}
+.admin-sidebar{width:235px;flex-shrink:0;background:white;border-radius:0;border-right:1px solid var(--sv);box-shadow:2px 0 18px rgba(20,46,160,.06);overflow:hidden;min-height:calc(100vh - 110px);position:sticky;top:110px}
+.sb-hdr{background:var(--ctb);padding:16px 18px;display:flex;align-items:center;gap:10px;position:relative}
+.sb-hdr::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gd),transparent)}
+.sb-hdr i{color:var(--gd)}
+.sb-hdr span{font-size:14px;font-weight:700;color:white}
+.sb-sec{font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--cs);padding:12px 18px 6px}
+.sidebar-link{display:flex;align-items:center;gap:10px;color:var(--ctl);padding:9px 18px;font-size:13.5px;font-weight:500;border-left:3px solid transparent;transition:background .15s,color .15s,border-color .15s}
+.sidebar-link i{width:16px;text-align:center;font-size:13px;color:var(--cs)}
+.sidebar-link:hover,.sidebar-link.active{background:var(--bs);color:var(--ca);border-left-color:var(--ca)}
+.sidebar-link:hover i,.sidebar-link.active i{color:var(--ca)}
+.sb-sep{height:1px;background:var(--sv);margin:6px 18px}
+.dash-main{flex:1;min-width:0}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:1100px){
+  .col-8{grid-column:1/-1}.col-4{grid-column:1/-1}.col-6{grid-column:1/-1}
+  .hero-stats{display:none}
+  .admin-sidebar{display:none}
+}
+@media(max-width:700px){
+  .search-box{display:none}
+  .main-tabs a{padding:11px 12px;font-size:12px}
+  .dash-hero{flex-direction:column}
+  .hero-actions{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER (igual que clientes.html) ══ -->
+<header class="header-bar">
+  <div class="header-logo-section">
+    <div class="logo-text" style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--cp);line-height:1.1">LifeLine</div>
+    <img src="{% static 'imagenes/Group 243 (3).png' %}" alt="logo" style="width:40px;height:40px;object-fit:contain">
+  </div>
+
+  <div class="search-box">
+    <i class="fas fa-search"></i>
+    <input type="text" placeholder="Buscar usuarios, productos, publicaciones...">
+  </div>
+
+  <div class="hright">
+    <div class="hbtn" title="Notificaciones">
+      <i class="fas fa-bell"></i>
+      <span class="notif-dot"></span>
+    </div>
+    <a class="hbtn" href="{% url 'ver_carrito' %}" title="Carrito">
+      <i class="fas fa-shopping-cart"></i>
+    </a>
+    <div class="user-chip">
+      <div class="user-chip-av">
+        {% if usuario.foto_perfil %}<img src="{{ usuario.foto_perfil.url }}" alt="">{% else %}<i class="fas fa-user"></i>{% endif %}
+      </div>
+      <span>{{ usuario.username }}</span>
+    </div>
+  </div>
+</header>
+
+<!-- ══ NAV ══ -->
+<nav class="main-tabs">
+  <a href="{% url 'dashboard' %}" class="active"><i class="fas fa-th-large"></i> Dashboard</a>
+  <a href="{% url 'mural' %}"><i class="fas fa-seedling"></i> Mural</a>
+  <a href="{% url 'perfil' %}"><i class="fas fa-user"></i> Perfil</a>
+  <a href="{% url 'lista_productos' %}"><i class="fas fa-store"></i> Productos</a>
+  <a href="{% url 'lista_usuarios' %}"><i class="fas fa-users"></i> Usuarios</a>
+  <a href="{% url 'clientes' %}"><i class="fas fa-chart-bar"></i> Reportes</a>
+  <a href="{% url 'nutricion' %}"><i class="fas fa-apple-alt"></i> Nutrición</a>
+  <a href="{% url 'ejercicio' %}"><i class="fas fa-dumbbell"></i> Ejercicio</a>
+  <a href="{% url 'alarmas' %}"><i class="fas fa-clock"></i> Alarmas</a>
+  <a href="{% url 'contactanos' %}"><i class="fas fa-envelope"></i> Contáctanos</a>
+</nav>
+
+<!-- ══ LAYOUT CON SIDEBAR ══ -->
+<div class="page-layout">
+
+  <!-- ══ SIDEBAR ══ -->
+  <aside class="admin-sidebar">
+    <div class="sb-hdr"><i class="fas fa-chart-bar"></i><span>Panel Admin</span></div>
+
+    <!-- Dashboard activo -->
+    <a href="{% url 'dashboard' %}" class="sidebar-link active" style="border-left-color:var(--gd);color:var(--ca)">
+      <i class="fas fa-th-large" style="color:var(--gd)"></i> Dashboard
+    </a>
+    <div class="sb-sep"></div>
+
+    <div class="sb-sec">Usuarios</div>
+    <a href="{% url 'lista_usuarios' %}" class="sidebar-link"><i class="fas fa-users"></i> Clientes</a>
+    <a href="{% url 'clientes' %}" class="sidebar-link"><i class="fas fa-user-check"></i> Clientes Report</a>
+    <div class="sb-sep"></div>
+
+    <div class="sb-sec">Productos</div>
+    <a href="{% url 'reporte_productos' %}" class="sidebar-link"><i class="fas fa-boxes"></i> Productos</a>
+    <a href="{% url 'lista_productos' %}" class="sidebar-link"><i class="fas fa-store"></i> Catálogo</a>
+    <a href="{% url 'reporte_stock' %}" class="sidebar-link"><i class="fas fa-exclamation-triangle"></i> Stock Bajo</a>
+    <div class="sb-sep"></div>
+
+    <div class="sb-sec">Salud</div>
+    <a href="{% url 'reporte_medicamentos' %}" class="sidebar-link"><i class="fas fa-pills"></i> Medicamentos</a>
+    <a href="{% url 'reporte_emocional' %}" class="sidebar-link"><i class="fas fa-heart"></i> Emocional</a>
+    <a href="{% url 'reporte_tienda' %}" class="sidebar-link"><i class="fas fa-shopping-cart"></i> Tienda</a>
+    <div class="sb-sep"></div>
+
+    {% if request.user.is_staff or request.user.rol == 'ADMIN' %}
+    <a href="/admin/" class="sidebar-link"><i class="fas fa-lock"></i> Panel Admin</a>
+    {% endif %}
+  </aside>
+
+  <!-- ══ CONTENIDO PRINCIPAL ══ -->
+  <div class="dash-main">
+<!-- ══ DASHBOARD ══ -->
+<div class="dash-wrap">
+
+  <!-- Alerta global de stock -->
+  {% if total_stock_bajo > 0 %}
+  <div class="dash-alert">
+    <i class="fas fa-exclamation-triangle"></i>
+    <span>
+      <strong>¡Atención!</strong> Hay {{ total_stock_bajo }} producto{{ total_stock_bajo|pluralize }} con stock bajo (menos de 5 unidades).
+      <a href="{% url 'reporte_stock' %}">Ver reporte de stock →</a>
+    </span>
+  </div>
+  {% endif %}
+
+  <!-- ══ HERO ══ -->
+  <div class="dash-hero">
+    <div class="hero-text">
+      <div class="hero-eyebrow"><i class="fas fa-star"></i> Panel de Control</div>
+      <div class="hero-title">Bienvenido/a,<br>{{ usuario.username }} 👋</div>
+      <div class="hero-sub">Aquí tienes un resumen de todo lo que está pasando en la comunidad LifeLine hoy.</div>
+      <div class="hero-actions">
+        <a href="{% url 'nuevo_producto' %}" class="btn-hero-pri">
+          <i class="fas fa-plus"></i> Nuevo Producto
+        </a>
+        <a href="{% url 'mural' %}" class="btn-hero-sec">
+          <i class="fas fa-seedling"></i> Ver Mural
+        </a>
+        <a href="{% url 'lista_usuarios' %}" class="btn-hero-sec">
+          <i class="fas fa-users"></i> Gestionar Usuarios
+        </a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><strong>{{ total_usuarios|default:"—" }}</strong><span>Usuarios</span></div>
+      <div class="hstat"><strong>{{ total_publicaciones|default:"—" }}</strong><span>Publicaciones</span></div>
+      <div class="hstat"><strong>{{ total_productos|default:"—" }}</strong><span>Productos</span></div>
+      <div class="hstat"><strong>{{ total_pedidos|default:"—" }}</strong><span>Pedidos</span></div>
+    </div>
+  </div>
+
+  <!-- ══ STAT CARDS ══ -->
+  <div class="dash-grid">
+
+    <div class="stat-row">
+      <div class="scard azul">
+        <div class="sc-icon"><i class="fas fa-users"></i></div>
+        <div class="sc-num">{{ total_usuarios|default:"0" }}</div>
+        <div class="sc-label">Usuarios registrados</div>
+        <div class="sc-trend trend-up"><i class="fas fa-arrow-up"></i> {{ nuevos_usuarios_mes|default:"0" }} este mes</div>
+      </div>
+
+      <div class="scard verde">
+        <div class="sc-icon"><i class="fas fa-boxes"></i></div>
+        <div class="sc-num">{{ total_productos|default:"0" }}</div>
+        <div class="sc-label">Productos en catálogo</div>
+        <div class="sc-trend {% if total_stock_bajo > 0 %}trend-down{% else %}trend-up{% endif %}">
+          <i class="fas fa-{% if total_stock_bajo > 0 %}exclamation-triangle{% else %}check{% endif %}"></i>
+          {% if total_stock_bajo > 0 %}{{ total_stock_bajo }} con stock bajo{% else %}Stock en buen nivel{% endif %}
+        </div>
+      </div>
+
+      <div class="scard lila">
+        <div class="sc-icon"><i class="fas fa-pen-nib"></i></div>
+        <div class="sc-num">{{ total_publicaciones|default:"0" }}</div>
+        <div class="sc-label">Publicaciones en mural</div>
+        <div class="sc-trend trend-up"><i class="fas fa-arrow-up"></i> {{ publicaciones_semana|default:"0" }} esta semana</div>
+      </div>
+
+      <div class="scard oro">
+        <div class="sc-icon"><i class="fas fa-clipboard-list"></i></div>
+        <div class="sc-num">{{ total_pedidos|default:"0" }}</div>
+        <div class="sc-label">Pedidos totales</div>
+        <div class="sc-trend trend-neutral"><i class="fas fa-minus"></i> {{ pedidos_pendientes|default:"0" }} pendientes</div>
+      </div>
+
+      <div class="scard teal">
+        <div class="sc-icon"><i class="fas fa-heart"></i></div>
+        <div class="sc-num">{{ total_likes|default:"0" }}</div>
+        <div class="sc-label">Likes en el mural</div>
+        <div class="sc-trend trend-up"><i class="fas fa-arrow-up"></i> Comunidad activa</div>
+      </div>
+
+      <div class="scard rojo">
+        <div class="sc-icon"><i class="fas fa-exclamation-triangle"></i></div>
+        <div class="sc-num">{{ total_stock_bajo|default:"0" }}</div>
+        <div class="sc-label">Productos stock bajo</div>
+        <div class="sc-trend {% if total_stock_bajo > 0 %}trend-down{% else %}trend-up{% endif %}">
+          <i class="fas fa-{% if total_stock_bajo > 0 %}exclamation{% else %}check{% endif %}"></i>
+          {% if total_stock_bajo > 0 %}Requiere atención{% else %}Todo en orden{% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ACTIVIDAD RECIENTE ══ -->
+    <div class="panel col-8">
+      <div class="panel-hdr">
+        <div class="panel-hdr-left">
+          <i class="fas fa-bolt"></i>
+          <h3>Actividad Reciente</h3>
+        </div>
+        <a href="{% url 'mural' %}" class="panel-link">Ver todo <i class="fas fa-chevron-right"></i></a>
+      </div>
+      <div class="panel-body">
+
+        {% for pub in publicaciones_recientes %}
+        <div class="act-item">
+          <div class="act-av av-lila">
+            {% if pub.autor.foto_perfil %}<img src="{{ pub.autor.foto_perfil.url }}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">{% else %}{{ pub.autor.username|first|upper }}{% endif %}
+          </div>
+          <div class="act-content">
+            <div class="act-msg"><strong>{{ pub.autor.username }}</strong> publicó en el mural: "{{ pub.contenido|truncatechars:60 }}"</div>
+            <div class="act-time"><i class="fas fa-clock" style="margin-right:4px"></i>{{ pub.fecha_creacion|date:"d M Y, H:i" }}</div>
+          </div>
+          <span class="act-badge ab-pub">{{ pub.get_tipo_display }}</span>
+        </div>
+        {% empty %}
+        <!-- Datos de ejemplo cuando no hay publicaciones -->
+        <div class="act-item">
+          <div class="act-av av-azul"><i class="fas fa-shield-alt"></i></div>
+          <div class="act-content">
+            <div class="act-msg"><strong>LifeLine Oficial</strong> publicó un nuevo artículo en el mural sobre nutrición oncológica.</div>
+            <div class="act-time"><i class="fas fa-clock" style="margin-right:4px"></i>Hace 2 horas</div>
+          </div>
+          <span class="act-badge ab-pub">💡 Consejo</span>
+        </div>
+        <div class="act-item">
+          <div class="act-av av-verde"><i class="fas fa-user"></i></div>
+          <div class="act-content">
+            <div class="act-msg"><strong>María G.</strong> se registró como nueva <strong>Paciente</strong> en LifeLine.</div>
+            <div class="act-time"><i class="fas fa-clock" style="margin-right:4px"></i>Hace 4 horas</div>
+          </div>
+          <span class="act-badge ab-user">Nuevo usuario</span>
+        </div>
+        <div class="act-item">
+          <div class="act-av av-oro"><i class="fas fa-shopping-cart"></i></div>
+          <div class="act-content">
+            <div class="act-msg"><strong>Carlos P.</strong> realizó un pedido de 3 productos por $85,000 COP.</div>
+            <div class="act-time"><i class="fas fa-clock" style="margin-right:4px"></i>Hace 5 horas</div>
+          </div>
+          <span class="act-badge ab-venta">Venta</span>
+        </div>
+        <div class="act-item">
+          <div class="act-av av-rojo"><i class="fas fa-exclamation-triangle"></i></div>
+          <div class="act-content">
+            <div class="act-msg"><strong>Turbante Oncológico Suave</strong> alcanzó stock crítico: solo 2 unidades disponibles.</div>
+            <div class="act-time"><i class="fas fa-clock" style="margin-right:4px"></i>Hace 6 horas</div>
+          </div>
+          <span class="act-badge ab-stock">Stock bajo</span>
+        </div>
+        <div class="act-item">
+          <div class="act-av av-lila"><i class="fas fa-heart"></i></div>
+          <div class="act-content">
+            <div class="act-msg"><strong>Ana M.</strong> compartió una experiencia en el mural: "Comencé la rutina de ejercicio suave..."</div>
+            <div class="act-time"><i class="fas fa-clock" style="margin-right:4px"></i>Hace 8 horas</div>
+          </div>
+          <span class="act-badge ab-pub">🌱 Experiencia</span>
+        </div>
+        <div class="act-item">
+          <div class="act-av av-teal"><i class="fas fa-clock"></i></div>
+          <div class="act-content">
+            <div class="act-msg"><strong>Roberto S.</strong> configuró una alarma de medicamento: Ibuprofeno 400mg cada 8h.</div>
+            <div class="act-time"><i class="fas fa-clock" style="margin-right:4px"></i>Ayer, 14:30</div>
+          </div>
+          <span class="act-badge ab-alarma">Alarma</span>
+        </div>
+        {% endfor %}
+
+      </div>
+    </div>
+
+    <!-- ══ ACCESOS RÁPIDOS ══ -->
+    <div class="panel col-4">
+      <div class="panel-hdr">
+        <div class="panel-hdr-left">
+          <i class="fas fa-th-large"></i>
+          <h3>Accesos Rápidos</h3>
+        </div>
+      </div>
+      <div class="quick-grid">
+        <a href="{% url 'nuevo_producto' %}" class="qlink ql-azul">
+          <i class="fas fa-plus-circle"></i><span>Nuevo Producto</span>
+        </a>
+        <a href="{% url 'lista_usuarios' %}" class="qlink ql-lila">
+          <i class="fas fa-user-plus"></i><span>Ver Usuarios</span>
+        </a>
+        <a href="{% url 'mural' %}" class="qlink ql-verde">
+          <i class="fas fa-seedling"></i><span>Ir al Mural</span>
+        </a>
+        <a href="{% url 'reporte_stock' %}" class="qlink ql-rojo">
+          <i class="fas fa-exclamation-triangle"></i><span>Stock Bajo</span>
+        </a>
+        <a href="{% url 'reporte_productos' %}" class="qlink ql-azul">
+          <i class="fas fa-boxes"></i><span>Reporte Productos</span>
+        </a>
+        <a href="{% url 'clientes' %}" class="qlink ql-oro">
+          <i class="fas fa-chart-bar"></i><span>Reporte Clientes</span>
+        </a>
+        <a href="{% url 'reporte_medicamentos' %}" class="qlink ql-teal">
+          <i class="fas fa-pills"></i><span>Medicamentos</span>
+        </a>
+        <a href="{% url 'reporte_emocional' %}" class="qlink ql-lila">
+          <i class="fas fa-heart"></i><span>Emocional</span>
+        </a>
+        <a href="{% url 'reporte_tienda' %}" class="qlink ql-verde">
+          <i class="fas fa-shopping-cart"></i><span>Tienda</span>
+        </a>
+        <a href="{% url 'nutricion' %}" class="qlink ql-verde">
+          <i class="fas fa-apple-alt"></i><span>Nutrición</span>
+        </a>
+        <a href="{% url 'ejercicio' %}" class="qlink ql-azul">
+          <i class="fas fa-dumbbell"></i><span>Ejercicio</span>
+        </a>
+        <a href="/admin/" class="qlink ql-gris">
+          <i class="fas fa-lock"></i><span>Panel Admin</span>
+        </a>
+      </div>
+
+      <!-- Distribución por rol -->
+      <div style="border-top:1px solid var(--bs)">
+        <div class="panel-hdr" style="padding:14px 22px">
+          <div class="panel-hdr-left">
+            <i class="fas fa-pie-chart"></i>
+            <h3 style="font-size:15px">Usuarios por Rol</h3>
+          </div>
+        </div>
+        <div class="pct-row">
+          <div class="pct-top"><span class="pct-label">Pacientes</span><span class="pct-val">{{ pct_pacientes|default:"42" }}%</span></div>
+          <div class="pct-bar"><div class="pct-fill pf-verde" style="width:{{ pct_pacientes|default:42 }}%"></div></div>
+        </div>
+        <div class="pct-row">
+          <div class="pct-top"><span class="pct-label">Cuidadores</span><span class="pct-val">{{ pct_cuidadores|default:"28" }}%</span></div>
+          <div class="pct-bar"><div class="pct-fill pf-azul" style="width:{{ pct_cuidadores|default:28 }}%"></div></div>
+        </div>
+        <div class="pct-row">
+          <div class="pct-top"><span class="pct-label">Profesionales</span><span class="pct-val">{{ pct_profesionales|default:"18" }}%</span></div>
+          <div class="pct-bar"><div class="pct-fill pf-lila" style="width:{{ pct_profesionales|default:18 }}%"></div></div>
+        </div>
+        <div class="pct-row">
+          <div class="pct-top"><span class="pct-label">Usuarios</span><span class="pct-val">{{ pct_users|default:"12" }}%</span></div>
+          <div class="pct-bar"><div class="pct-fill pf-oro" style="width:{{ pct_users|default:12 }}%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ MURAL RECIENTE ══ -->
+    <div class="panel col-6">
+      <div class="panel-hdr">
+        <div class="panel-hdr-left">
+          <i class="fas fa-seedling"></i>
+          <h3>Últimas del Mural</h3>
+        </div>
+        <a href="{% url 'mural' %}" class="panel-link">Ver mural <i class="fas fa-chevron-right"></i></a>
+      </div>
+      <div class="panel-body">
+        {% for pub in publicaciones_recientes %}
+        <div class="mural-item">
+          <div class="mural-av">
+            {% if pub.autor.foto_perfil %}<img src="{{ pub.autor.foto_perfil.url }}" alt="">{% else %}{{ pub.autor.username|first|upper }}{% endif %}
+          </div>
+          <div class="mural-meta">
+            <div class="mural-user">{{ pub.autor.username }}</div>
+            <div class="mural-text">{{ pub.contenido|truncatechars:65 }}</div>
+            <div class="mural-foot">
+              <i class="fas fa-heart" style="color:var(--er)"></i> {{ pub.total_likes }}
+              <i class="fas fa-comment-alt" style="color:var(--cs)"></i> {{ pub.comentarios.count }}
+              <i class="fas fa-clock"></i> {{ pub.fecha_creacion|date:"d M" }}
+              <span class="mural-tipo {% if pub.tipo == 'APOYO' %}apoyo{% elif pub.tipo == 'EXPERIENCIA' %}exp{% elif pub.tipo == 'CONSEJO' %}consejo{% else %}pregunta{% endif %}">{{ pub.get_tipo_display }}</span>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="mural-item">
+          <div class="mural-av" style="background:var(--ctb)"><i class="fas fa-shield-alt" style="color:var(--gd)"></i></div>
+          <div class="mural-meta">
+            <div class="mural-user">LifeLine Oficial</div>
+            <div class="mural-text">Acompañar a un ser querido es un acto de amor puro y la base de su fortaleza.</div>
+            <div class="mural-foot"><i class="fas fa-heart" style="color:var(--er)"></i> 245 <i class="fas fa-comment-alt" style="color:var(--cs)"></i> 12 <span class="mural-tipo apoyo">💙 Apoyo</span></div>
+          </div>
+        </div>
+        <div class="mural-item">
+          <div class="mural-av">E</div>
+          <div class="mural-meta">
+            <div class="mural-user">Elena M.</div>
+            <div class="mural-text">Los Turbantes Oncológicos Suaves son increíblemente cómodos, los recomiendo de corazón.</div>
+            <div class="mural-foot"><i class="fas fa-heart" style="color:var(--er)"></i> 58 <i class="fas fa-comment-alt" style="color:var(--cs)"></i> 10 <span class="mural-tipo exp">🌱 Experiencia</span></div>
+          </div>
+        </div>
+        <div class="mural-item">
+          <div class="mural-av">C</div>
+          <div class="mural-meta">
+            <div class="mural-user">Carlos V.</div>
+            <div class="mural-text">¿Alguien tiene recomendaciones de ejercicios para días de baja energía?</div>
+            <div class="mural-foot"><i class="fas fa-heart" style="color:var(--er)"></i> 23 <i class="fas fa-comment-alt" style="color:var(--cs)"></i> 8 <span class="mural-tipo pregunta">❓ Pregunta</span></div>
+          </div>
+        </div>
+        <div class="mural-item">
+          <div class="mural-av" style="background:var(--ctb)"><i class="fas fa-shield-alt" style="color:var(--gd)"></i></div>
+          <div class="mural-meta">
+            <div class="mural-user">LifeLine Oficial</div>
+            <div class="mural-text">Nueva guía: La importancia de la nutrición durante el tratamiento oncológico.</div>
+            <div class="mural-foot"><i class="fas fa-heart" style="color:var(--er)"></i> 150 <i class="fas fa-comment-alt" style="color:var(--cs)"></i> 25 <span class="mural-tipo consejo">💡 Consejo</span></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- ══ PRODUCTOS STOCK BAJO ══ -->
+    <div class="panel col-6">
+      <div class="panel-hdr">
+        <div class="panel-hdr-left">
+          <i class="fas fa-exclamation-triangle" style="color:var(--er)"></i>
+          <h3>Productos con Stock Bajo</h3>
+        </div>
+        <a href="{% url 'reporte_stock' %}" class="panel-link">Ver reporte <i class="fas fa-chevron-right"></i></a>
+      </div>
+      <div class="panel-body">
+        {% for p in stock_bajo %}
+        <div class="stock-item">
+          <div class="stock-img">
+            {% if p.imagen %}<img src="{{ p.imagen.url }}" alt="">{% else %}<i class="fas fa-image"></i>{% endif %}
+          </div>
+          <div class="stock-info">
+            <div class="stock-nombre">{{ p.nombre }}</div>
+            <div class="stock-cat">{{ p.categoria }}</div>
+          </div>
+          {% if p.cantidad == 0 %}<span class="stock-badge badge-agotado">⚠ Agotado</span>{% else %}<span class="stock-badge badge-bajo">{{ p.cantidad }} uds</span>{% endif %}
+          <a href="{% url 'editar_producto' p.id %}" class="btn-reponer">Reponer</a>
+        </div>
+        {% empty %}
+        <div class="stock-item">
+          <div class="stock-img"><i class="fas fa-image"></i></div>
+          <div class="stock-info"><div class="stock-nombre">Turbante Oncológico Suave</div><div class="stock-cat">Accesorios y Ropa</div></div>
+          <span class="stock-badge badge-agotado">⚠ Agotado</span>
+          <button class="btn-reponer">Reponer</button>
+        </div>
+        <div class="stock-item">
+          <div class="stock-img"><i class="fas fa-image"></i></div>
+          <div class="stock-info"><div class="stock-nombre">Crema Ultra-Hidratante</div><div class="stock-cat">Cuidado de la Piel</div></div>
+          <span class="stock-badge badge-bajo">2 uds</span>
+          <button class="btn-reponer">Reponer</button>
+        </div>
+        <div class="stock-item">
+          <div class="stock-img"><i class="fas fa-image"></i></div>
+          <div class="stock-info"><div class="stock-nombre">Almohada Terapéutica</div><div class="stock-cat">Bienestar y Relax</div></div>
+          <span class="stock-badge badge-bajo">1 ud</span>
+          <button class="btn-reponer">Reponer</button>
+        </div>
+        <div style="text-align:center;padding:12px 22px;font-size:13px;color:var(--ok);font-weight:600;border-top:1px solid var(--bs)">
+          <i class="fas fa-check-circle" style="margin-right:5px"></i>
+          {% if total_stock_bajo == 0 %}¡Todo el resto del stock está en buen nivel!{% else %}{{ total_stock_bajo }} productos requieren atención.{% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- ══ ALARMAS DEL DÍA ══ -->
+    <div class="panel col-6">
+      <div class="panel-hdr">
+        <div class="panel-hdr-left">
+          <i class="fas fa-clock" style="color:var(--warn)"></i>
+          <h3>Alarmas de Hoy</h3>
+        </div>
+        <a href="{% url 'alarmas' %}" class="panel-link">Ver todas <i class="fas fa-chevron-right"></i></a>
+      </div>
+      <div class="panel-body">
+        {% for alarma in alarmas_hoy %}
+        <div class="alarma-item">
+          <div class="al-hora">{{ alarma.hora|time:"H:i" }}</div>
+          <div class="al-info">
+            <div class="al-med">{{ alarma.medicamento }}</div>
+            <div class="al-det">{{ alarma.dosis }} · {{ alarma.usuario.username }}</div>
+          </div>
+          <span class="al-badge {% if alarma.estado == 'tomada' %}al-ok{% elif alarma.estado == 'omitida' %}al-omit{% else %}al-pend{% endif %}">
+            {% if alarma.estado == 'tomada' %}✔ Tomada{% elif alarma.estado == 'omitida' %}✖ Omitida{% else %}⏳ Pendiente{% endif %}
+          </span>
+        </div>
+        {% empty %}
+        <div class="alarma-item">
+          <div class="al-hora">08:00</div>
+          <div class="al-info"><div class="al-med">Ibuprofeno 400mg</div><div class="al-det">1 comprimido · María G.</div></div>
+          <span class="al-badge al-ok">✔ Tomada</span>
+        </div>
+        <div class="alarma-item">
+          <div class="al-hora">12:00</div>
+          <div class="al-info"><div class="al-med">Metoclopramida</div><div class="al-det">½ comprimido · Carlos P.</div></div>
+          <span class="al-badge al-ok">✔ Tomada</span>
+        </div>
+        <div class="alarma-item">
+          <div class="al-hora">16:00</div>
+          <div class="al-info"><div class="al-med">Dexametasona 4mg</div><div class="al-det">1 comprimido · Ana M.</div></div>
+          <span class="al-badge al-pend">⏳ Pendiente</span>
+        </div>
+        <div class="alarma-item">
+          <div class="al-hora">20:00</div>
+          <div class="al-info"><div class="al-med">Omeprazol 20mg</div><div class="al-det">1 cápsula · Roberto S.</div></div>
+          <span class="al-badge al-pend">⏳ Pendiente</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- ══ USUARIOS RECIENTES ══ -->
+    <div class="panel col-6">
+      <div class="panel-hdr">
+        <div class="panel-hdr-left">
+          <i class="fas fa-user-plus" style="color:var(--ok)"></i>
+          <h3>Usuarios Recientes</h3>
+        </div>
+        <a href="{% url 'lista_usuarios' %}" class="panel-link">Ver todos <i class="fas fa-chevron-right"></i></a>
+      </div>
+      <div class="panel-body">
+        {% for u in usuarios_recientes %}
+        <div class="user-item">
+          <div class="user-av">{{ u.username|first|upper }}</div>
+          <div class="user-info">
+            <div class="user-name">{{ u.username }}</div>
+            <div class="user-rol">{{ u.email }}</div>
+          </div>
+          <span class="rol-badge rol-{{ u.rol|lower }}">{{ u.get_rol_display }}</span>
+          <div class="user-date" style="margin-left:10px">{{ u.date_joined|date:"d/m/Y" }}</div>
+        </div>
+        {% empty %}
+        <div class="user-item">
+          <div class="user-av">M</div>
+          <div class="user-info"><div class="user-name">María García</div><div class="user-rol">maria@email.com</div></div>
+          <span class="rol-badge rol-paciente">Paciente</span>
+          <div class="user-date" style="margin-left:10px">Hoy</div>
+        </div>
+        <div class="user-item">
+          <div class="user-av">C</div>
+          <div class="user-info"><div class="user-name">Carlos Pérez</div><div class="user-rol">carlos@email.com</div></div>
+          <span class="rol-badge rol-cuidador">Cuidador</span>
+          <div class="user-date" style="margin-left:10px">Ayer</div>
+        </div>
+        <div class="user-item">
+          <div class="user-av">A</div>
+          <div class="user-info"><div class="user-name">Ana Martínez</div><div class="user-rol">ana@email.com</div></div>
+          <span class="rol-badge rol-profesional">Profesional</span>
+          <div class="user-date" style="margin-left:10px">Hace 2 días</div>
+        </div>
+        <div class="user-item">
+          <div class="user-av">R</div>
+          <div class="user-info"><div class="user-name">Roberto Silva</div><div class="user-rol">roberto@email.com</div></div>
+          <span class="rol-badge rol-paciente">Paciente</span>
+          <div class="user-date" style="margin-left:10px">Hace 3 días</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- ══ PUBLICACIONES POR CATEGORÍA (mini chart) ══ -->
+    <div class="panel col-12">
+      <div class="panel-hdr">
+        <div class="panel-hdr-left">
+          <i class="fas fa-chart-bar"></i>
+          <h3>Actividad del Mural — Publicaciones por Tipo</h3>
+        </div>
+        <a href="{% url 'reporte_emocional' %}" class="panel-link">Reporte completo <i class="fas fa-chevron-right"></i></a>
+      </div>
+      <div class="chart-wrap">
+        <div class="chart-bars" id="chartBars">
+          <!-- Renderizado por JS con datos Django -->
+          <div class="bar-col">
+            <div class="bar-fill azul" style="height:{{ pct_apoyo|default:70 }}%"></div>
+            <div class="bar-label">💙 Apoyo</div>
+          </div>
+          <div class="bar-col">
+            <div class="bar-fill verde" style="height:{{ pct_experiencia|default:45 }}%"></div>
+            <div class="bar-label">🌱 Experiencia</div>
+          </div>
+          <div class="bar-col">
+            <div class="bar-fill" style="height:{{ pct_consejo|default:60 }}%;background:linear-gradient(to top,#f39c12,#d68910)"></div>
+            <div class="bar-label">💡 Consejo</div>
+          </div>
+          <div class="bar-col">
+            <div class="bar-fill" style="height:{{ pct_pregunta|default:30 }}%;background:linear-gradient(to top,var(--er),#e97070)"></div>
+            <div class="bar-label">❓ Pregunta</div>
+          </div>
+          <div style="width:2px;background:var(--bs);flex-shrink:0;align-self:stretch;margin:0 8px"></div>
+          <!-- Usuarios por mes últimos 4 meses -->
+          <div class="bar-col">
+            <div class="bar-fill azul" style="height:40%"></div>
+            <div class="bar-label">Ene</div>
+          </div>
+          <div class="bar-col">
+            <div class="bar-fill azul" style="height:55%"></div>
+            <div class="bar-label">Feb</div>
+          </div>
+          <div class="bar-col">
+            <div class="bar-fill azul" style="height:70%"></div>
+            <div class="bar-label">Mar</div>
+          </div>
+          <div class="bar-col">
+            <div class="bar-fill azul" style="height:{{ pct_mes_actual|default:85 }}%"></div>
+            <div class="bar-label">Abr</div>
+          </div>
+        </div>
+      </div>
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-dot azul"></div> Publicaciones por tipo / Usuarios nuevos por mes</div>
+        <div class="legend-item" style="margin-left:auto;color:var(--ca);font-weight:600">
+          <i class="fas fa-users" style="margin-right:5px"></i>
+          Total comunidad: {{ total_usuarios|default:"—" }} personas
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.dash-grid -->
+</div><!-- /.dash-wrap -->
+  </div><!-- /.dash-main -->
+</div><!-- /.page-layout -->
+
+<script>
+/* Animación de barras al cargar */
+document.querySelectorAll('.bar-fill').forEach((bar, i) => {
+  const h = bar.style.height;
+  bar.style.height = '0%';
+  setTimeout(() => { bar.style.height = h; }, 200 + i * 80);
+});
+
+/* Reloj en tiempo real en el hero (opcional) */
+function updateTime() {
+  const now = new Date();
+  const t = now.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+  const eyebrow = document.querySelector('.hero-eyebrow');
+  if (eyebrow) eyebrow.dataset.time = t;
+}
+updateTime();
+setInterval(updateTime, 60000);
+</script>
+</body>
+</html>

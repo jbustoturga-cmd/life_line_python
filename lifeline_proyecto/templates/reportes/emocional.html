@@ -1,0 +1,314 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LifeLine - Reporte Emocional</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+<style>
+:root{--cp:#3d5273;--cs:#5b6e94;--ca:#142ea0;--cmb:#526eaa;--cmh:#2d3c7e;--ctb:linear-gradient(135deg,#040418,#102468);--ctd:#1a1a1a;--ctl:#555;--bs:#e8edf8;--bg:rgba(20,46,160,.12);--sv:#dce3f0;--cr:#f7f9fc;--gd:#f1c40f;--ok:#27ae60;--er:#e74c3c;--rxl:20px;--rmd:12px;--rsm:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:var(--cr);color:var(--ctd);min-height:100vh}
+a{text-decoration:none}
+.header-bar{background:white;border-bottom:4px solid var(--ca);padding:11px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(20,46,160,.1)}
+.header-logo-section{display:flex;align-items:center;gap:10px}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--cp);line-height:1.1}
+.header-logo-section img{width:40px;height:40px;object-fit:contain}
+.search-box{background:var(--bs);border-radius:30px;padding:9px 18px;display:flex;align-items:center;border:1.5px solid var(--sv);width:280px}
+.search-box i{color:var(--ca);font-size:14px}
+.search-box input{border:none;background:none;outline:none;font-size:14px;color:var(--ctd);width:100%;margin-left:8px;font-family:'Outfit',sans-serif}
+.navbar-right{display:flex;align-items:center;gap:12px}
+.user-photo{width:38px;height:38px;border-radius:50%;overflow:hidden;border:2px solid var(--ca)}
+.user-photo img{width:100%;height:100%;object-fit:cover}
+.btn-logout{background:none;border:1.5px solid rgba(220,53,69,.35);color:white;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;gap:6px}
+.btn-logout:hover{background:#dc3545;border-color:#dc3545}
+.main-tabs{background:var(--cp);display:flex;padding:0 24px;overflow-x:auto;gap:2px}
+.main-tabs a{color:rgba(255,255,255,.7);padding:12px 16px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;white-space:nowrap;border-bottom:3px solid transparent;transition:color .2s,border-color .2s,background .2s}
+.main-tabs a:hover{color:white;background:rgba(255,255,255,.08);border-bottom-color:rgba(255,255,255,.3)}
+.main-tabs a.active{color:var(--gd);border-bottom-color:var(--gd);font-weight:700}
+.page-layout{display:flex;gap:22px;padding:24px 20px;max-width:1380px;margin:0 auto;align-items:flex-start}
+.admin-sidebar{width:235px;flex-shrink:0;background:white;border-radius:var(--rxl);border:1px solid var(--sv);box-shadow:0 2px 18px rgba(20,46,160,.08);overflow:hidden}
+.sb-hdr{background:var(--ctb);padding:16px 18px;display:flex;align-items:center;gap:10px;position:relative}
+.sb-hdr::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gd),transparent)}
+.sb-hdr i{color:var(--gd)}.sb-hdr span{font-size:14px;font-weight:700;color:white}
+.sb-sec{font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--cs);padding:12px 18px 6px}
+.sidebar-link{display:flex;align-items:center;gap:10px;color:var(--ctl);padding:9px 18px;font-size:13.5px;font-weight:500;border-left:3px solid transparent;transition:background .15s,color .15s,border-color .15s}
+.sidebar-link i{width:16px;text-align:center;font-size:13px;color:var(--cs)}
+.sidebar-link:hover,.sidebar-link.active{background:var(--bs);color:var(--ca);border-left-color:var(--ca)}
+.sidebar-link:hover i,.sidebar-link.active i{color:var(--ca)}
+.sb-sep{height:1px;background:var(--sv);margin:6px 18px}
+.main-content{flex:1;min-width:0}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px;margin-bottom:24px}
+.stat-card{background:white;border-radius:var(--rxl);padding:22px 20px;border:1px solid var(--sv);box-shadow:0 2px 14px rgba(20,46,160,.07);position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--ca),var(--cmb))}
+.stat-ico{width:44px;height:44px;border-radius:var(--rmd);background:var(--bs);border:1px solid var(--sv);display:flex;align-items:center;justify-content:center;color:var(--ca);font-size:18px;margin-bottom:14px}
+.stat-num{font-size:34px;font-weight:700;color:var(--ca);line-height:1}
+.stat-label{font-size:12px;color:var(--ctl);margin-top:5px;font-weight:500;text-transform:uppercase;letter-spacing:.5px}
+.page-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:12px}
+.page-hdr h2{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--cp);display:flex;align-items:center;gap:8px}
+.page-hdr h2 i{color:var(--ca);font-size:20px}
+.table-card{background:white;border-radius:var(--rxl);border:1px solid var(--sv);box-shadow:0 2px 18px rgba(20,46,160,.07);overflow:hidden;margin-bottom:20px}
+.table-card-hdr{padding:14px 20px;border-bottom:1px solid var(--bs);font-size:14px;font-weight:700;color:var(--cp);display:flex;align-items:center;gap:8px}
+table{width:100%;border-collapse:collapse}
+thead{background:var(--ctb)}
+th{padding:13px 16px;text-align:left;font-size:11px;font-weight:700;color:rgba(255,255,255,.85);letter-spacing:.5px;text-transform:uppercase}
+td{padding:13px 16px;border-bottom:1px solid var(--bs);font-size:14px;color:var(--ctd);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f4f7ff}
+.empty-cell{text-align:center;padding:36px;color:var(--ctl);font-size:14px}
+.tipo-badge{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700}
+.tipo-apoyo{background:#cce5ff;color:#004085}
+.tipo-experiencia{background:#d4edda;color:#155724}
+.tipo-consejo{background:#fff3cd;color:#856404}
+.tipo-pregunta{background:#f8d7da;color:#721c24}
+@media(max-width:1000px){.admin-sidebar{display:none}.page-layout{flex-direction:column}}
+@media(max-width:700px){.search-box{display:none}.main-tabs a{padding:11px 12px;font-size:12px}}
+.logo-wrap { display: flex; align-items: center; gap: 10px; }
+.logol { width: 25px; height: 25px; margin-left: 5px; }
+
+.logo-text-wrap { line-height: 1.1; }
+.logo-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--cp);
+}
+.logo-tagline {
+    font-size: 10px;
+    color: var(--cs);
+    font-weight: 500;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+}
+
+.header-right { display: flex; align-items: center; gap: 12px; }
+
+.hdr-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--bs);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--cp);
+    border: 1.5px solid var(--sv);
+    position: relative;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: var(--er);
+    color: white;
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bs);
+    border: 1.5px solid var(--sv);
+    border-radius: 30px;
+    padding: 5px 14px 5px 5px;
+}
+
+.user-chip-av {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--ctb);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gd);
+}
+</style>
+</head>
+<body>
+
+<header class="header-bar">
+  <div class="logo-wrap">
+    <div class="logo-text-wrap">
+      <div class="logo-title">
+        Life<span style="color: #4a6feb;">Line</span>
+        <img class="logol" src="{% static 'imagenes/Group 243 (3).png' %}" alt="logo">
+      </div>
+      <div class="logo-tagline">Comunidad &amp; Bienestar</div>
+    </div>
+  </div>
+  
+  <div class="search-box">
+    <i class="fas fa-search"></i>
+    <input type="text" placeholder="Buscar en LifeLine...">
+  </div>
+
+  <div class="header-right">
+    {% if request.user.is_staff or request.user.rol == 'ADMIN' %}
+    <a class="hdr-btn admin-btn" href="{% url 'lista_productos' %}" title="Panel de Administración">
+      <i class="fas fa-user-shield"></i>
+    </a>
+    {% endif %}
+
+    <a class="hdr-btn" href="{% url 'ver_carrito' %}" title="Carrito">
+      <i class="fas fa-shopping-cart"></i>
+      <span class="cart-badge" id="cart-count">{{ carrito_count }}</span>
+    </a>
+
+    <div class="user-chip">
+      <div class="user-chip-av"><i class="fas fa-user"></i></div>
+      <span>{{ request.user.username|default:"Mi cuenta" }}</span>
+    </div>
+  </div>
+</header>
+
+<nav class="main-tabs">
+  <a href="{% url 'home' %}"><i class="fas fa-home"></i> Inicio</a>
+  <a href="{% url 'lista_usuarios' %}"><i class="fas fa-users"></i> Usuarios</a>
+  <a href="{% url 'lista_productos' %}"><i class="fas fa-store"></i> Productos</a>
+  <a href="{% url 'clientes' %}" ><i class="fas fa-chart-bar"></i> Reportes</a>
+<a href="{% url 'reporte_medicamentos' %}"><i class="fas fa-pills"></i> Medicamentos</a>
+  <a href="{% url 'reporte_emocional' %}"class="active" ><i class="fas fa-heart"></i> Emocional</a>
+  <a href="{% url 'reporte_tienda' %}"><i class="fas fa-store"></i> Tienda</a>
+  <a href="{% url 'reporte_stock' %}"><i class="fas fa-exclamation-triangle"></i> Stock</a>
+</nav>
+
+<div class="page-layout">
+  <aside class="admin-sidebar">
+    <div class="sb-hdr"><i class="fas fa-chart-bar"></i><span>Panel Admin</span></div>
+    <!-- Botón Dashboard -->
+  <a href="{% url 'dashboard' %}" class="sidebar-link" style="background:rgba(20,46,160,.08);border-left:3px solid var(--gd);font-weight:700;color:var(--ca)">
+    <i class="fas fa-th-large" style="color:var(--gd)"></i> Dashboard
+  </a>
+  <div class="sb-sep"></div>
+    <div class="sb-sec">Usuarios</div>
+    <a href="{% url 'lista_usuarios' %}" class="sidebar-link"><i class="fas fa-users"></i> Clientes</a>
+    <a href="{% url 'clientes' %}" class="sidebar-link"><i class="fas fa-user-check"></i> Clientes Report</a>
+    <div class="sb-sep"></div>
+    <div class="sb-sec">Productos</div>
+    <a href="{% url 'reporte_productos' %}" class="sidebar-link"><i class="fas fa-boxes"></i> Productos</a>
+    <a href="{% url 'lista_productos' %}" class="sidebar-link"><i class="fas fa-store"></i> Catálogo</a>
+    <a href="{% url 'reporte_stock' %}" class="sidebar-link"><i class="fas fa-exclamation-triangle"></i> Stock Bajo</a>
+    <div class="sb-sep"></div>
+    <div class="sb-sec">Salud</div>
+    <a href="{% url 'reporte_medicamentos' %}" class="sidebar-link"><i class="fas fa-pills"></i> Medicamentos</a>
+    <a href="{% url 'reporte_emocional' %}" class="sidebar-link active"><i class="fas fa-heart"></i> Emocional</a>
+    <a href="{% url 'reporte_tienda' %}" class="sidebar-link"><i class="fas fa-shopping-cart"></i> Tienda</a>
+    {% if user.rol == 'ADMIN' %}
+    <div class="sb-sep"></div>
+    <a href="/admin/" class="sidebar-link"><i class="fas fa-lock"></i> Panel Admin</a>
+    {% endif %}
+  </aside>
+
+  <main class="main-content">
+
+    <a href="{% url 'clientes' %}" class="btn-back" style="display:inline-flex;align-items:center;gap:6px;margin-bottom:16px;padding:8px 14px;border:1.5px solid var(--sv);border-radius:8px;color:var(--cp);font-weight:600;font-size:13px;">
+      <i class="fas fa-arrow-left"></i> Volver a Reportes
+    </a>
+
+    <div class="page-hdr">
+      <h2><i class="fas fa-heart"></i> Reporte Emocional y Comunidad</h2>
+    </div>
+
+    <!-- Estadísticas -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-ico"><i class="fas fa-pen-nib"></i></div>
+        <div class="stat-num">{{ total_pub }}</div>
+        <div class="stat-label">Publicaciones</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-ico"><i class="fas fa-comment-dots"></i></div>
+        <div class="stat-num">{{ total_com }}</div>
+        <div class="stat-label">Comentarios</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-ico"><i class="fas fa-heart"></i></div>
+        <div class="stat-num">{{ total_likes }}</div>
+        <div class="stat-label">Likes totales</div>
+      </div>
+    </div>
+
+    <!-- Publicaciones por tipo -->
+    <div class="table-card">
+      <div class="table-card-hdr"><i class="fas fa-tags"></i> Publicaciones por tipo</div>
+      <table>
+        <thead><tr><th>Tipo</th><th>Cantidad</th><th>Proporción</th></tr></thead>
+        <tbody>
+          {% for cat in por_categoria %}
+          <tr>
+            <td>
+              <!-- ✅ CORREGIDO: usamos cat.tipo (no cat.categoria) -->
+              {% if cat.tipo == 'APOYO' %}
+                <span class="tipo-badge tipo-apoyo">💙 Apoyo</span>
+              {% elif cat.tipo == 'EXPERIENCIA' %}
+                <span class="tipo-badge tipo-experiencia">🌱 Experiencia</span>
+              {% elif cat.tipo == 'CONSEJO' %}
+                <span class="tipo-badge tipo-consejo">💡 Consejo</span>
+              {% elif cat.tipo == 'PREGUNTA' %}
+                <span class="tipo-badge tipo-pregunta">❓ Pregunta</span>
+              {% else %}
+                <strong>{{ cat.tipo }}</strong>
+              {% endif %}
+            </td>
+            <td><strong>{{ cat.total }}</strong></td>
+            <td>
+              {% if total_pub > 0 %}
+              <div style="background:#e8edf8;border-radius:20px;height:8px;width:100%;overflow:hidden">
+                <div style="background:#142ea0;height:100%;border-radius:20px;width:{% widthratio cat.total total_pub 100 %}%"></div>
+              </div>
+              {% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="3" class="empty-cell">No hay publicaciones registradas aún.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Usuarios más activos -->
+    <div class="table-card">
+      <div class="table-card-hdr"><i class="fas fa-star"></i> Usuarios más activos</div>
+      <table>
+        <thead><tr><th>Usuario</th><th>Publicaciones</th></tr></thead>
+        <tbody>
+          {% for u in usuarios_activos %}
+          <tr>
+            <td>
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#040418,#102468);display:flex;align-items:center;justify-content:center;color:#f1c40f;font-weight:700;font-size:13px">
+                  {{ u.autor__username|first|upper }}
+                </div>
+                <strong>{{ u.autor__username }}</strong>
+              </div>
+            </td>
+            <td>{{ u.total }}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="2" class="empty-cell">Sin datos de usuarios.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+</div>
+
+<!-- Footer -->
+<footer class="site-footer" style="background:linear-gradient(135deg,#040418,#102468);color:rgba(255,255,255,.7);padding:20px 28px;text-align:center;font-size:12px;margin-top:40px">
+  © 2025 LifeLine — Proyecto SENA ADSO
+</footer>
+
+</body>
+</html>

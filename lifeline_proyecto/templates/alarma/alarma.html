@@ -1,0 +1,908 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeLine - Mis Alarmas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+    <style>
+        @font-face {
+            font-family: 'Talkwin';
+            src: url("{% static 'fonts/Talkwin.ttf' %}") format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root {
+            --warm-gold: #F5A623;
+            --coral: #E8735A;
+            --rose: #C75B7A;
+            --deep: #1a1035;
+            --soft-purple: #6B4FA0;
+            --lavender: #9B7EC8;
+            --cream: #FFF8F0;
+            --white: #ffffff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--deep);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+a { text-decoration: none; }
+        /* ── Fondo animado con orbes ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 60% 50% at 15% 20%, rgba(216, 129, 155, 0.25) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 60% at 85% 70%, rgba(227, 218, 243, 0.3) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 40% at 50% 50%, rgba(245,166,35,0.10) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Estrellas/partículas decorativas */
+        .particles {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: float-particle linear infinite;
+            opacity: 0;
+        }
+        @keyframes float-particle {
+            0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+            10%  { opacity: 1; }
+            90%  { opacity: 0.6; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        /* ============================================================
+HEADER — Banda superior con acento dorado
+   ============================================================ */
+.header-bar {
+background: white;
+border-bottom: 4px solid var(--color-accent);
+padding: 11px 28px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+position: sticky; top: 0; z-index: 200;
+box-shadow: 0 2px 20px rgba(20,46,160,0.1);
+}
+
+
+.logol {
+width: 20px; height: 20px;
+}
+
+.logo-wrap { display: flex; align-items: center; gap: 10px; }
+
+.logo-mark {
+width: 42px; height: 42px;
+background: var(--color-top-bar);
+border-radius: 12px;
+display: flex; align-items: center; justify-content: center;
+color: var(--gold); font-size: 18px;
+box-shadow: 0 3px 12px rgba(20,46,160,0.4);
+position: relative; overflow: hidden;
+}
+.logo-mark::after {
+content: '';
+position: absolute; bottom: 0; left: 0; right: 0;
+height: 3px; background: var(--gold);
+}
+
+.logo-text-wrap { line-height: 1.1; }
+.logo-title {
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+font-size: 24px; font-weight: 700;
+color: var(--color-primary); letter-spacing: -0.3px;
+}
+.logo-tagline {
+font-size: 10px; color: var(--color-secondary);
+font-weight: 500; letter-spacing: 1.4px; text-transform: uppercase;
+}
+
+.search-box {
+background: var(--blue-soft);
+border-radius: 30px;
+padding: 9px 18px;
+display: flex; align-items: center;
+border: 1.5px solid var(--silver);
+width: 300px;
+transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-box:focus-within {
+border-color: var(--color-accent);
+box-shadow: 0 0 0 3px var(--blue-glow);
+}
+.search-box i { color: var(--color-accent); font-size: 14px; }
+.search-box input {
+border: none; background: none; outline: none;
+font-size: 14px; color: var(--color-text-dark);
+width: 100%; margin-left: 8px;
+font-family: 'Outfit', sans-serif;
+}
+.search-box input::placeholder { color: var(--color-text-light); }
+
+.header-right { display: flex; align-items: center; gap: 12px; }
+
+.hdr-btn {
+width: 38px; height: 38px; border-radius: 50%;
+background: var(--blue-soft);
+display: flex; align-items: center; justify-content: center;
+color: var(--color-primary); font-size: 15px;
+transition: background 0.2s, color 0.2s; cursor: pointer;
+border: 1.5px solid var(--silver); position: relative;
+}
+.hdr-btn:hover { background: var(--color-accent); color: white; border-color: var(--color-accent); }
+
+.cart-badge {
+  position: absolute; top: -6px; right: -6px;
+  background: var(--error-red); color: white;
+  border-radius: 50%; font-size: 10px; font-weight: 700;
+  min-width: 18px; height: 18px;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(231,76,60,0.4);
+}
+
+.user-chip {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--blue-soft);
+  border: 1.5px solid var(--silver);
+  border-radius: 30px;
+  padding: 5px 14px 5px 5px; cursor: pointer;
+  transition: border-color 0.2s;
+}
+.user-chip:hover { border-color: var(--color-accent); }
+.user-chip-av {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--color-top-bar);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold); font-size: 12px;
+}
+.user-chip span { font-size: 13px; font-weight: 600; color: var(--color-primary); }
+
+/* Badge del Admin */
+.admin-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--color-primary); /* Azul oscuro */
+  color: var(--gold); /* Exclamación dorada */
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* Efecto hover especial para Admin */
+.admin-btn:hover {
+  background: var(--color-primary) !important;
+  color: var(--gold) !important;
+  border-color: var(--color-primary) !important;
+}
+
+/* Asegura que el contenedor mantenga el espacio */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Espacio entre los botones */
+}
+/* ============================================================
+   NAV TABS
+   ============================================================ */
+.main-tabs {
+  background:#3d5273;
+  display: flex; padding: 0 24px;
+  overflow-x: auto; gap: 2px;
+}
+.main-tabs a {
+  color: rgba(255,255,255,0.7);
+  padding: 12px 16px; font-size: 13px; font-weight: 500;
+  display: flex; align-items: center; gap: 6px;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.main-tabs a:hover { color: white; background: rgba(255,255,255,0.08); border-bottom-color: rgba(255,255,255,0.3); }
+.main-tabs a.active { color: var(--gold); border-bottom-color: var(--gold); font-weight: 700; background: rgba(255,255,255,0.06); }
+/* boton cerrar sesion */
+ .btn-logout {
+            background: rgba(10, 48, 66, 0.2);
+            color: var(--coral);
+            border: 1px solid rgba(5, 5, 61, 0.35);
+            padding: 7px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            transition: all 0.2s;
+            margin-left: 380px;
+        }
+        .btn-logout:hover { background: rgba(112, 5, 103, 0.35)35); }
+
+        /* ── Contenido principal ── */
+        .page-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        /* ── Encabezado hero ── */
+        .page-hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .hero-title {
+            font-family: 'Talkwin', 'Nunito', sans-serif;
+            font-size: 32px;
+            color: white;
+            letter-spacing: 0.5px;
+        }
+        .hero-subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            margin-top: 4px;
+            font-weight: 400;
+        }
+        .hero-icon-wrap {
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--warm-gold), var(--coral));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: white;
+            margin-right: 14px;
+            flex-shrink: 0;
+            box-shadow: 0 6px 20px rgba(245,166,35,0.4);
+        }
+        .hero-left { display: flex; align-items: center; }
+
+        /* ── Botón nueva alarma ── */
+        .btn-nueva-alarma {
+            background: linear-gradient(135deg, var(--warm-gold), var(--coral));
+            color: white;
+            border: none;
+            padding: 13px 26px;
+            border-radius: 40px;
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 6px 20px rgba(245,166,35,0.35);
+            transition: all 0.25s;
+            font-family: 'Nunito', sans-serif;
+        }
+        .btn-nueva-alarma:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(245,166,35,0.5);
+        }
+
+        /* ── Alertas ── */
+        .alert-success {
+            background: linear-gradient(135deg, rgba(40,167,69,0.2), rgba(40,167,69,0.1));
+            border: 1px solid rgba(40,167,69,0.35);
+            color: #7feba5;
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+        .alert-error {
+            background: linear-gradient(135deg, rgba(220,53,69,0.2), rgba(220,53,69,0.1));
+            border: 1px solid rgba(220,53,69,0.35);
+            color: #f5a0aa;
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        /* ── Sección títulos ── */
+        .seccion-titulo {
+            font-family: 'Talkwin', 'Nunito', sans-serif;
+            font-size: 18px;
+            color: white;
+            margin: 28px 0 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 0.3px;
+        }
+        .seccion-titulo::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.15), transparent);
+            margin-left: 6px;
+        }
+        .seccion-titulo .icon-badge {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        .icon-badge.yellow { background: rgba(245,166,35,0.25); color: var(--warm-gold); }
+        .icon-badge.blue   { background: rgba(107,79,160,0.25); color: var(--lavender); }
+        .icon-badge.green  { background: rgba(40,167,69,0.25);  color: #5dde8a; }
+
+        /* ── Tarjeta pendiente ── */
+        .pendiente-card {
+            background: linear-gradient(135deg, rgba(245,166,35,0.15), rgba(232,115,90,0.10));
+            border: 1px solid rgba(245,166,35,0.35);
+            border-radius: 18px;
+            padding: 22px 24px;
+            margin-bottom: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+        .pendiente-card::before {
+            content: '⚠';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 60px;
+            opacity: 0.06;
+        }
+        .pendiente-titulo {
+            font-family: 'Talkwin', 'Nunito', sans-serif;
+            font-size: 16px;
+            color: var(--warm-gold);
+            margin-bottom: 6px;
+        }
+        .pendiente-texto { font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 16px; }
+        .pendiente-acciones { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn-tomada {
+            background: linear-gradient(135deg, #28a745, #20c162);
+            color: white;
+            padding: 9px 18px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(40,167,69,0.3);
+        }
+        .btn-tomada:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(40,167,69,0.4); }
+        .btn-omitida {
+            background: rgba(220,53,69,0.2);
+            color: #f08090;
+            border: 1px solid rgba(220,53,69,0.35);
+            padding: 9px 18px;
+            border-radius: 25px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.2s;
+        }
+        .btn-omitida:hover { background: rgba(220,53,69,0.35); }
+
+        /* ── Tarjeta alarma activa ── */
+        .alarma-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.10);
+            border-radius: 18px;
+            padding: 20px 24px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            backdrop-filter: blur(10px);
+            transition: all 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+        .alarma-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--warm-gold), var(--coral));
+            border-radius: 4px 0 0 4px;
+        }
+        .alarma-card:hover {
+            background: rgba(255,255,255,0.10);
+            border-color: rgba(255,255,255,0.18);
+            transform: translateX(4px);
+        }
+        .alarma-info { flex: 1; padding-left: 8px; }
+        .alarma-med {
+            font-family: 'Talkwin', 'Nunito', sans-serif;
+            font-size: 17px;
+            color: white;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .alarma-med i { color: var(--warm-gold); font-size: 14px; }
+        .alarma-det { font-size: 12px; color: rgba(255,255,255,0.45); font-weight: 600; letter-spacing: 0.3px; }
+        .alarma-hora {
+            font-family: 'Talkwin', 'Nunito', sans-serif;
+            font-size: 30px;
+            color: var(--lavender);
+            letter-spacing: 1px;
+        }
+        .alarma-acciones { display: flex; gap: 8px; }
+        .btn-eliminar-alarma {
+            background: rgba(220,53,69,0.15);
+            color: #f08090;
+            border: 1px solid rgba(220,53,69,0.25);
+            padding: 8px 14px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 12px;
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.2s;
+        }
+        .btn-eliminar-alarma:hover { background: rgba(220,53,69,0.3); }
+        .btn-check {
+            background: linear-gradient(135deg, #28a745, #20c162);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            transition: all 0.2s;
+            box-shadow: 0 3px 10px rgba(40,167,69,0.3);
+        }
+        .btn-check:hover { transform: translateY(-1px); }
+
+        /* ── Historial ── */
+        .historial-item {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 12px;
+            padding: 14px 20px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .historial-item strong { color: rgba(255,255,255,0.85); font-size: 14px; }
+        .historial-meta { font-size: 12px; color: rgba(255,255,255,0.35); margin-left: 10px; }
+        .badge-tomada  { background: rgba(40,167,69,0.2);  color: #7feba5; padding: 4px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; border: 1px solid rgba(40,167,69,0.3); }
+        .badge-omitida { background: rgba(220,53,69,0.2);  color: #f5a0aa; padding: 4px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; border: 1px solid rgba(220,53,69,0.3); }
+        .badge-tarde   { background: rgba(245,166,35,0.2); color: #f5d08a; padding: 4px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; border: 1px solid rgba(245,166,35,0.3); }
+
+        /* ── Empty state ── */
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: rgba(255,255,255,0.3);
+        }
+        .empty-state i { font-size: 44px; margin-bottom: 14px; display: block; opacity: 0.4; }
+        .empty-state p { font-size: 14px; font-weight: 600; }
+
+        /* ── Modal ── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10,8,30,0.75);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.visible { display: flex; }
+        .modal-card {
+            background: #1e1640;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 24px;
+            padding: 36px;
+            width: 90%;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+        }
+        .modal-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--warm-gold), var(--coral), var(--rose));
+            border-radius: 24px 24px 0 0;
+        }
+        .modal-titulo {
+            font-family: 'Talkwin', 'Nunito', sans-serif;
+            font-size: 22px;
+            color: white;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .modal-titulo i { color: var(--warm-gold); }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-weight: 700; color: rgba(255,255,255,0.6); margin-bottom: 6px; font-size: 12px; letter-spacing: 0.5px; text-transform: uppercase; }
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.07);
+            border: 1.5px solid rgba(255,255,255,0.12);
+            border-radius: 10px;
+            font-size: 14px;
+            color: white;
+            font-family: 'Nunito', sans-serif;
+            transition: border-color 0.2s;
+        }
+        .form-input:focus { border-color: var(--lavender); outline: none; background: rgba(255,255,255,0.10); }
+        .form-input option { background: #1e1640; }
+        .hidden { display: none; }
+        .modal-botones { display: flex; gap: 12px; margin-top: 24px; }
+        .btn-crear {
+            flex: 1;
+            background: linear-gradient(135deg, var(--warm-gold), var(--coral));
+            color: white;
+            border: none;
+            padding: 13px;
+            border-radius: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: 'Nunito', sans-serif;
+            box-shadow: 0 6px 20px rgba(245,166,35,0.35);
+            transition: all 0.2s;
+        }
+        .btn-crear:hover { transform: translateY(-1px); box-shadow: 0 8px 25px rgba(245,166,35,0.5); }
+        .btn-cancelar-modal {
+            background: rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.6);
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 13px 22px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.2s;
+        }
+        .btn-cancelar-modal:hover { background: rgba(255,255,255,0.14); }
+        .error-field { color: #f5a0aa; font-size: 12px; margin-top: 3px; font-weight: 600; }
+
+        /* Frase motivacional */
+        .motivational-strip {
+            background: linear-gradient(135deg, rgba(199,91,122,0.15), rgba(107,79,160,0.15));
+            border: 1px solid rgba(199,91,122,0.25);
+            border-radius: 14px;
+            padding: 16px 22px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .motivational-strip .quote-icon { font-size: 28px; opacity: 0.6; }
+        .motivational-strip p {
+            font-family: 'Talkwin', 'Nunito', sans-serif;
+            font-size: 15px;
+            color: rgba(255,255,255,0.8);
+            letter-spacing: 0.3px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+
+        /* Grid 2 cols para form */
+        .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    </style>
+</head>
+<body>
+
+<!-- Partículas decorativas -->
+<div class="particles" id="particles"></div>
+
+<header class="header-bar">
+  <div class="logo-wrap">
+    <div class="logo-text-wrap">
+      <div class="logo-title">
+        Life<span style="color: #4a6feb;">Line</span>
+        <img class="logol" src="{% static 'imagenes/Group 243 (3).png' %}" alt="logo">
+      </div>
+      <div class="logo-tagline">Comunidad &amp; Bienestar</div>
+    </div>
+  </div>
+  
+  <div class="search-box">
+    <i class="fas fa-search"></i>
+    <input type="text" placeholder="Buscar en LifeLine...">
+  </div>
+
+  <div class="header-right">
+   {% if request.user.is_staff or request.user.rol == 'ADMIN' %}
+    <a class="hdr-btn admin-btn" href="{% url 'lista_productos' %}" title="Panel de Administración">
+      <i class="fas fa-user-shield"></i>
+{% endif %}
+
+    <a class="hdr-btn" href="{% url 'ver_carrito' %}" title="Carrito">
+      <i class="fas fa-shopping-cart"></i>
+      <span class="cart-badge" id="cart-count">0</span>
+    </a>
+
+    <div class="user-chip">
+      <div class="user-chip-av"><i class="fas fa-user"></i></div>
+      <span>{{ usuario.username|default:"Mi cuenta" }}</span>
+    </div>
+  </div> </header>
+
+<nav class="main-tabs">
+  <a href="{% url 'home' %}" ><i class="fas fa-home"></i> Inicio</a>
+  <a href="{% url 'mural' %}"><i class="fas fa-seedling"></i> Mural</a>
+  <a href="{% url 'perfil' %}"><i class="fas fa-user"></i> Perfil</a>
+  <a href="{% url 'tienda' %}"><i class="fas fa-store"></i> Productos</a>
+  <a href="{% url 'calendario' %}"><i class="fas fa-calendar-alt"></i> Calendario</a>
+  <a href="{% url 'nutricion' %}"><i class="fas fa-apple-alt"></i> Nutrición</a>
+   <a href="{% url 'ejercicio' %}" ><i class="fas fa-dumbbell"></i> Ejercicio</a>
+  <a href="{% url 'alarmas' %}"class="active"><i class="fas fa-clock"></i> Alarmas</a>
+  <a href="{% url 'contactanos' %}"><i class="fas fa-envelope"></i> Contáctanos</a>
+  {% if user.is_authenticated %}
+        <form method="post" action="{% url 'logout' %}" style="margin:0;">
+            {% csrf_token %}
+            <button type="submit" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Salir</button>
+        </form>
+        {% endif %}
+</nav>
+
+
+<div class="page-content">
+
+    {% if messages %}{% for m in messages %}
+        <div class="{% if m.tags == 'success' %}alert-success{% else %}alert-error{% endif %}">{{ m }}</div>
+    {% endfor %}{% endif %}
+
+    <!-- Hero header -->
+    <div class="page-hero">
+        <div class="hero-left">
+            <div class="hero-icon-wrap"><i class="fas fa-pills"></i></div>
+            <div>
+                <div class="hero-title">Mis Alarmas</div>
+                <div class="hero-subtitle">Cuida tu tratamiento, un día a la vez 💛</div>
+            </div>
+        </div>
+        <button class="btn-nueva-alarma" onclick="abrirModal()">
+            <i class="fas fa-plus"></i> Nueva Alarma
+        </button>
+    </div>
+
+    <!-- Frase motivacional -->
+    <div class="motivational-strip">
+        <span class="quote-icon">✨</span>
+        <p>Cada dosis es un paso hacia adelante. Tú puedes con esto.</p>
+    </div>
+
+    <!-- Dosis pendientes -->
+    {% if pendientes %}
+        <div class="seccion-titulo">
+            <span class="icon-badge yellow"><i class="fas fa-exclamation"></i></span>
+            Dosis Pendientes
+        </div>
+        {% for alarma in pendientes %}
+        <div class="pendiente-card">
+            <div class="pendiente-titulo">⚠ Dosis pendiente: {{ alarma.medicamento }}</div>
+            <div class="pendiente-texto">
+                La hora para tu dosis de las {{ alarma.hora_toma|time:"h:i A" }} ha pasado. ¿Te la saltaste?
+            </div>
+            <div class="pendiente-acciones">
+                <form method="post" action="{% url 'marcar_dosis' alarma.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="estado" value="tarde">
+                    <button type="submit" class="btn-tomada">
+                        <i class="fas fa-check"></i> Tomada ahora (Tarde)
+                    </button>
+                </form>
+                <form method="post" action="{% url 'marcar_dosis' alarma.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="estado" value="omitida">
+                    <button type="submit" class="btn-omitida">
+                        <i class="fas fa-times"></i> Marcar como Omitida
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Alarmas activas -->
+    <div class="seccion-titulo">
+        <span class="icon-badge yellow"><i class="fas fa-bell"></i></span>
+        Alarmas Activas
+    </div>
+    {% if alarmas_activas %}
+        {% for alarma in alarmas_activas %}
+        <div class="alarma-card">
+            <div class="alarma-info">
+                <div class="alarma-med">
+                    <i class="fas fa-capsules"></i> {{ alarma.medicamento }}
+                </div>
+                <div class="alarma-det">
+                    {{ alarma.dosis }} {{ alarma.get_unidad_display }} &nbsp;·&nbsp;
+                    {{ alarma.get_frecuencia_display }}
+                    {% if alarma.cada_x_horas %} cada {{ alarma.cada_x_horas }}h{% endif %}
+                </div>
+            </div>
+            <div class="alarma-hora">{{ alarma.hora_toma|time:"H:i" }}</div>
+            <div class="alarma-acciones">
+                <form method="post" action="{% url 'marcar_dosis' alarma.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="estado" value="tomada">
+                    <button type="submit" class="btn-check" title="Marcar tomada">
+                        <i class="fas fa-check"></i>
+                    </button>
+                </form>
+                <form method="post" action="{% url 'eliminar_alarma' alarma.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-eliminar-alarma"
+                            onclick="return confirm('¿Eliminar esta alarma?')">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <i class="fas fa-bell-slash"></i>
+            <p>No tienes alarmas activas. ¡Crea una nueva!</p>
+        </div>
+    {% endif %}
+
+    <!-- Historial -->
+    <div class="seccion-titulo">
+        <span class="icon-badge blue"><i class="fas fa-history"></i></span>
+        Historial de Dosis
+    </div>
+    {% if historial %}
+        {% for registro in historial %}
+        <div class="historial-item">
+            <div>
+                <strong>{{ registro.alarma.medicamento }}</strong>
+                <span class="historial-meta">{{ registro.fecha|date:"d/m/Y" }} · {{ registro.hora|time:"H:i" }}</span>
+                {% if registro.nota %}<div style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:3px;">{{ registro.nota }}</div>{% endif %}
+            </div>
+            <span class="badge-{{ registro.estado }}">{{ registro.get_estado_display }}</span>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state"><p>Aún no hay registros de dosis.</p></div>
+    {% endif %}
+
+</div>
+
+<!-- Modal: Nueva Alarma -->
+<div class="modal-overlay {% if mostrar_modal %}visible{% endif %}" id="modalAlarma">
+    <div class="modal-card">
+        <div class="modal-titulo">
+            <i class="fas fa-plus-circle"></i> Nueva Alarma
+        </div>
+        <form method="post" action="{% url 'nueva_alarma' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Medicamento</label>
+                <input type="text" name="medicamento" class="form-input"
+                       placeholder="Ej: Metronidazol" required>
+            </div>
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label>Dosis</label>
+                    <input type="number" name="dosis" class="form-input" step="0.5" min="0.1" placeholder="Ej: 500" required>
+                </div>
+                <div class="form-group">
+                    <label>Unidad</label>
+                    <select name="unidad" class="form-input">
+                        <option value="capsula">Cápsula</option>
+                        <option value="tableta" selected>Tableta</option>
+                        <option value="mg">mg</option>
+                        <option value="ml">ml</option>
+                        <option value="unidad">Unidad</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Frecuencia</label>
+                <select name="frecuencia" class="form-input" id="selectFrecuencia" onchange="toggleXHoras()">
+                    <option value="diaria">Diaria</option>
+                    <option value="cada_x_horas">Recurrente (Cada X horas)</option>
+                    <option value="prn">Según Necesidad (PRN)</option>
+                </select>
+            </div>
+            <div class="form-group hidden" id="grupoXHoras">
+                <label>Cada cuántas horas (1–24)</label>
+                <input type="number" name="cada_x_horas" class="form-input" min="1" max="24" placeholder="Ej: 8">
+            </div>
+            <div class="form-group">
+                <label>Hora de toma</label>
+                <input type="time" name="hora_toma" class="form-input" required>
+            </div>
+            <div class="modal-botones">
+                <button type="submit" class="btn-crear"><i class="fas fa-save"></i> Crear Alarma</button>
+                <button type="button" class="btn-cancelar-modal" onclick="cerrarModal()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Modal
+function abrirModal()  { document.getElementById('modalAlarma').classList.add('visible'); }
+function cerrarModal() { document.getElementById('modalAlarma').classList.remove('visible'); }
+function toggleXHoras() {
+    const sel = document.getElementById('selectFrecuencia').value;
+    document.getElementById('grupoXHoras').classList.toggle('hidden', sel !== 'cada_x_horas');
+}
+document.getElementById('modalAlarma').addEventListener('click', function(e) {
+    if (e.target === this) cerrarModal();
+});
+
+// Partículas
+(function(){
+    const container = document.getElementById('particles');
+    const colors = ['#F5A623','#E8735A','#C75B7A','#9B7EC8','#ffffff'];
+    for(let i = 0; i < 25; i++){
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const size = Math.random() * 4 + 2;
+        p.style.cssText = `
+            width:${size}px; height:${size}px;
+            left:${Math.random()*100}%;
+            background:${colors[Math.floor(Math.random()*colors.length)]};
+            animation-duration:${Math.random()*15+10}s;
+            animation-delay:${Math.random()*10}s;
+        `;
+        container.appendChild(p);
+    }
+})();
+</script>
+</body>
+</html>

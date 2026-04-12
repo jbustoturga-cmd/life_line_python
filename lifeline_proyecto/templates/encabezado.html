@@ -1,0 +1,207 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeLine - Inicio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================================
+           PALETA ORIGINAL UNIFICADA
+           ============================================================ */
+        :root {
+            --color-primary:    #3d5273;
+            --color-secondary:  #5b6e94;
+            --color-accent:     #142ea0;
+            --color-menu-bg:    #526eaa;
+            --color-menu-hover: #2d3c7e;
+            --color-top-bar:    linear-gradient(135deg, #040418, #102468);
+            --color-text-dark:  #1a1a1a;
+            --color-text-light: #555;
+            --color-bg-light:   #f0f2f5;
+            --navy-deep:        #040418;
+            --navy-mid:         #102468;
+            --blue-soft:        #e8edf8;
+            --blue-glow:        rgba(20,46,160,0.12);
+            --silver:           #dce3f0;
+            --cream:            #f7f9fc;
+            --gold:             #f1c40f;
+            --error-red:        #e74c3c;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--cream);
+            background-image:
+                radial-gradient(ellipse at 0% 0%, rgba(20,46,160,0.07) 0%, transparent 50%),
+                radial-gradient(ellipse at 100% 100%, rgba(61,82,115,0.05) 0%, transparent 50%);
+            color: var(--color-text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        a { text-decoration: none; }
+
+        /* ============================================================
+           HEADER (Igual al de la Tienda)
+           ============================================================ */
+        .header-bar {
+            background: white;
+            border-bottom: 4px solid var(--color-accent);
+            padding: 11px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky; top: 0; z-index: 200;
+            box-shadow: 0 2px 20px rgba(20,46,160,0.1);
+        }
+
+        .logo-wrap { display: flex; align-items: center; gap: 10px; }
+        .logol { width: 25px; height: 25px; vertical-align: middle; margin-left: 5px; }
+
+        .logo-text-wrap { line-height: 1.1; }
+        .logo-title {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 24px; font-weight: 700;
+            color: var(--color-primary); letter-spacing: -0.3px;
+        }
+        .logo-tagline {
+            font-size: 10px; color: var(--color-secondary);
+            font-weight: 500; letter-spacing: 1.4px; text-transform: uppercase;
+        }
+
+        .search-box {
+            background: var(--blue-soft);
+            border-radius: 30px;
+            padding: 9px 18px;
+            display: flex; align-items: center;
+            border: 1.5px solid var(--silver);
+            width: 300px;
+        }
+        .search-box input {
+            border: none; background: none; outline: none;
+            font-size: 14px; width: 100%; margin-left: 8px;
+        }
+
+        .header-right { display: flex; align-items: center; gap: 12px; }
+        .hdr-btn {
+            width: 38px; height: 38px; border-radius: 50%;
+            background: var(--blue-soft);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--color-primary); border: 1.5px solid var(--silver);
+            position: relative;
+        }
+        .cart-badge {
+            position: absolute; top: -6px; right: -6px;
+            background: var(--error-red); color: white;
+            border-radius: 50%; font-size: 10px; font-weight: 700;
+            min-width: 18px; height: 18px;
+            display: flex; align-items: center; justify-content: center;
+            border: 2px solid white;
+        }
+
+        .user-chip {
+            display: flex; align-items: center; gap: 8px;
+            background: var(--blue-soft); border: 1.5px solid var(--silver);
+            border-radius: 30px; padding: 5px 14px 5px 5px;
+        }
+        .user-chip-av {
+            width: 28px; height: 28px; border-radius: 50%;
+            background: var(--color-top-bar);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--gold); font-size: 12px;
+        }
+
+        /* ============================================================
+           NAV TABS (Igual al de la Tienda)
+           ============================================================ */
+        .main-tabs {
+            background: var(--color-primary);
+            display: flex; padding: 0 24px;
+            overflow-x: auto; gap: 2px;
+        }
+        .main-tabs a {
+            color: rgba(255,255,255,0.7);
+            padding: 12px 16px; font-size: 13px; font-weight: 500;
+            display: flex; align-items: center; gap: 6px;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        .main-tabs a:hover { color: white; background: rgba(255,255,255,0.08); }
+        .main-tabs a.active { color: var(--gold); border-bottom-color: var(--gold); font-weight: 700; }
+/* boton cerrar sesion */
+ .btn-logout {
+            background: rgba(10, 48, 66, 0.2);
+            color: var(--coral);
+            border: 1px solid rgba(5, 5, 61, 0.35);
+            padding: 7px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            transition: all 0.2s;
+            margin-left: 380px;
+        }
+        .btn-logout:hover { background: rgba(112, 5, 103, 0.35)35); }
+
+
+
+</style>
+<header class="header-bar">
+  <div class="logo-wrap">
+    <div class="logo-text-wrap">
+      <div class="logo-title">
+        Life<span style="color: #4a6feb;">Line</span>
+        <img class="logol" src="{% static 'imagenes/Group 243 (3).png' %}" alt="logo">
+      </div>
+      <div class="logo-tagline">Comunidad &amp; Bienestar</div>
+    </div>
+  </div>
+  
+  <div class="search-box">
+    <i class="fas fa-search"></i>
+    <input type="text" placeholder="Buscar en LifeLine...">
+  </div>
+
+  <div class="header-right">
+    {% if request.user.is_staff or request.user.rol == 'ADMIN' %}
+    <a class="hdr-btn admin-btn" href="{% url 'lista_productos' %}" title="Panel de Administración">
+      <i class="fas fa-user-shield"></i>
+{% endif %}
+
+      <span class="admin-badge">!</span>
+    </a>
+
+    <a class="hdr-btn" href="{% url 'ver_carrito' %}" title="Carrito">
+      <i class="fas fa-shopping-cart"></i>
+<span class="cart-badge" id="cart-count">{{ carrito_count }}</span>    </a>
+    </a>
+
+    <div class="user-chip">
+      <div class="user-chip-av"><i class="fas fa-user"></i></div>
+      <span>{{ usuario.username|default:"Mi cuenta" }}</span>
+    </div>
+  </div> </header>
+
+<nav class="main-tabs">
+  <a href="{% url 'home' %}" class="active"><i class="fas fa-home"></i> Inicio</a>
+  <a href="{% url 'mural' %}"><i class="fas fa-seedling"></i> Mural</a>
+  <a href="{% url 'perfil' %}"><i class="fas fa-user"></i> Perfil</a>
+  <a href="{% url 'tienda' %}"><i class="fas fa-store"></i> Productos</a>
+  <a href="#"><i class="fas fa-calendar-alt"></i> Calendario</a>
+  <a href="#"><i class="fas fa-apple-alt"></i> Nutrición</a>
+  <a href="{% url 'alarmas' %}"><i class="fas fa-clock"></i> Alarmas</a>
+  <a href="{% url 'contactanos' %}"><i class="fas fa-envelope"></i> Contáctanos</a>
+  {% if user.is_authenticated %}
+        <form method="post" action="{% url 'logout' %}" style="margin:0;">
+            {% csrf_token %}
+            <button type="submit" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Salir</button>
+        </form>
+        {% endif %}

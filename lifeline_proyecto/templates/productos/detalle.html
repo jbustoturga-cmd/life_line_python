@@ -1,0 +1,190 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LifeLine - {{ producto.nombre }}</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+<style>
+:root{--cp:#3d5273;--cs:#5b6e94;--ca:#142ea0;--cmb:#526eaa;--cmh:#2d3c7e;--ctb:linear-gradient(135deg,#040418,#102468);--ctd:#1a1a1a;--ctl:#555;--bs:#e8edf8;--bg:rgba(20,46,160,.12);--sv:#dce3f0;--cr:#f7f9fc;--gd:#f1c40f;--ok:#27ae60;--er:#e74c3c;--rxl:20px;--rmd:12px;--rsm:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:var(--cr);background-image:radial-gradient(ellipse at 0% 0%,rgba(20,46,160,.06) 0%,transparent 50%),radial-gradient(ellipse at 100% 100%,rgba(61,82,115,.04) 0%,transparent 50%);color:var(--ctd);min-height:100vh}
+a{text-decoration:none}
+.header-bar{background:white;border-bottom:4px solid var(--ca);padding:11px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(20,46,160,.1)}
+.header-logo-section{display:flex;align-items:center;gap:10px}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--cp);line-height:1.1}
+.header-logo-section img{width:40px;height:40px;object-fit:contain}
+.search-box{background:var(--bs);border-radius:30px;padding:9px 18px;display:flex;align-items:center;border:1.5px solid var(--sv);width:280px}
+.search-box:focus-within{border-color:var(--ca);box-shadow:0 0 0 3px var(--bg)}
+.search-box i{color:var(--ca);font-size:14px}
+.search-box input{border:none;background:none;outline:none;font-size:14px;color:var(--ctd);width:100%;margin-left:8px;font-family:'Outfit',sans-serif}
+.navbar-right{display:flex;align-items:center;gap:12px}
+.navbar-icon a{color:var(--ctd);font-size:18px;padding:0 6px}
+.user-photo{width:38px;height:38px;border-radius:50%;overflow:hidden;border:2px solid var(--ca)}
+.user-photo img{width:100%;height:100%;object-fit:cover}
+.main-tabs{background:var(--cp);display:flex;padding:0 24px;overflow-x:auto;gap:2px}
+.main-tabs a{color:rgba(255,255,255,.7);padding:12px 16px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;white-space:nowrap;border-bottom:3px solid transparent;transition:color .2s,border-color .2s,background .2s}
+.main-tabs a:hover{color:white;background:rgba(255,255,255,.08);border-bottom-color:rgba(255,255,255,.3)}
+.main-tabs a.active{color:var(--gd);border-bottom-color:var(--gd);font-weight:700}
+/* PAGE */
+.detalle-wrapper{max-width:900px;margin:30px auto;padding:0 20px 40px;animation:pi .45s ease both}
+@keyframes pi{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ctl);margin-bottom:20px}
+.breadcrumb a{color:var(--ca);font-weight:500}
+.breadcrumb a:hover{text-decoration:underline}
+.breadcrumb i{font-size:11px;color:var(--sv)}
+/* DETALLE CARD */
+.detalle-card{background:white;border-radius:var(--rxl);border:1px solid var(--sv);box-shadow:0 4px 28px rgba(20,46,160,.09);overflow:hidden;display:flex;gap:0}
+.detalle-img-col{width:300px;flex-shrink:0;background:var(--bs);display:flex;align-items:center;justify-content:center;padding:30px;position:relative}
+.detalle-img-col::after{content:'';position:absolute;top:0;right:0;bottom:0;width:1px;background:var(--sv)}
+.detalle-imagen{width:100%;max-height:280px;object-fit:contain;border-radius:var(--rmd)}
+.no-img-grande{width:160px;height:160px;background:white;border-radius:var(--rxl);display:flex;align-items:center;justify-content:center;font-size:52px;color:var(--sv);border:2px dashed var(--sv)}
+.detalle-info-col{flex:1;padding:32px}
+/* Header del producto */
+.prod-cat{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--cs);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.prod-nombre{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;color:var(--cp);line-height:1.2;margin-bottom:10px}
+.prod-precio{font-size:32px;font-weight:700;color:var(--ca);margin-bottom:24px;font-variant-numeric:tabular-nums}
+.prod-precio small{font-size:14px;font-weight:500;color:var(--ctl);margin-left:4px}
+/* Campos */
+.campo-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px}
+.campo{background:var(--bs);border-radius:var(--rsm);padding:14px 16px;border:1px solid var(--sv)}
+.campo-label{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--cs);margin-bottom:5px}
+.campo-valor{font-size:14px;font-weight:500;color:var(--ctd)}
+.campo-desc{background:var(--bs);border-radius:var(--rsm);padding:14px 16px;border:1px solid var(--sv);margin-bottom:16px}
+.campo-desc .campo-label{margin-bottom:7px}
+.campo-desc .campo-valor{font-size:14px;color:var(--ctl);line-height:1.6}
+/* Badges */
+.badge{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700}
+.badge-activo{background:#d4edda;color:#155724}
+.badge-inactivo{background:#f8d7da;color:#721c24}
+/* Botones */
+.detalle-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-edit{background:linear-gradient(135deg,#f39c12,#d68910);color:white;border:none;border-radius:var(--rmd);padding:11px 22px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;text-decoration:none;transition:opacity .2s,transform .15s}
+.btn-edit:hover{opacity:.88;transform:translateY(-1px)}
+.btn-del{background:linear-gradient(135deg,var(--er),#c0392b);color:white;border:none;border-radius:var(--rmd);padding:11px 22px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;text-decoration:none;transition:opacity .2s,transform .15s}
+.btn-del:hover{opacity:.88;transform:translateY(-1px)}
+.btn-back{display:flex;align-items:center;gap:6px;color:var(--cp);font-size:13px;font-weight:600;padding:9px 16px;border:1.5px solid var(--sv);border-radius:var(--rmd);background:white;transition:border-color .2s,background .2s;text-decoration:none}
+.btn-back:hover{border-color:var(--ca);background:var(--bs)}
+@media(max-width:700px){.detalle-card{flex-direction:column}.detalle-img-col{width:100%;height:220px}.detalle-img-col::after{display:none}.campo-grid{grid-template-columns:1fr}.search-box{display:none}.main-tabs a{padding:11px 12px;font-size:12px}}
+
+/* ✅ Footer */
+.site-footer{background:linear-gradient(135deg,#040418,#102468);color:rgba(255,255,255,.8);margin-top:auto}
+.footer-inner{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:28px;max-width:1200px;margin:0 auto;padding:36px 24px 20px}
+.footer-logo-text{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:white;line-height:1.1;margin-bottom:8px}
+.footer-desc{font-size:12px;color:rgba(255,255,255,.6);line-height:1.6}
+.footer-titulo{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#f1c40f;margin-bottom:10px}
+.footer-links{list-style:none}
+.footer-links li{margin-bottom:7px}
+.footer-links a{color:rgba(255,255,255,.7);font-size:13px;display:flex;align-items:center;gap:6px;transition:color .2s}
+.footer-links a i{font-size:11px;color:#f1c40f}
+.footer-links a:hover{color:white}
+.footer-social{display:flex;gap:10px;margin-top:4px}
+.social-icon{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;color:white;font-size:14px;transition:background .2s}
+.social-icon:hover{background:#f1c40f;color:#0a0a0a}
+.footer-bottom{text-align:center;padding:12px;font-size:11px;color:rgba(255,255,255,.35);border-top:1px solid rgba(255,255,255,.07)}
+/* ✅ Btn back */
+.btn-back{display:inline-flex;align-items:center;gap:6px;color:var(--cp,#3d5273);font-size:13px;font-weight:600;padding:8px 14px;border:1.5px solid #dce3f0;border-radius:8px;background:white;transition:border-color .2s,background .2s;text-decoration:none;margin-bottom:14px}
+.btn-back:hover{border-color:#142ea0;background:#e8edf8}
+/* ✅ Cart badge */
+.cart-wrapper{position:relative;display:inline-flex}
+.cart-icon-link{color:var(--ctd,#1a1a1a);font-size:20px;padding:4px 8px;position:relative}
+.cart-badge{position:absolute;top:-5px;right:-3px;background:#e74c3c;color:white;border-radius:50%;width:17px;height:17px;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid white;font-family:inherit}
+/* ✅ Solo admin */
+.admin-only-block{display:none}
+
+</style>
+</head>
+<body>
+
+<div class="header-bar">
+  <div class="header-logo-section">
+    <div class="logo-text">Life<br>Line</div>
+    <img src="{% static 'imagenes/Group 243 (3).png' %}" alt="logo">
+  </div>
+  <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Buscar en LifeLine..."></div>
+  <div class="navbar-right">
+    <div class="navbar-icon"><a href="{% url 'ver_carrito' %}"><i class="fas fa-shopping-cart"></i></a></div>
+    <div class="user-photo"><img src="{% static 'imagenes/Group 244.png' %}" alt="Usuario"></div>
+  </div>
+</div>
+
+<nav class="main-tabs">
+  <a href="{% url 'home' %}"><i class="fas fa-home"></i> Inicio</a>
+  <a href="{% url 'mural' %}"><i class="fas fa-seedling"></i> Mural</a>
+  <a href="{% url 'perfil' %}"><i class="fas fa-user"></i> Perfil</a>
+  <a href="{% url 'lista_productos' %}" class="active"><i class="fas fa-store"></i> Productos</a>
+  <a href="{% url 'contactanos' %}"><i class="fas fa-envelope"></i> Contáctanos</a>
+</nav>
+
+<div class="detalle-wrapper">
+
+  <div class="breadcrumb">
+    <a href="{% url 'lista_productos' %}"><i class="fas fa-store" style="margin-right:4px"></i>Productos</a>
+    <i class="fas fa-chevron-right"></i>
+    <span>{{ producto.nombre }}</span>
+  </div>
+
+  <div class="detalle-card">
+
+    <!-- Imagen -->
+    <div class="detalle-img-col">
+      {% if producto.imagen %}
+        <img src="{{ producto.imagen.url }}" class="detalle-imagen" alt="{{ producto.nombre }}">
+      {% else %}
+        <div class="no-img-grande"><i class="fas fa-image"></i></div>
+      {% endif %}
+    </div>
+
+    <!-- Info -->
+    <div class="detalle-info-col">
+      <div class="prod-cat"><i class="fas fa-folder"></i> {{ producto.categoria }}</div>
+      <div class="prod-nombre">{{ producto.nombre }}</div>
+      <div class="prod-precio">${{ producto.precio_final }}<small>COP</small></div>
+
+      <div class="campo-desc">
+        <div class="campo-label">Descripción</div>
+        <div class="campo-valor">{{ producto.descripcion|default:"Sin descripción disponible." }}</div>
+      </div>
+
+      <div class="campo-grid">
+        <div class="campo">
+          <div class="campo-label">Stock disponible</div>
+          <div class="campo-valor">{{ producto.cantidad }} unidades</div>
+        </div>
+        <div class="campo">
+          <div class="campo-label">Estado</div>
+          <div class="campo-valor">
+            {% if producto.estado %}<span class="badge badge-activo">✔ Activo</span>
+            {% else %}<span class="badge badge-inactivo">✖ Inactivo</span>{% endif %}
+          </div>
+        </div>
+        <div class="campo">
+          <div class="campo-label">Registrado el</div>
+          <div class="campo-valor">{{ producto.fecha_creacion|date:"d/m/Y" }}</div>
+        </div>
+        {% if producto.fecha_vencimiento %}
+        <div class="campo">
+          <div class="campo-label">Vencimiento</div>
+          <div class="campo-valor">{{ producto.fecha_vencimiento|date:"d/m/Y" }}</div>
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="detalle-btns">
+        <a href="{% url 'editar_producto' producto.id %}" class="btn-edit">
+          <i class="fas fa-edit"></i> Editar
+        </a>
+        <a href="{% url 'eliminar_producto' producto.id %}" class="btn-del">
+          <i class="fas fa-trash"></i> Eliminar
+        </a>
+        <a href="{% url 'lista_productos' %}" class="btn-back">
+          <i class="fas fa-arrow-left"></i> Volver
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

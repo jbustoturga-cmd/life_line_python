@@ -1,0 +1,732 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeLine - Calendario</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+    <style>
+        @font-face {
+            font-family: 'Talkwin';
+            src: url("{% static 'fonts/Talkwin.ttf' %}") format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root {
+            --warm-gold: #F5A623;
+            --coral: #E8735A;
+            --rose: #C75B7A;
+            --deep: #0f1624;
+            --card-bg: #161f32;
+            --soft-purple: #6B4FA0;
+            --lavender: #9B7EC8;
+            --teal: #2EC4B6;
+            --mint: #52d9b5;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--deep);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+a { text-decoration: none; }
+
+        /* Fondo con gradiente suave */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 70% 50% at 0% 0%, rgba(196, 255, 249, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 50% at 100% 100%, rgba(255, 203, 218, 0.18) 0%, transparent 55%),
+                radial-gradient(ellipse 50% 60% at 50% 40%, rgba(225, 209, 255, 0.1) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+                /* ============================================================
+HEADER — Banda superior con acento dorado
+   ============================================================ */
+.header-bar {
+background: white;
+border-bottom: 4px solid var(--color-accent);
+padding: 11px 28px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+position: sticky; top: 0; z-index: 200;
+box-shadow: 0 2px 20px rgba(20,46,160,0.1);
+}
+
+
+.logol {
+width: 20px; height: 20px;
+}
+
+.logo-wrap { display: flex; align-items: center; gap: 10px; }
+
+.logo-mark {
+width: 42px; height: 42px;
+background: var(--color-top-bar);
+border-radius: 12px;
+display: flex; align-items: center; justify-content: center;
+color: var(--gold); font-size: 18px;
+box-shadow: 0 3px 12px rgba(20,46,160,0.4);
+position: relative; overflow: hidden;
+}
+.logo-mark::after {
+content: '';
+position: absolute; bottom: 0; left: 0; right: 0;
+height: 3px; background: var(--gold);
+}
+
+.logo-text-wrap { line-height: 1.1; }
+.logo-title {
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+font-size: 24px; font-weight: 700;
+color: var(--color-primary); letter-spacing: -0.3px;
+}
+.logo-tagline {
+font-size: 10px; color: var(--color-secondary);
+font-weight: 500; letter-spacing: 1.4px; text-transform: uppercase;
+}
+
+.search-box {
+background: var(--blue-soft);
+border-radius: 30px;
+padding: 9px 18px;
+display: flex; align-items: center;
+border: 1.5px solid var(--silver);
+width: 300px;
+transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-box:focus-within {
+border-color: var(--color-accent);
+box-shadow: 0 0 0 3px var(--blue-glow);
+}
+.search-box i { color: var(--color-accent); font-size: 14px; }
+.search-box input {
+border: none; background: none; outline: none;
+font-size: 14px; color: var(--color-text-dark);
+width: 100%; margin-left: 8px;
+font-family: 'Outfit', sans-serif;
+}
+.search-box input::placeholder { color: var(--color-text-light); }
+
+.header-right { display: flex; align-items: center; gap: 12px; }
+
+.hdr-btn {
+width: 38px; height: 38px; border-radius: 50%;
+background: var(--blue-soft);
+display: flex; align-items: center; justify-content: center;
+color: var(--color-primary); font-size: 15px;
+transition: background 0.2s, color 0.2s; cursor: pointer;
+border: 1.5px solid var(--silver); position: relative;
+}
+.hdr-btn:hover { background: var(--color-accent); color: white; border-color: var(--color-accent); }
+
+.cart-badge {
+  position: absolute; top: -6px; right: -6px;
+  background: var(--error-red); color: white;
+  border-radius: 50%; font-size: 10px; font-weight: 700;
+  min-width: 18px; height: 18px;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(231,76,60,0.4);
+}
+
+.user-chip {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--blue-soft);
+  border: 1.5px solid var(--silver);
+  border-radius: 30px;
+  padding: 5px 14px 5px 5px; cursor: pointer;
+  transition: border-color 0.2s;
+}
+.user-chip:hover { border-color: var(--color-accent); }
+.user-chip-av {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--color-top-bar);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold); font-size: 12px;
+}
+.user-chip span { font-size: 13px; font-weight: 600; color: var(--color-primary); }
+
+/* Badge del Admin */
+.admin-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--color-primary); /* Azul oscuro */
+  color: var(--gold); /* Exclamación dorada */
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* Efecto hover especial para Admin */
+.admin-btn:hover {
+  background: var(--color-primary) !important;
+  color: var(--gold) !important;
+  border-color: var(--color-primary) !important;
+}
+
+/* Asegura que el contenedor mantenga el espacio */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Espacio entre los botones */
+}
+/* ============================================================
+   NAV TABS
+   ============================================================ */
+.main-tabs {
+  background:#3d5273;
+  display: flex; padding: 0 24px;
+  overflow-x: auto; gap: 2px;
+}
+.main-tabs a {
+  color: rgba(255,255,255,0.7);
+  padding: 12px 16px; font-size: 13px; font-weight: 500;
+  display: flex; align-items: center; gap: 6px;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.main-tabs a:hover { color: white; background: rgba(255,255,255,0.08); border-bottom-color: rgba(255,255,255,0.3); }
+.main-tabs a.active { color: var(--gold); border-bottom-color: var(--gold); font-weight: 700; background: rgba(255,255,255,0.06); }
+/* boton cerrar sesion */
+ .btn-logout {
+            background: rgba(10, 48, 66, 0.2);
+            color: var(--coral);
+            border: 1px solid rgba(5, 5, 61, 0.35);
+            padding: 7px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            transition: all 0.2s;
+            margin-left: 380px;
+        }
+        .btn-logout:hover { background: rgba(112, 5, 103, 0.35)35); }
+        /* ── Layout ── */
+        .cal-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Mensajes */
+        .alerts-wrapper {
+            max-width: 1200px;
+            margin: 16px auto 0;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+        .alert-success {
+            background: linear-gradient(135deg, rgba(82,217,181,0.2), rgba(82,217,181,0.08));
+            border: 1px solid rgba(82,217,181,0.3);
+            color: #7feba5;
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        .alert-error {
+            background: linear-gradient(135deg, rgba(220,53,69,0.2), rgba(220,53,69,0.08));
+            border: 1px solid rgba(220,53,69,0.3);
+            color: #f5a0aa;
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .cal-layout {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 28px 24px;
+        }
+
+        /* ── Encabezado de sección ── */
+        .seccion-titulo {
+            font-family: 'Talkwin', 'Nunito', sans-serif;
+            font-size: 19px;
+            color: white;
+            margin: 0 0 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 0.3px;
+        }
+        .seccion-titulo::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.12), transparent);
+            margin-left: 4px;
+        }
+        .s-icon {
+            width: 34px; height: 34px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .s-icon.teal   { background: rgba(46,196,182,0.2);  color: var(--teal); }
+        .s-icon.purple { background: rgba(107,79,160,0.25); color: var(--lavender); }
+        .s-icon.coral  { background: rgba(232,115,90,0.2);  color: var(--coral); }
+
+        /* ── Citas ── */
+        .cita-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.09);
+            border-radius: 18px;
+            padding: 20px 22px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 12px;
+            backdrop-filter: blur(10px);
+            transition: all 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+        .cita-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--teal), var(--soft-purple));
+            border-radius: 4px 0 0 4px;
+        }
+        .cita-card.proxima::before {
+            background: linear-gradient(180deg, var(--warm-gold), var(--coral));
+        }
+        .cita-card.proxima {
+            border-color: rgba(245,166,35,0.2);
+            background: rgba(245,166,35,0.06);
+        }
+        .cita-card:hover {
+            background: rgba(255,255,255,0.09);
+            transform: translateX(4px);
+        }
+
+        .cita-tipo-badge {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            background: rgba(46,196,182,0.2);
+            color: var(--teal);
+            margin-bottom: 6px;
+            border: 1px solid rgba(46,196,182,0.25);
+        }
+        .cita-card.proxima .cita-tipo-badge {
+            background: rgba(245,166,35,0.2);
+            color: var(--warm-gold);
+            border-color: rgba(245,166,35,0.25);
+        }
+        .cita-titulo {
+            font-family: 'Talkwin', 'Nunito', sans-serif;
+            font-size: 16px;
+            color: white;
+            margin-bottom: 6px;
+        }
+        .cita-detalle { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.7; }
+        .cita-detalle i { color: rgba(255,255,255,0.3); }
+
+        .cita-acciones { display: flex; gap: 7px; flex-shrink: 0; flex-wrap: wrap; }
+        .btn-completar {
+            background: linear-gradient(135deg, var(--teal), var(--mint));
+            color: #0f1624;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 800;
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.2s;
+            box-shadow: 0 3px 12px rgba(46,196,182,0.3);
+        }
+        .btn-completar:hover { transform: translateY(-1px); box-shadow: 0 5px 18px rgba(46,196,182,0.4); }
+        .btn-cancelar-cita {
+            background: rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.55);
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.2s;
+        }
+        .btn-cancelar-cita:hover { background: rgba(255,255,255,0.14); }
+        .btn-eliminar-cita {
+            background: rgba(220,53,69,0.15);
+            color: #f08090;
+            border: 1px solid rgba(220,53,69,0.25);
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.2s;
+        }
+        .btn-eliminar-cita:hover { background: rgba(220,53,69,0.3); }
+
+        /* ── Historial ── */
+        .hist-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 12px;
+            padding: 12px 18px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .hist-item strong { color: rgba(255,255,255,0.8); font-size: 14px; }
+        .hist-meta { font-size: 12px; color: rgba(255,255,255,0.3); margin-left: 10px; }
+        .badge-completada { background: rgba(46,196,182,0.18); color: var(--teal); padding: 4px 13px; border-radius: 20px; font-size: 11px; font-weight: 700; border: 1px solid rgba(46,196,182,0.25); }
+        .badge-cancelada  { background: rgba(220,53,69,0.18);  color: #f08090;   padding: 4px 13px; border-radius: 20px; font-size: 11px; font-weight: 700; border: 1px solid rgba(220,53,69,0.25); }
+
+        /* ── Empty state ── */
+        .empty-state { text-align: center; padding: 50px 20px; color: rgba(255,255,255,0.25); }
+        .empty-state i { font-size: 44px; margin-bottom: 14px; display: block; }
+        .empty-state p { font-size: 14px; font-weight: 600; }
+
+        /* ── Formulario lateral ── */
+        .form-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.10);
+            border-radius: 22px;
+            padding: 28px;
+            position: sticky;
+            top: 20px;
+            backdrop-filter: blur(20px);
+            overflow: hidden;
+        }
+        .form-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--teal), var(--soft-purple), var(--rose));
+        }
+
+        .form-group { margin-bottom: 14px; }
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 6px;
+            font-size: 11px;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+        }
+        .form-input {
+            width: 100%;
+            padding: 11px 15px;
+            background: rgba(255,255,255,0.07);
+            border: 1.5px solid rgba(255,255,255,0.10);
+            border-radius: 10px;
+            font-size: 14px;
+            color: white;
+            font-family: 'Nunito', sans-serif;
+            transition: border-color 0.2s;
+        }
+        .form-input:focus { border-color: var(--teal); outline: none; background: rgba(255,255,255,0.10); }
+        .form-input option { background: #161f32; }
+        .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .btn-agendar {
+            background: linear-gradient(135deg, var(--teal), var(--soft-purple));
+            color: white;
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 8px;
+            font-family: 'Nunito', sans-serif;
+            box-shadow: 0 6px 20px rgba(46,196,182,0.3);
+            transition: all 0.25s;
+        }
+        .btn-agendar:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(46,196,182,0.4); }
+        .error-field { color: #f5a0aa; font-size: 12px; margin-top: 3px; font-weight: 600; }
+
+        /* Frase motivacional */
+        .motivational-strip {
+            background: linear-gradient(135deg, rgba(46,196,182,0.12), rgba(107,79,160,0.12));
+            border: 1px solid rgba(46,196,182,0.2);
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .motivational-strip p {
+            font-family: 'Talkwin', 'Nunito', sans-serif;
+            font-size: 14px;
+            color: rgba(255,255,255,0.75);
+        }
+
+        /* Contador próxima cita */
+        .proxima-banner {
+            background: linear-gradient(135deg, rgba(245,166,35,0.2), rgba(232,115,90,0.15));
+            border: 1px solid rgba(245,166,35,0.3);
+            border-radius: 14px;
+            padding: 16px 22px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .proxima-banner .icon { font-size: 26px; }
+        .proxima-banner .text p { color: rgba(255,255,255,0.5); font-size: 12px; margin-bottom: 2px; }
+        .proxima-banner .text strong {
+            font-family: 'Talkwin', 'Nunito', sans-serif;
+            color: var(--warm-gold);
+            font-size: 16px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+
+        @media(max-width:850px) {
+            .cal-layout { grid-template-columns: 1fr; }
+            .form-card { position: static; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header-bar">
+  <div class="logo-wrap">
+    <div class="logo-text-wrap">
+      <div class="logo-title">
+        Life<span style="color: #4a6feb;">Line</span>
+        <img class="logol" src="{% static 'imagenes/Group 243 (3).png' %}" alt="logo">
+      </div>
+      <div class="logo-tagline">Comunidad &amp; Bienestar</div>
+    </div>
+  </div>
+  
+  <div class="search-box">
+    <i class="fas fa-search"></i>
+    <input type="text" placeholder="Buscar en LifeLine...">
+  </div>
+
+  <div class="header-right">
+    {% if request.user.is_staff or request.user.rol == 'ADMIN' %}
+    <a class="hdr-btn admin-btn" href="{% url 'lista_productos' %}" title="Panel de Administración">
+      <i class="fas fa-user-shield"></i>
+{% endif %}
+
+    <a class="hdr-btn" href="{% url 'ver_carrito' %}" title="Carrito">
+      <i class="fas fa-shopping-cart"></i>
+      <span class="cart-badge" id="cart-count">0</span>
+    </a>
+
+    <div class="user-chip">
+      <div class="user-chip-av"><i class="fas fa-user"></i></div>
+      <span>{{ usuario.username|default:"Mi cuenta" }}</span>
+    </div>
+  </div> </header>
+
+<nav class="main-tabs">
+  <a href="{% url 'home' %}" ><i class="fas fa-home"></i> Inicio</a>
+  <a href="{% url 'mural' %}"><i class="fas fa-seedling"></i> Mural</a>
+  <a href="{% url 'perfil' %}"><i class="fas fa-user"></i> Perfil</a>
+  <a href="{% url 'tienda' %}"><i class="fas fa-store"></i> Productos</a>
+  <a href="{% url 'calendario' %}"class="active"><i class="fas fa-calendar-alt"></i> Calendario</a>
+  <a href="{% url 'nutricion' %}"><i class="fas fa-apple-alt"></i> Nutrición</a>
+  <a href="{% url 'alarmas' %}"><i class="fas fa-clock"></i> Alarmas</a>
+  <a href="{% url 'contactanos' %}"><i class="fas fa-envelope"></i> Contáctanos</a>
+  {% if user.is_authenticated %}
+        <form method="post" action="{% url 'logout' %}" style="margin:0;">
+            {% csrf_token %}
+            <button type="submit" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Salir</button>
+        </form>
+        {% endif %}
+</nav>
+
+{% if messages %}
+<div class="alerts-wrapper">
+    {% for m in messages %}
+        <div class="{% if m.tags == 'success' %}alert-success{% else %}alert-error{% endif %}">{{ m }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="cal-layout cal-wrapper">
+
+    <!-- Columna izquierda -->
+    <div>
+
+        <!-- Frase motivacional -->
+        <div class="motivational-strip">
+            <span style="font-size:26px;">🌿</span>
+            <p>Cada cita médica es un acto de amor hacia ti mismo. ¡Vas muy bien!</p>
+        </div>
+
+        <!-- Próxima cita destacada -->
+        {% if citas_proximas %}
+        <div class="proxima-banner">
+            <span class="icon">📅</span>
+            <div class="text">
+                <p>Tu próxima cita es</p>
+                <strong>{{ citas_proximas.0.titulo }} — {{ citas_proximas.0.fecha|date:"d/m/Y" }} a las {{ citas_proximas.0.hora|time:"h:i A" }}</strong>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="seccion-titulo">
+            <span class="s-icon teal"><i class="fas fa-calendar-check"></i></span>
+            Próximas Citas Médicas
+        </div>
+
+        {% if citas_proximas %}
+            {% for cita in citas_proximas %}
+            <div class="cita-card {% if cita.es_proxima %}proxima{% endif %}">
+                <div>
+                    <span class="cita-tipo-badge">{{ cita.get_tipo_display }}</span>
+                    <div class="cita-titulo">{{ cita.titulo }}</div>
+                    <div class="cita-detalle">
+                        <i class="fas fa-calendar"></i> {{ cita.fecha|date:"d/m/Y" }}
+                        &nbsp;·&nbsp;
+                        <i class="fas fa-clock"></i> {{ cita.hora|time:"h:i A" }}
+                        {% if cita.lugar %}&nbsp;·&nbsp;<i class="fas fa-map-marker-alt"></i> {{ cita.lugar }}{% endif %}
+                        {% if cita.profesional %}<br><i class="fas fa-user-md"></i> {{ cita.profesional }}{% endif %}
+                    </div>
+                </div>
+                <div class="cita-acciones">
+                    <form method="post" action="{% url 'completar_cita' cita.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-completar">
+                            <i class="fas fa-check"></i> Asistida
+                        </button>
+                    </form>
+                    <form method="post" action="{% url 'cancelar_cita' cita.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-cancelar-cita">Cancelar</button>
+                    </form>
+                    <form method="post" action="{% url 'eliminar_cita' cita.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-eliminar-cita"
+                                onclick="return confirm('¿Eliminar esta cita?')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-calendar-times"></i>
+                <p>No tienes citas pendientes. ¡Agenda una nueva!</p>
+            </div>
+        {% endif %}
+
+        {% if historial %}
+        <div class="seccion-titulo" style="margin-top:32px;">
+            <span class="s-icon purple"><i class="fas fa-history"></i></span>
+            Historial de Asistencias
+        </div>
+        {% for cita in historial %}
+        <div class="hist-item">
+            <div>
+                <strong>{{ cita.titulo }}</strong>
+                <span class="hist-meta">{{ cita.fecha|date:"d/m/Y" }}</span>
+            </div>
+            <span class="badge-{{ cita.estado }}">{{ cita.get_estado_display }}</span>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+    <!-- Columna derecha: formulario -->
+    <div>
+        <div class="form-card">
+            <div class="seccion-titulo" style="margin-bottom:20px;">
+                <span class="s-icon coral"><i class="fas fa-plus-circle"></i></span>
+                Agendar Cita
+            </div>
+            <form method="post" action="{% url 'calendario' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Tipo de cita</label>
+                    {{ formulario.tipo }}
+                    {% if formulario.tipo.errors %}<span class="error-field">{{ formulario.tipo.errors.0 }}</span>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label>Título</label>
+                    {{ formulario.titulo }}
+                    {% if formulario.titulo.errors %}<span class="error-field">{{ formulario.titulo.errors.0 }}</span>{% endif %}
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label>Fecha</label>
+                        {{ formulario.fecha }}
+                        {% if formulario.fecha.errors %}<span class="error-field">{{ formulario.fecha.errors.0 }}</span>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label>Hora</label>
+                        {{ formulario.hora }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Lugar</label>
+                    {{ formulario.lugar }}
+                </div>
+                <div class="form-group">
+                    <label>Profesional</label>
+                    {{ formulario.profesional }}
+                </div>
+                <div class="form-group">
+                    <label>Recordatorio</label>
+                    {{ formulario.recordatorio }}
+                </div>
+                <button type="submit" class="btn-agendar">
+                    <i class="fas fa-calendar-plus"></i> Confirmar cita
+                </button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

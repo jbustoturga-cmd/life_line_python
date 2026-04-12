@@ -1,0 +1,171 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}LifeLine{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+    {% block css_extra %}{% endblock %}
+</head>
+<body>
+
+<!-- ══ HEADER ══════════════════════════════════════════════════════════ -->
+<header class="header-bar">
+    <div class="header-logo-section">
+        <div class="logo-text">Life<br>Line</div>
+        <img src="{% static 'imagenes/Group 243 (3).png' %}" width="50" alt="Logo LifeLine">
+    </div>
+
+    <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Buscar en LifeLine...">
+    </div>
+
+    <div class="navbar-right">
+
+        <!-- ✅ Contador carrito -->
+        <div class="cart-wrapper">
+            <a href="{% url 'ver_carrito' %}" class="cart-icon-link">
+                <i class="fas fa-shopping-cart"></i>
+                {% with carrito=request.session.carrito %}
+                {% if carrito %}
+                    {% with total_items=carrito.values|length %}
+                    {% if total_items > 0 %}
+                    <span class="cart-badge">{{ carrito|length }}</span>
+                    {% endif %}
+                    {% endwith %}
+                {% endif %}
+                {% endwith %}
+            </a>
+        </div>
+
+        <!-- Foto usuario -->
+        <a href="{% url 'perfil' %}" class="user-photo-link">
+            <div class="user-photo">
+                {% if request.user.is_authenticated and request.user.foto_perfil %}
+                    <img src="{{ request.user.foto_perfil.url }}" alt="Mi perfil">
+                {% else %}
+                    <img src="{% static 'imagenes/Group 244.png' %}" alt="Mi perfil">
+                {% endif %}
+            </div>
+        </a>
+
+        <!-- ✅ Botón cerrar sesión — solo si está logueado -->
+        {% if user.is_authenticated %}
+        <form method="post" action="{% url 'logout' %}" style="margin:0;">
+            {% csrf_token %}
+            <button type="submit" class="btn-logout">
+                <i class="fas fa-sign-out-alt"></i> Salir
+            </button>
+        </form>
+        {% endif %}
+
+    </div>
+</header>
+
+<!-- ══ NAV PRINCIPAL ════════════════════════════════════════════════════ -->
+<nav class="main-tabs">
+    <a href="{% url 'home' %}"        class="{% block nav_inicio %}{% endblock %}">
+        <i class="fas fa-home"></i> Inicio
+    </a>
+    <a href="{% url 'mural' %}"       class="{% block nav_mural %}{% endblock %}">
+        <i class="fas fa-seedling"></i> Mural
+    </a>
+    <a href="{% url 'perfil' %}"      class="{% block nav_perfil %}{% endblock %}">
+        <i class="fas fa-user"></i> Perfil
+    </a>
+    <a href="{% url 'tienda' %}"      class="{% block nav_tienda %}{% endblock %}">
+        <i class="fas fa-store"></i> Tienda
+    </a>
+    <a href="{% url 'calendario' %}"  class="{% block nav_calendario %}{% endblock %}">
+        <i class="fas fa-calendar-alt"></i> Calendario
+    </a>
+    <a href="{% url 'nutricion' %}"   class="{% block nav_nutricion %}{% endblock %}">
+        <i class="fas fa-apple-alt"></i> Nutrición
+    </a>
+    <a href="{% url 'alarmas' %}"     class="{% block nav_alarma %}{% endblock %}">
+        <i class="fas fa-clock"></i> Alarmas
+    </a>
+    <a href="{% url 'ejercicio' %}"   class="{% block nav_ejercicio %}{% endblock %}">
+        <i class="fas fa-dumbbell"></i> Ejercicio
+    </a>
+    <a href="{% url 'mis_pedidos' %}" class="{% block nav_pedidos %}{% endblock %}">
+        <i class="fas fa-box"></i> Mis Pedidos
+    </a>
+    {% if user.is_authenticated and user.rol == 'ADMIN' %}
+    <a href="{% url 'lista_usuarios' %}" class="{% block nav_admin %}{% endblock %}">
+        <i class="fas fa-shield-alt"></i> Admin
+    </a>
+    {% endif %}
+    <a href="{% url 'contactanos' %}" class="{% block nav_contacto %}{% endblock %}">
+        <i class="fas fa-envelope"></i> Contáctanos
+    </a>
+</nav>
+
+<!-- ══ CONTENIDO PRINCIPAL ══════════════════════════════════════════════ -->
+<main>
+    {% block contenido %}{% endblock %}
+</main>
+
+<!-- ══ FOOTER ══════════════════════════════════════════════════════════ -->
+<footer class="site-footer">
+    <div class="footer-inner">
+
+        <div class="footer-col">
+            <div class="footer-logo">
+                <div class="footer-logo-text">Life<br>Line</div>
+            </div>
+            <p class="footer-desc">
+                Acompañando a personas diagnosticadas con cáncer y a sus familias.
+                Bienestar, comunidad e información en un solo lugar.
+            </p>
+        </div>
+
+        <div class="footer-col">
+            <div class="footer-titulo">Navegación</div>
+            <ul class="footer-links">
+                <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> Inicio</a></li>
+                <li><a href="{% url 'mural' %}"><i class="fas fa-seedling"></i> Mural</a></li>
+                <li><a href="{% url 'tienda' %}"><i class="fas fa-store"></i> Tienda</a></li>
+                <li><a href="{% url 'nutricion' %}"><i class="fas fa-apple-alt"></i> Nutrición</a></li>
+                <li><a href="{% url 'contactanos' %}"><i class="fas fa-envelope"></i> Contáctanos</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <div class="footer-titulo">Mi Cuenta</div>
+            <ul class="footer-links">
+                <li><a href="{% url 'perfil' %}"><i class="fas fa-user"></i> Mi Perfil</a></li>
+                <li><a href="{% url 'ver_carrito' %}"><i class="fas fa-shopping-cart"></i> Carrito</a></li>
+                <li><a href="{% url 'mis_pedidos' %}"><i class="fas fa-box"></i> Mis Pedidos</a></li>
+                <li><a href="{% url 'alarmas' %}"><i class="fas fa-clock"></i> Alarmas</a></li>
+                <li><a href="{% url 'calendario' %}"><i class="fas fa-calendar-alt"></i> Calendario</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <div class="footer-titulo">Síguenos</div>
+            <div class="footer-social">
+                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+            </div>
+            <div class="footer-titulo" style="margin-top:18px;">Proyecto</div>
+            <p class="footer-desc" style="margin-top:6px;">SENA · ADSO · 2025<br>Tecnología en Análisis y Desarrollo</p>
+        </div>
+
+    </div>
+    <div class="footer-bottom">
+        © 2025 LifeLine — Todos los derechos reservados.
+        Proyecto educativo SENA ADSO.
+    </div>
+</footer>
+
+{% block js_extra %}{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,337 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LifeLine — Ejercicio y Movilidad</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+<style>
+:root{
+  --cp:#3d5273;--cs:#5b6e94;--ca:#142ea0;--cmb:#526eaa;--cmh:#2d3c7e;
+  --ctb:linear-gradient(135deg,#040418,#102468);
+  --ctd:#1a1a1a;--ctl:#666;--bs:#e8edf8;--bg:rgba(20,46,160,.1);
+  --sv:#dce3f0;--cr:#f7f9fc;--gd:#f1c40f;--ok:#27ae60;--er:#e74c3c;
+  --rxl:20px;--rmd:14px;--rsm:8px;
+  /* niveles */
+  --alta-bg:#e8f5e9; --alta-c:#1b5e20; --alta-b:#a5d6a7; --alta-acc:#2e7d32;
+  --media-bg:var(--bs); --media-c:var(--cp); --media-b:var(--sv); --media-acc:var(--ca);
+  --dif-bg:#fce4ec; --dif-c:#880e4f; --dif-b:#f48fb1; --dif-acc:#c62828;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:var(--cr);background-image:radial-gradient(ellipse at 0% 0%,rgba(20,46,160,.07) 0%,transparent 50%);color:var(--ctd);min-height:100vh}
+a{text-decoration:none}
+
+/* ── HEADER / NAV ── */
+.header-bar{background:white;border-bottom:4px solid var(--ca);padding:11px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(20,46,160,.1)}
+.header-logo-section{display:flex;align-items:center;gap:10px}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--cp);line-height:1.1}
+.header-logo-section img{width:40px;height:40px;object-fit:contain}
+.search-box{background:var(--bs);border-radius:30px;padding:9px 18px;display:flex;align-items:center;border:1.5px solid var(--sv);width:280px;transition:border-color .2s}
+.search-box:focus-within{border-color:var(--ca);box-shadow:0 0 0 3px var(--bg)}
+.search-box i{color:var(--ca);font-size:14px}
+.search-box input{border:none;background:none;outline:none;font-size:14px;color:var(--ctd);width:100%;margin-left:8px;font-family:'Outfit',sans-serif}
+.navbar-right{display:flex;align-items:center;gap:12px}
+.user-photo{width:38px;height:38px;border-radius:50%;overflow:hidden;border:2px solid var(--ca)}
+.user-photo img{width:100%;height:100%;object-fit:cover}
+.btn-logout{background:none;border:1.5px solid var(--sv);color:var(--ctl);border-radius:var(--rsm);padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;gap:6px;transition:border-color .2s,color .2s}
+.btn-logout:hover{border-color:var(--er);color:var(--er)}
+.main-tabs{background:var(--cp);display:flex;padding:0 24px;overflow-x:auto;gap:2px}
+.main-tabs a{color:rgba(255,255,255,.7);padding:12px 16px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s}
+.main-tabs a:hover{color:white;background:rgba(255,255,255,.08);border-bottom-color:rgba(255,255,255,.3)}
+.main-tabs a.active{color:var(--gd);border-bottom-color:var(--gd);font-weight:700}
+
+/* ── PAGE HERO STRIP ── */
+.ej-hero{background:var(--ctb);padding:32px 0;position:relative;overflow:hidden}
+.ej-hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='1' fill='%23ffffff' fill-opacity='0.05'/%3E%3C/svg%3E")}
+.ej-hero::after{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;background:radial-gradient(circle,rgba(241,196,15,.15),transparent 70%);border-radius:50%;pointer-events:none}
+.ej-hero-inner{max-width:1100px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:24px;position:relative;z-index:1}
+.ej-hero-text{}
+.ej-hero-eyebrow{font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--gd);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.ej-hero-eyebrow::before{content:'';width:22px;height:2px;background:var(--gd);border-radius:2px}
+.ej-hero-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:#fff;line-height:1.15;margin-bottom:6px}
+.ej-hero-sub{font-size:14px;color:rgba(255,255,255,.65);max-width:480px}
+.ej-hero-stats{display:flex;gap:20px;flex-shrink:0}
+.ehs{text-align:center;padding:12px 18px;background:rgba(255,255,255,.07);border-radius:var(--rmd);border:1px solid rgba(255,255,255,.1)}
+.ehs-n{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--gd);line-height:1}
+.ehs-l{font-size:10px;color:rgba(255,255,255,.55);letter-spacing:.6px;text-transform:uppercase;margin-top:3px}
+@media(max-width:700px){.ej-hero-stats{display:none}.ej-hero-title{font-size:24px}}
+
+/* ── MAIN WRAPPER ── */
+.ej-wrap{max-width:1100px;margin:0 auto;padding:28px 24px 60px}
+.ej-layout{display:grid;grid-template-columns:1fr 310px;gap:24px;align-items:flex-start}
+@media(max-width:820px){.ej-layout{grid-template-columns:1fr}}
+
+/* ── NIVEL SELECTOR — nuevo look ── */
+.nivel-selector{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+@media(max-width:560px){.nivel-selector{grid-template-columns:1fr}}
+
+.nivel-btn{border-radius:18px;padding:18px 16px;border:2px solid transparent;cursor:pointer;text-align:center;transition:all .25s;text-decoration:none;display:block;position:relative;overflow:hidden}
+.nivel-btn::after{content:'';position:absolute;inset:0;opacity:0;transition:opacity .25s;background:linear-gradient(135deg,rgba(255,255,255,.2),transparent)}
+.nivel-btn:hover::after{opacity:1}
+.nivel-btn .nb-ico{font-size:28px;margin-bottom:8px;display:block;transition:transform .3s}
+.nivel-btn:hover .nb-ico{transform:scale(1.15) translateY(-2px)}
+.nivel-btn h3{font-size:15px;font-weight:800;margin-bottom:4px}
+.nivel-btn p{font-size:12px;opacity:.8;line-height:1.4}
+
+.nivel-alta{background:linear-gradient(135deg,#e8f5e9,#c8e6c9);color:#1b5e20;border-color:#a5d6a7}
+.nivel-media{background:linear-gradient(135deg,var(--bs),#d0d9f0);color:var(--cp);border-color:var(--sv)}
+.nivel-dificil{background:linear-gradient(135deg,#fce4ec,#f8bbd0);color:#880e4f;border-color:#f48fb1}
+
+.nivel-btn.activo{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.18)}
+.nivel-alta.activo{border-color:#2e7d32;box-shadow:0 10px 28px rgba(46,125,50,.28)}
+.nivel-media.activo{border-color:var(--ca);box-shadow:0 10px 28px rgba(20,46,160,.28)}
+.nivel-dificil.activo{border-color:#c62828;box-shadow:0 10px 28px rgba(198,40,40,.28)}
+
+/* ── RUTINA CARD ── */
+.rutina-card{background:white;border-radius:var(--rxl);border:1px solid var(--sv);box-shadow:0 4px 28px rgba(20,46,160,.1);overflow:hidden;animation:fadeCard .4s ease both}
+@keyframes fadeCard{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.rc-hdr{background:var(--ctb);padding:22px 26px;position:relative;overflow:hidden}
+.rc-hdr::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(241,196,15,.12),transparent 70%);border-radius:50%}
+.rc-hdr::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent 0%,var(--gd) 40%,var(--cmb) 80%,transparent)}
+.rc-hdr-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;position:relative;z-index:1}
+.rc-titulo{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:white;margin-bottom:4px}
+.rc-desc{font-size:13px;color:rgba(255,255,255,.7);line-height:1.5}
+.rc-dur-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(241,196,15,.18);border:1px solid rgba(241,196,15,.3);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;color:var(--gd);white-space:nowrap;flex-shrink:0}
+
+/* Ejercicios lista */
+.rc-body{padding:24px 26px}
+.ej-items{display:flex;flex-direction:column;gap:0}
+.ej-item{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid var(--bs);transition:background .15s;border-radius:var(--rsm);cursor:default}
+.ej-item:last-child{border-bottom:none}
+.ej-item:hover{background:var(--bs);padding-left:8px;padding-right:8px;margin:0 -8px}
+.ej-num{width:30px;height:30px;border-radius:50%;background:var(--bs);border:1.5px solid var(--sv);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--ca);flex-shrink:0;font-family:'Cormorant Garamond',serif;font-size:15px;transition:background .2s,color .2s}
+.ej-item:hover .ej-num{background:var(--ca);color:#fff;border-color:var(--ca)}
+.ej-txt{font-size:14px;color:var(--ctd);font-weight:500;line-height:1.45}
+
+/* Form completar */
+.form-completar{background:linear-gradient(135deg,var(--bs),#dce6f5);border-radius:var(--rmd);padding:20px 22px;margin-top:20px;border:1px solid var(--sv)}
+.fc-label{font-size:11px;font-weight:800;color:var(--cs);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:9px}
+.fc-textarea{width:100%;padding:11px 14px;border:1.5px solid var(--sv);border-radius:var(--rsm);font-size:14px;font-family:'Outfit',sans-serif;color:var(--ctd);resize:none;outline:none;background:white;transition:border-color .2s,box-shadow .2s;line-height:1.5}
+.fc-textarea:focus{border-color:var(--ca);box-shadow:0 0 0 3px var(--bg)}
+.fc-textarea::placeholder{color:var(--ctl)}
+.btn-completar{background:linear-gradient(135deg,var(--ca),var(--cmh));color:white;border:none;border-radius:var(--rmd);padding:13px 20px;font-size:14px;font-weight:700;cursor:pointer;width:100%;margin-top:12px;font-family:'Outfit',sans-serif;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 4px 16px rgba(20,46,160,.3);transition:opacity .2s,transform .15s}
+.btn-completar:hover{opacity:.9;transform:translateY(-1px)}
+
+/* ── SIDEBAR: Historial ── */
+.hist-card{background:white;border-radius:var(--rxl);border:1px solid var(--sv);box-shadow:0 4px 28px rgba(20,46,160,.1);overflow:hidden;position:sticky;top:84px}
+.hc-hdr{background:var(--ctb);padding:16px 20px;display:flex;align-items:center;gap:10px;position:relative}
+.hc-hdr::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gd),transparent)}
+.hc-hdr i{color:var(--gd);font-size:16px}
+.hc-hdr span{font-size:15px;font-weight:700;color:white}
+
+/* Resumen stats */
+.hc-stats{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--bs)}
+.hcs{padding:14px 16px;text-align:center;border-right:1px solid var(--bs)}
+.hcs:last-child{border-right:none}
+.hcs-n{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--ca);line-height:1}
+.hcs-l{font-size:10px;color:var(--ctl);margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
+
+/* Items historial */
+.hist-body{padding:0;max-height:340px;overflow-y:auto}
+.hist-body::-webkit-scrollbar{width:4px}
+.hist-body::-webkit-scrollbar-thumb{background:var(--sv);border-radius:4px}
+.hist-item{padding:12px 20px;border-bottom:1px solid var(--bs);transition:background .15s}
+.hist-item:last-child{border-bottom:none}
+.hist-item:hover{background:var(--bs)}
+.hi-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px}
+.hi-nivel{font-size:13px;font-weight:700;color:var(--ctd)}
+.hi-date{font-size:11px;color:var(--ctl)}
+.hi-nota{font-size:12px;color:var(--ctl);line-height:1.4;font-style:italic}
+.hi-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:12px;font-size:10px;font-weight:700;margin-top:5px}
+.hib-alta{background:#e8f5e9;color:#1b5e20}
+.hib-media{background:var(--bs);color:var(--cp)}
+.hib-dif{background:#fce4ec;color:#880e4f}
+
+/* Empty state */
+.empty-hist{text-align:center;padding:36px 20px}
+.empty-hist i{font-size:36px;color:var(--sv);display:block;margin-bottom:12px}
+.empty-hist p{color:var(--ctl);font-size:13px;line-height:1.6}
+
+/* Motivational quote */
+.hc-quote{padding:16px 20px;background:linear-gradient(135deg,var(--bs),#dce6f5);border-top:1px solid var(--sv)}
+.hcq-text{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--cp);line-height:1.55;margin-bottom:6px}
+.hcq-src{font-size:11px;color:var(--ctl);font-weight:600}
+
+/* Alert */
+.dj-ok{background:#d4edda;color:#155724;border:1px solid #c3e6cb;padding:12px 16px;border-radius:var(--rsm);display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:16px}
+
+@media(max-width:820px){.hist-card{position:static;max-height:none}.hist-body{max-height:none}}
+@media(max-width:700px){.search-box{display:none}.main-tabs a{padding:11px 12px;font-size:12px}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header-bar">
+  <div class="header-logo-section">
+    <div class="logo-text">Life<br>Line</div>
+    <img src="{% static 'imagenes/Group 243 (3).png' %}" alt="logo">
+  </div>
+  <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Buscar en LifeLine..."></div>
+  <div class="navbar-right">
+    <div class="user-photo">
+      {% if usuario.foto_perfil %}<img src="{{ usuario.foto_perfil.url }}" alt="">{% else %}<img src="{% static 'imagenes/Group 244.png' %}" alt="Usuario">{% endif %}
+    </div>
+    {% if user.is_authenticated %}
+    <form method="post" action="{% url 'logout' %}" style="margin:0">{% csrf_token %}
+      <button type="submit" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Salir</button>
+    </form>{% endif %}
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="main-tabs">
+  <a href="{% url 'home' %}"><i class="fas fa-home"></i> Inicio</a>
+  <a href="{% url 'mural' %}"><i class="fas fa-seedling"></i> Mural</a>
+  <a href="{% url 'perfil' %}"><i class="fas fa-user"></i> Perfil</a>
+  <a href="{% url 'tienda' %}"><i class="fas fa-store"></i> Tienda</a>
+  <a href="{% url 'calendario' %}"><i class="fas fa-calendar-alt"></i> Calendario</a>
+  <a href="{% url 'alarmas' %}"><i class="fas fa-clock"></i> Alarmas</a>
+  <a href="{% url 'ejercicio' %}" class="active"><i class="fas fa-dumbbell"></i> Ejercicio</a>
+  <a href="{% url 'contactanos' %}"><i class="fas fa-envelope"></i> Contáctanos</a>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="ej-hero">
+  <div class="ej-hero-inner">
+    <div class="ej-hero-text">
+      <div class="ej-hero-eyebrow">Bienestar físico</div>
+      <div class="ej-hero-title">Ejercicios y Movilidad Suave</div>
+      <div class="ej-hero-sub">Actividad física adaptada para mejorar el dolor, el ánimo y la energía durante el tratamiento.</div>
+    </div>
+    <div class="ej-hero-stats">
+      <div class="ehs"><div class="ehs-n">3</div><div class="ehs-l">Niveles</div></div>
+      <div class="ehs"><div class="ehs-n">{{ historial|length|default:"0" }}</div><div class="ehs-l">Sesiones completadas</div></div>
+      <div class="ehs"><div class="ehs-n">{{ rutina.duracion|default:"—" }}</div><div class="ehs-l">Min. hoy</div></div>
+    </div>
+  </div>
+</div>
+
+{% if messages %}
+<div style="max-width:1100px;margin:16px auto;padding:0 24px">
+  {% for m in messages %}<div class="dj-ok"><i class="fas fa-check-circle"></i> {{ m }}</div>{% endfor %}
+</div>
+{% endif %}
+
+<!-- MAIN -->
+<div class="ej-wrap">
+  <div class="ej-layout">
+
+    <!-- COLUMNA PRINCIPAL -->
+    <div>
+      <!-- Selector de nivel -->
+      <div class="nivel-selector">
+        <a href="?nivel=alta" class="nivel-btn nivel-alta {% if nivel == 'alta' %}activo{% endif %}">
+          <span class="nb-ico">⚡</span>
+          <h3>Alta Energía</h3>
+          <p>Para días en que te sientes fuerte y activo</p>
+        </a>
+        <a href="?nivel=media" class="nivel-btn nivel-media {% if nivel == 'media' %}activo{% endif %}">
+          <span class="nb-ico">🚶</span>
+          <h3>Energía Media</h3>
+          <p>Estiramientos y movimientos suaves en silla</p>
+        </a>
+        <a href="?nivel=dificil" class="nivel-btn nivel-dificil {% if nivel == 'dificil' %}activo{% endif %}">
+          <span class="nb-ico">🫁</span>
+          <h3>Día Difícil</h3>
+          <p>Respiración y relajación consciente</p>
+        </a>
+      </div>
+
+      <!-- Rutina Card -->
+      <div class="rutina-card">
+        <div class="rc-hdr">
+          <div class="rc-hdr-top">
+            <div>
+              <div class="rc-titulo">{{ rutina.titulo }}</div>
+              <div class="rc-desc">{{ rutina.descripcion }}</div>
+            </div>
+            <div class="rc-dur-pill"><i class="fas fa-clock"></i> {{ rutina.duracion }} min</div>
+          </div>
+        </div>
+
+        <div class="rc-body">
+          <div class="ej-items">
+            {% for ej in rutina.ejercicios %}
+            <div class="ej-item">
+              <div class="ej-num">{{ forloop.counter }}</div>
+              <div class="ej-txt">{{ ej }}</div>
+            </div>
+            {% empty %}
+            <div style="text-align:center;padding:32px;color:var(--ctl);font-size:14px">
+              <i class="fas fa-dumbbell" style="display:block;font-size:32px;color:var(--sv);margin-bottom:10px"></i>
+              Selecciona un nivel para ver la rutina.
+            </div>
+            {% endfor %}
+          </div>
+
+          <!-- Formulario completar -->
+          <div class="form-completar">
+            <form method="post" action="{% url 'completar_sesion' %}">
+              {% csrf_token %}
+              <input type="hidden" name="nivel" value="{{ nivel }}">
+              <label class="fc-label">¿Cómo te sentiste hoy? (opcional)</label>
+              <textarea class="fc-textarea" name="nota" rows="2" placeholder="Ej: Me sentí bien, con poca fatiga y buen ánimo..."></textarea>
+              <button type="submit" class="btn-completar">
+                <i class="fas fa-check-circle"></i> Marcar sesión como completada
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR: HISTORIAL -->
+    <div>
+      <div class="hist-card">
+        <div class="hc-hdr"><i class="fas fa-history"></i><span>Mi historial</span></div>
+
+        <!-- Stats resumen -->
+        <div class="hc-stats">
+          <div class="hcs">
+            <div class="hcs-n">{{ historial|length|default:"0" }}</div>
+            <div class="hcs-l">Sesiones</div>
+          </div>
+          <div class="hcs">
+            <div class="hcs-n">{% if historial %}{{ historial|length }}{% else %}0{% endif %}</div>
+            <div class="hcs-l">Esta semana</div>
+          </div>
+        </div>
+
+        <div class="hist-body">
+          {% if historial %}
+            {% for s in historial %}
+            <div class="hist-item">
+              <div class="hi-top">
+                <span class="hi-nivel">{{ s.get_nivel_energia_display }}</span>
+                <span class="hi-date">{{ s.fecha|date:"d M Y" }}</span>
+              </div>
+              <span class="hi-badge {% if s.nivel_energia == 'alta' %}hib-alta{% elif s.nivel_energia == 'media' %}hib-media{% else %}hib-dif{% endif %}">
+                {% if s.nivel_energia == 'alta' %}⚡ Alta{% elif s.nivel_energia == 'media' %}🚶 Media{% else %}🫁 Difícil{% endif %}
+              </span>
+              {% if s.nota %}<div class="hi-nota">"{{ s.nota|truncatechars:58 }}"</div>{% endif %}
+            </div>
+            {% endfor %}
+          {% else %}
+          <div class="empty-hist">
+            <i class="fas fa-dumbbell"></i>
+            <p>Aún no tienes sesiones registradas.<br>¡Completa tu primera rutina hoy!</p>
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Frase motivacional -->
+        <div class="hc-quote">
+          <div class="hcq-text">"El movimiento es medicina para crear cambios físicos, mentales y emocionales en tu vida."</div>
+          <div class="hcq-src">— Carol Welch</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

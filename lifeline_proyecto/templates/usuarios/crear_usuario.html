@@ -1,0 +1,253 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeLine - Crear Usuario</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+    <style>
+                a { text-decoration: none; }
+
+        body { background: linear-gradient(135deg, #ffffff, #d2daf5); }
+        .form-wrapper { max-width: 650px; margin: 30px auto; padding: 0 20px 40px; }
+        .form-card { background: white; border-radius: 16px; padding: 40px; box-shadow: 0 8px 25px rgba(0,0,0,0.10); }
+        .form-titulo { font-size: 26px; font-weight: bold; color: #1D3461; margin-bottom: 6px; }
+        .form-subtitulo { color: #666; font-size: 15px; margin-bottom: 28px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; color: #3d5273; margin-bottom: 6px; font-size: 15px; }
+        .form-input { width: 100%; padding: 12px 16px; border: 1.5px solid #d0d0d0; border-radius: 8px; font-size: 15px; background: white; }
+        .form-input:focus { border-color: #3d5273; outline: none; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .error-field { color: #e74c3c; font-size: 13px; margin-top: 4px; }
+        .alert-error { background: #f8d7da; color: #721c24; padding: 13px 18px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #f5c6cb; }
+        .btn-guardar { background: #3d5273; color: white; padding: 13px 30px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.2s; width: 100%; }
+        .btn-guardar:hover { background: #2d3e5f; }
+        .btn-cancelar { display: block; text-align: center; margin-top: 12px; color: #666; font-size: 14px; text-decoration: none; }
+        .btn-cancelar:hover { color: #3d5273; }
+    .logo-wrap { display: flex; align-items: center; gap: 10px; }
+.logol { width: 25px; height: 25px; margin-left: 5px; }
+
+.logo-text-wrap { line-height: 1.1; }
+.logo-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--cp);
+}
+.logo-tagline {
+    font-size: 10px;
+    color: var(--cs);
+    font-weight: 500;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+}
+
+.header-right { display: flex; align-items: center; gap: 12px; }
+
+.hdr-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--bs);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--cp);
+    border: 1.5px solid var(--sv);
+    position: relative;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: var(--er);
+    color: white;
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bs);
+    border: 1.5px solid var(--sv);
+    border-radius: 30px;
+    padding: 5px 14px 5px 5px;
+}
+
+.user-chip-av {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--ctb);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gd);
+}
+    </style>
+</head>
+<body>
+
+<header class="header-bar">
+  <div class="logo-wrap">
+    <div class="logo-text-wrap">
+      <div class="logo-title">
+        Life<span style="color: #4a6feb;">Line</span>
+        <img class="logol" src="{% static 'imagenes/Group 243 (3).png' %}" alt="logo">
+      </div>
+      <div class="logo-tagline">Comunidad &amp; Bienestar</div>
+    </div>
+  </div>
+  
+  <div class="search-box">
+    <i class="fas fa-search"></i>
+    <input type="text" placeholder="Buscar en LifeLine...">
+  </div>
+
+  <div class="header-right">
+    {% if request.user.is_staff or request.user.rol == 'ADMIN' %}
+    <a class="hdr-btn admin-btn" href="{% url 'lista_productos' %}" title="Panel de Administración">
+      <i class="fas fa-user-shield"></i>
+    </a>
+    {% endif %}
+
+    <a class="hdr-btn" href="{% url 'ver_carrito' %}" title="Carrito">
+      <i class="fas fa-shopping-cart"></i>
+      <span class="cart-badge" id="cart-count">{{ carrito_count }}</span>
+    </a>
+
+    <div class="user-chip">
+      <div class="user-chip-av"><i class="fas fa-user"></i></div>
+      <span>{{ request.user.username|default:"Mi cuenta" }}</span>
+    </div>
+  </div>
+</header>
+<nav class="main-tabs">
+    
+        <a href="{% url 'lista_usuarios' %}" class="sidebar-link">
+            <i class="fas fa-users"></i> Clientes
+        </a>
+        <a href="{% url 'clientes' %}" class="sidebar-link">
+            <i class="fas fa-users"></i> Clientes Report
+        </a>
+        <a href="{% url 'reporte_productos' %}" class="sidebar-link active">
+            <i class="fas fa-boxes"></i> Productos
+        </a>
+        
+
+        <a href="{% url 'lista_productos' %}" class="sidebar-link">
+            <i class="fas fa-store"></i> Catálogo
+        </a>
+        <a href="{% url 'reporte_stock' %}" class="sidebar-link active"><i class="fas fa-exclamation-triangle"></i> Stock Bajo</a>
+        <a href="{% url 'reporte_medicamentos' %}" class="sidebar-link"><i class="fas fa-pills"></i> Medicamentos</a>
+        <a href="{% url 'reporte_emocional' %}" class="sidebar-link"><i class="fas fa-heart"></i> Emocional</a>
+        <a href="{% url 'reporte_tienda' %}" class="sidebar-link"><i class="fas fa-shopping-cart"></i> Tienda</a>
+        </a>
+        <a href="/admin/" class="sidebar-link">
+            <i class="fas fa-lock"></i> Panel Admin
+        </a>
+</nav>
+
+
+
+
+
+    
+
+<div class="form-wrapper">
+    <a href="{% url 'lista_usuarios' %}" class="back-arrow">← Volver</a>
+
+    <div class="form-card">
+        <div class="form-titulo"><i class="fas fa-user-plus"></i> Crear Usuario</div>
+        <p class="form-subtitulo">Completa los campos para registrar un nuevo usuario en el sistema.</p>
+
+        {% if formulario.errors %}
+            <div class="alert-error"><i class="fas fa-exclamation-triangle"></i> Por favor corrige los errores marcados.</div>
+        {% endif %}
+
+        <form method="post" action="{% url 'crear_usuario' %}">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Nombre de usuario</label>
+                {{ formulario.username }}
+                {% if formulario.username.errors %}<span class="error-field">{{ formulario.username.errors.0 }}</span>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label>Correo electrónico</label>
+                {{ formulario.email }}
+                {% if formulario.email.errors %}<span class="error-field">{{ formulario.email.errors.0 }}</span>{% endif %}
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Fecha de nacimiento</label>
+                    {{ formulario.fecha_nacimiento }}
+                    {% if formulario.fecha_nacimiento.errors %}<span class="error-field">{{ formulario.fecha_nacimiento.errors.0 }}</span>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label>Rol</label>
+                    {{ formulario.rol }}
+                    {% if formulario.rol.errors %}<span class="error-field">{{ formulario.rol.errors.0 }}</span>{% endif %}
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Tipo de documento</label>
+                    {{ formulario.tipo_documento }}
+                </div>
+                <div class="form-group">
+                    <label>Número de documento</label>
+                    {{ formulario.numero_documento }}
+                </div>
+            </div>
+
+            <div id="estadioGroup" class="form-group" style="display:none;">
+                <label>Estadio (solo pacientes)</label>
+                {{ formulario.estadio }}
+                {% if formulario.estadio.errors %}<span class="error-field">{{ formulario.estadio.errors.0 }}</span>{% endif %}
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    {{ formulario.password1 }}
+                    {% if formulario.password1.errors %}<span class="error-field">{{ formulario.password1.errors.0 }}</span>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label>Confirmar contraseña</label>
+                    {{ formulario.password2 }}
+                    {% if formulario.password2.errors %}<span class="error-field">{{ formulario.password2.errors.0 }}</span>{% endif %}
+                </div>
+            </div>
+
+            <button type="submit" class="btn-guardar"><i class="fas fa-save"></i> Guardar Usuario</button>
+        </form>
+
+        <a href="{% url 'lista_usuarios' %}" class="btn-cancelar">Cancelar</a>
+    </div>
+</div>
+
+<script>
+    const rol = document.getElementById('id_rol');
+    if (rol) {
+        rol.addEventListener('change', function() {
+            document.getElementById('estadioGroup').style.display = this.value === 'PACIENTE' ? 'block' : 'none';
+        });
+        if (rol.value === 'PACIENTE') document.getElementById('estadioGroup').style.display = 'block';
+    }
+</script>
+</body>
+</html>

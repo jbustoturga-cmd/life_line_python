@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LifeLine - ¡Compra exitosa!</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+<style>
+:root{--cp:#3d5273;--ca:#142ea0;--cmh:#2d3c7e;--ctb:linear-gradient(135deg,#040418,#102468);--ctd:#1a1a1a;--ctl:#555;--bs:#e8edf8;--sv:#dce3f0;--cr:#f7f9fc;--gd:#f1c40f;--ok:#27ae60;--rxl:20px;--rmd:12px;--rsm:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:var(--cr);color:var(--ctd);min-height:100vh;display:flex;flex-direction:column}
+a{text-decoration:none}
+.header-bar{background:white;border-bottom:4px solid var(--ca);padding:11px 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 20px rgba(20,46,160,.1)}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--cp);line-height:1.1}
+.header-logo-section{display:flex;align-items:center;gap:10px}
+.header-logo-section img{width:40px;height:40px;object-fit:contain}
+.outer{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px}
+.card{background:white;border-radius:var(--rxl);border:1px solid var(--sv);box-shadow:0 8px 40px rgba(20,46,160,.12);max-width:560px;width:100%;overflow:hidden;animation:pop .5s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes pop{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:none}}
+.card-top{background:linear-gradient(135deg,var(--ok),#1e8449);padding:36px 30px;text-align:center;position:relative;overflow:hidden}
+.card-top::before{content:'';position:absolute;top:-40px;right:-40px;width:130px;height:130px;background:rgba(255,255,255,.08);border-radius:50%}
+.check-circle{width:80px;height:80px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;border:3px solid rgba(255,255,255,.4)}
+.check-circle i{font-size:38px;color:white}
+.card-top h1{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:white;margin-bottom:6px}
+.card-top p{font-size:14px;color:rgba(255,255,255,.8)}
+.card-body{padding:28px 30px}
+/* Código de seguimiento */
+.tracking-box{background:var(--bs);border:1.5px dashed var(--ca);border-radius:var(--rmd);padding:16px 20px;text-align:center;margin-bottom:24px}
+.tracking-label{font-size:11px;font-weight:700;color:var(--ctl);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.tracking-code{font-family:monospace;font-size:24px;font-weight:700;color:var(--ca);letter-spacing:3px}
+/* Detalle del pedido */
+.detalle-hdr{font-size:12px;font-weight:700;color:var(--ctl);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.detalle-row{display:flex;justify-content:space-between;font-size:14px;padding:8px 0;border-bottom:1px solid var(--bs)}
+.detalle-row:last-of-type{border-bottom:none}
+.detalle-row .lbl{color:var(--ctl)}
+.detalle-row .val{font-weight:600;color:var(--ctd)}
+.total-line{display:flex;justify-content:space-between;font-size:16px;padding:14px 0 0;margin-top:6px;border-top:2px solid var(--bs)}
+.total-line .tl{font-weight:700;color:var(--cp)}
+.total-line .tv{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--ca)}
+/* Botones */
+.btn-row{display:flex;gap:12px;margin-top:22px}
+.btn-track{flex:1;background:linear-gradient(135deg,var(--ca),var(--cmh));color:white;border:none;border-radius:var(--rmd);padding:12px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;font-family:'Outfit',sans-serif;text-decoration:none;box-shadow:0 3px 10px rgba(20,46,160,.3);transition:opacity .2s}
+.btn-track:hover{opacity:.88}
+.btn-shop{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:12px;background:white;color:var(--cp);border:1.5px solid var(--sv);border-radius:var(--rmd);font-size:13px;font-weight:600;transition:border-color .2s,background .2s}
+.btn-shop:hover{border-color:var(--ca);background:var(--bs)}
+</style>
+</head>
+<body>
+
+<div class="header-bar">
+  <div class="header-logo-section">
+    <div class="logo-text">Life<br>Line</div>
+    <img src="{% static 'imagenes/Group 243 (3).png' %}" alt="logo">
+  </div>
+</div>
+
+<div class="outer">
+  <div class="card">
+    <div class="card-top">
+      <div class="check-circle"><i class="fas fa-check"></i></div>
+      <h1>¡Compra exitosa!</h1>
+      <p>Tu pedido fue procesado correctamente. Te enviaremos novedades pronto.</p>
+    </div>
+
+    <div class="card-body">
+      <!-- Código de seguimiento -->
+      <div class="tracking-box">
+        <div class="tracking-label"><i class="fas fa-barcode"></i> Número de seguimiento</div>
+        <div class="tracking-code">{{ pedido.numero_seguimiento }}</div>
+      </div>
+
+      <!-- Detalle -->
+      <div class="detalle-hdr"><i class="fas fa-receipt"></i> Detalle del pedido</div>
+
+      <div class="detalle-row">
+        <span class="lbl">Destinatario</span>
+        <span class="val">{{ datos.nombre_completo }}</span>
+      </div>
+      <div class="detalle-row">
+        <span class="lbl">Dirección</span>
+        <span class="val" style="text-align:right;max-width:60%">{{ pedido.direccion_envio }}</span>
+      </div>
+      <div class="detalle-row">
+        <span class="lbl">Teléfono</span>
+        <span class="val">{{ datos.telefono }}</span>
+      </div>
+      <div class="detalle-row">
+        <span class="lbl">Fecha estimada de entrega</span>
+        <span class="val">{{ fecha_entrega|date:"d/m/Y" }}</span>
+      </div>
+      <div class="detalle-row">
+        <span class="lbl">Estado</span>
+        <span class="val" style="color:var(--ok)">✔ Confirmado</span>
+      </div>
+
+      <div class="total-line">
+        <span class="tl">Total pagado</span>
+        <span class="tv">${{ pedido.total }} COP</span>
+      </div>
+
+      <div class="btn-row">
+        <a href="{% url 'seguimiento_envio' %}?codigo={{ pedido.numero_seguimiento }}" class="btn-track">
+          <i class="fas fa-search"></i> Rastrear pedido
+        </a>
+        <a href="{% url 'tienda' %}" class="btn-shop">
+          <i class="fas fa-store"></i> Seguir comprando
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

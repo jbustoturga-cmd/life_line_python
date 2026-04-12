@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LifeLine - Eliminar Producto</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+<style>
+:root{--cp:#3d5273;--cs:#5b6e94;--ca:#142ea0;--cmb:#526eaa;--cmh:#2d3c7e;--ctb:linear-gradient(135deg,#040418,#102468);--ctd:#1a1a1a;--ctl:#555;--bs:#e8edf8;--bg:rgba(20,46,160,.12);--sv:#dce3f0;--cr:#f7f9fc;--gd:#f1c40f;--ok:#27ae60;--er:#e74c3c;--rxl:20px;--rmd:12px;--rsm:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:var(--cr);background-image:radial-gradient(ellipse at 0% 0%,rgba(20,46,160,.06) 0%,transparent 50%),radial-gradient(ellipse at 100% 100%,rgba(61,82,115,.04) 0%,transparent 50%);color:var(--ctd);min-height:100vh;display:flex;flex-direction:column}
+a{text-decoration:none}
+.header-bar{background:white;border-bottom:4px solid var(--ca);padding:11px 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 20px rgba(20,46,160,.1)}
+.header-logo-section{display:flex;align-items:center;gap:10px}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--cp);line-height:1.1}
+.header-logo-section img{width:40px;height:40px;object-fit:contain}
+/* CENTER CONTENT */
+.confirm-outer{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px}
+.confirm-card{background:white;border-radius:var(--rxl);border:1px solid var(--sv);box-shadow:0 8px 40px rgba(20,46,160,.12);max-width:480px;width:100%;overflow:hidden;animation:pi .45s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes pi{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
+/* Top danger bar */
+.confirm-top{background:linear-gradient(135deg,var(--er),#c0392b);padding:30px;text-align:center;position:relative;overflow:hidden}
+.confirm-top::before{content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;background:rgba(255,255,255,.08);border-radius:50%}
+.confirm-top i{font-size:52px;color:rgba(255,255,255,.9);display:block;margin-bottom:10px;animation:shake 0.6s ease 0.3s}
+@keyframes shake{0%,100%{transform:none}20%{transform:rotate(-8deg)}40%{transform:rotate(8deg)}60%{transform:rotate(-5deg)}80%{transform:rotate(5deg)}}
+.confirm-top h2{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:white}
+/* Body */
+.confirm-body{padding:28px 32px}
+.confirm-texto{font-size:15px;color:var(--ctl);text-align:center;margin-bottom:8px}
+.confirm-nombre{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--cp);text-align:center;margin:14px 0;padding:14px 20px;background:var(--bs);border-radius:var(--rsm);border:1px solid var(--sv)}
+.confirm-aviso{display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;color:var(--er);font-weight:600;margin-bottom:24px}
+/* Botones */
+.confirm-btns{display:flex;gap:12px}
+.btn-confirmar{flex:1;background:linear-gradient(135deg,var(--er),#c0392b);color:white;border:none;border-radius:var(--rmd);padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 3px 10px rgba(231,76,60,.35);transition:opacity .2s,transform .15s}
+.btn-confirmar:hover{opacity:.88;transform:translateY(-1px)}
+.btn-cancelar{flex:1;background:white;color:var(--cp);border:1.5px solid var(--sv);border-radius:var(--rmd);padding:13px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;transition:border-color .2s,background .2s}
+.btn-cancelar:hover{border-color:var(--ca);background:var(--bs)}
+</style>
+</head>
+<body>
+
+<div class="header-bar">
+  <div class="header-logo-section">
+    <div class="logo-text">Life<br>Line</div>
+    <img src="{% static 'imagenes/Group 243 (3).png' %}" alt="logo">
+  </div>
+</div>
+
+<div class="confirm-outer">
+  <div class="confirm-card">
+
+    <div class="confirm-top">
+      <i class="fas fa-trash-alt"></i>
+      <h2>¿Eliminar Producto?</h2>
+    </div>
+
+    <div class="confirm-body">
+      <p class="confirm-texto">Estás a punto de eliminar permanentemente:</p>
+      <div class="confirm-nombre">"{{ producto.nombre }}"</div>
+      <div class="confirm-aviso">
+        <i class="fas fa-exclamation-triangle"></i>
+        Esta acción no se puede deshacer.
+      </div>
+
+      <form method="post" action="{% url 'eliminar_producto' producto.id %}">
+        {% csrf_token %}
+        <div class="confirm-btns">
+          <button type="submit" class="btn-confirmar">
+            <i class="fas fa-trash"></i> Sí, eliminar
+          </button>
+          <a href="{% url 'lista_productos' %}" class="btn-cancelar">
+            <i class="fas fa-times"></i> Cancelar
+          </a>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

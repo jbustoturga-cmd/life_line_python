@@ -1,0 +1,1228 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeLine - Inicio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+           VARIABLES — Paleta original del proyecto
+        ============================================================ */
+        :root {
+            --color-primary:    #3d5273;
+            --color-secondary:  #5b6e94;
+            --color-accent:     #142ea0;
+            --color-menu-bg:    #526eaa;
+            --color-menu-hover: #2d3c7e;
+            --color-top-bar:    linear-gradient(135deg, #040418, #102468);
+            --color-text-dark:  #1a1a1a;
+            --color-text-light: #555;
+            --color-bg-light:   #f0f2f5;
+            --navy-deep:        #040418;
+            --navy-mid:         #102468;
+            --blue-soft:        #e8edf8;
+            --blue-glow:        rgba(20,46,160,0.12);
+            --silver:           #dce3f0;
+            --cream:            #f7f9fc;
+            --gold:             #f1c40f;
+            --error-red:        #e74c3c;
+            --ok:               #27ae60;
+            --rxl: 20px; --rmd: 12px; --rsm: 8px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #3b4b82, #8ea3e1);
+            color: var(--color-text-dark);
+            line-height: 1.6;
+        }
+        a { text-decoration: none; }
+
+        /* ============================================================
+           HEADER — ORIGINAL SIN CAMBIOS
+        ============================================================ */
+        .header-bar {
+            background: white;
+            border-bottom: 4px solid var(--color-accent);
+            padding: 11px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky; top: 0; z-index: 200;
+            box-shadow: 0 2px 20px rgba(20,46,160,0.1);
+        }
+
+        .logo-wrap { display: flex; align-items: center; gap: 10px; }
+        .logol { width: 25px; height: 25px; vertical-align: middle; margin-left: 5px; }
+
+        .logo-text-wrap { line-height: 1.1; }
+        .logo-title {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 30px; font-weight: 700;
+            color: var(--color-primary); letter-spacing: -0.3px;
+        }
+        .logo-tagline {
+            font-size: 12px; color: var(--color-secondary);
+            font-weight: 500; letter-spacing: 1.4px; text-transform: uppercase;
+        }
+
+        .search-box {
+            background: var(--blue-soft);
+            border-radius: 30px;
+            padding: 9px 18px;
+            display: flex; align-items: center;
+            border: 1.5px solid var(--silver);
+            width: 300px;
+        }
+        .search-box input {
+            border: none; background: none; outline: none;
+            font-size: 14px; width: 100%; margin-left: 8px;
+        }
+
+        .header-right { display: flex; align-items: center; gap: 12px; }
+        .hdr-btn {
+            width: 38px; height: 38px; border-radius: 50%;
+            background: var(--blue-soft);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--color-primary); border: 1.5px solid var(--silver);
+            position: relative;
+        }
+
+        .login-btn-container a {
+            background: rgba(48, 54, 139, 0.692);
+            color: white;
+            border: 1px solid rgba(5, 5, 61, 0.35);
+            padding: 15px 50px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            transition: all 0.2s;
+            margin-left: 380px;
+        }
+        .login-btn-container a:hover { background: #283057; }
+
+        /* ============================================================
+           NAV TABS — ORIGINAL SIN CAMBIOS
+        ============================================================ */
+        .main-tabs {
+            background: var(--color-primary);
+            display: flex; padding: 0 24px;
+            overflow-x: auto; gap: 2px;
+        }
+        .main-tabs a {
+            color: rgba(255,255,255,0.7);
+            padding: 12px 16px; font-size: 13px; font-weight: 500;
+            display: flex; align-items: center; gap: 6px;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        .main-tabs a:hover { color: white; background: rgba(255,255,255,0.08); }
+        .main-tabs a.active { color: var(--gold); border-bottom-color: var(--gold); font-weight: 700; }
+
+        /* ============================================================
+           HERO — ORIGINAL SIN CAMBIOS
+        ============================================================ */
+        .contenido {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 60px 80px;
+            background: linear-gradient(135deg, #2c3b74, #9CAFF3);
+            position: relative;
+            height: 550px;
+            overflow: hidden;
+        }
+
+        .contenido::after {
+            content: "";
+            position: absolute;
+            bottom: -150px;
+            left: 0;
+            width: 100%;
+            height: 350px;
+            background: var(--cream);
+            clip-path: polygon(0 60%, 100% 15%, 100% 100%, 0 100%);
+            z-index: 1;
+        }
+
+        .texto {
+            color: #ffffff;
+            z-index: 5;
+            max-width: 60%;
+        }
+
+        .texto h1 {
+            font-size: 70px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 20px;
+            text-shadow: 2px 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .texto p {
+            font-size: 20px;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .foto img {
+            width: 450px;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            position: relative;
+            z-index: 5;
+            transform: rotate(2deg);
+            transition: transform 0.3s ease;
+        }
+
+        .foto img:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        .btn-registrar a {
+            background: rgba(48, 54, 139, 0.692);
+            color: white;
+            border: 1px solid rgba(5, 5, 61, 0.35);
+            padding: 20px 150px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 20px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            transition: all 0.2s;
+            margin-left: 160px;
+            margin-top: 70px;
+            position: relative;
+            z-index: 10;
+            display: inline-block;
+            transition: background 0.3s;
+        }
+        .btn-registrar a:hover { background: #1e2133; }
+        .foto img {
+            width: 420px;
+            border-radius: 18px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 5;
+            position: relative;
+            margin-top: -39px;
+        }
+
+        @media (max-width: 900px) {
+            .contenido { flex-direction: column; padding: 40px 20px; }
+            .texto h1 { font-size: 55px; }
+            .foto img { width: 100%; }
+            .btn-registrar a { padding: 14px 40px; font-size: 20px; }
+        }
+
+        /* ============================================================
+           SECCIONES NUEVAS — Diseño profesional
+        ============================================================ */
+
+        /* Fondo general para las secciones nuevas */
+        .sections-bg { background: var(--cream); }
+
+        /* ── SOBRE NOSOTROS ── */
+        .sobre-section {
+            background: var(--cream);
+            padding: 90px 0 70px;
+        }
+        .sobre-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 70px;
+            align-items: center;
+        }
+        .sobre-texto .eyebrow {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--color-accent);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .sobre-texto .eyebrow::before {
+            content: '';
+            width: 24px;
+            height: 2px;
+            background: var(--color-accent);
+            border-radius: 2px;
+        }
+        .sobre-texto h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--color-primary);
+            line-height: 1.15;
+            margin-bottom: 22px;
+        }
+        .sobre-texto p {
+            font-size: 16px;
+            color: var(--color-text-light);
+            line-height: 1.8;
+            margin-bottom: 18px;
+        }
+        .sobre-pillares {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 28px;
+        }
+        .pilar-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+        .pilar-ico {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--blue-soft);
+            border: 1px solid var(--silver);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-accent);
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+        .pilar-txt strong {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 2px;
+        }
+        .pilar-txt span {
+            font-size: 13px;
+            color: var(--color-text-light);
+        }
+        .sobre-visual {
+            position: relative;
+        }
+        .sobre-visual-main {
+            width: 100%;
+            border-radius: var(--rxl);
+            box-shadow: 0 20px 50px rgba(20,46,160,0.18);
+            object-fit: cover;
+            height: 380px;
+            display: block;
+        }
+        .sobre-badge {
+            position: absolute;
+            bottom: -20px;
+            left: -20px;
+            background: var(--color-top-bar);
+            border-radius: var(--rxl);
+            padding: 18px 22px;
+            border: 3px solid white;
+            box-shadow: 0 8px 28px rgba(20,46,160,0.35);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .sobre-badge .num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 34px;
+            font-weight: 700;
+            color: var(--gold);
+            line-height: 1;
+        }
+        .sobre-badge .lbl {
+            font-size: 12px;
+            color: rgba(255,255,255,0.75);
+            line-height: 1.3;
+            max-width: 80px;
+        }
+        .sobre-badge .lbl strong {
+            display: block;
+            color: white;
+            font-size: 13px;
+        }
+
+        /* ── SERVICIOS ── */
+        .servicios-section {
+            background: white;
+            padding: 80px 0;
+        }
+        .servicios-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 52px;
+        }
+        .section-header .eyebrow {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--color-accent);
+            margin-bottom: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-header .eyebrow::before,
+        .section-header .eyebrow::after {
+            content: '';
+            width: 24px;
+            height: 2px;
+            background: var(--color-accent);
+            border-radius: 2px;
+        }
+        .section-header h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 40px;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 14px;
+        }
+        .section-header p {
+            font-size: 16px;
+            color: var(--color-text-light);
+            max-width: 560px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+        .servicios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 24px;
+        }
+        .servicio-card {
+            background: var(--cream);
+            border-radius: var(--rxl);
+            padding: 30px 26px;
+            border: 1px solid var(--silver);
+            transition: transform 0.25s, box-shadow 0.25s, background 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+        .servicio-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-accent), var(--color-menu-bg));
+            opacity: 0;
+            transition: opacity 0.25s;
+        }
+        .servicio-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 36px rgba(20,46,160,0.14);
+            background: white;
+        }
+        .servicio-card:hover::before { opacity: 1; }
+        .serv-ico {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--rmd);
+            background: var(--blue-soft);
+            border: 1.5px solid var(--silver);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: var(--color-accent);
+            margin-bottom: 18px;
+            transition: background 0.25s, color 0.25s;
+        }
+        .servicio-card:hover .serv-ico {
+            background: var(--color-accent);
+            color: white;
+        }
+        .servicio-card h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 10px;
+        }
+        .servicio-card p {
+            font-size: 14px;
+            color: var(--color-text-light);
+            line-height: 1.65;
+        }
+
+        /* ── PRODUCTOS DESTACADOS ── */
+        .productos-section {
+            background: var(--cream);
+            padding: 80px 0;
+        }
+        .productos-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+        .productos-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        .prod-visual {
+            position: relative;
+        }
+        .prod-img-main {
+            width: 100%;
+            border-radius: var(--rxl);
+            box-shadow: 0 20px 50px rgba(20,46,160,0.18);
+            object-fit: cover;
+            height: 400px;
+            display: block;
+        }
+        .prod-img-badge {
+            position: absolute;
+            top: 24px;
+            right: -18px;
+            background: white;
+            border-radius: var(--rxl);
+            padding: 14px 18px;
+            box-shadow: 0 8px 28px rgba(20,46,160,0.2);
+            border: 1px solid var(--silver);
+            text-align: center;
+            min-width: 110px;
+        }
+        .prod-img-badge .pib-ico {
+            font-size: 26px;
+            margin-bottom: 4px;
+            display: block;
+        }
+        .prod-img-badge .pib-txt {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--color-primary);
+            line-height: 1.3;
+        }
+        .prod-texto .eyebrow {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--color-accent);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .prod-texto .eyebrow::before {
+            content: '';
+            width: 24px;
+            height: 2px;
+            background: var(--color-accent);
+            border-radius: 2px;
+        }
+        .prod-texto h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 40px;
+            font-weight: 700;
+            color: var(--color-primary);
+            line-height: 1.15;
+            margin-bottom: 18px;
+        }
+        .prod-texto p {
+            font-size: 16px;
+            color: var(--color-text-light);
+            line-height: 1.8;
+            margin-bottom: 28px;
+        }
+        .prod-cats {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        .prod-cat-chip {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            background: var(--blue-soft);
+            color: var(--color-primary);
+            border: 1.5px solid var(--silver);
+        }
+        .btn-comprar-ahora {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--color-accent), var(--color-menu-hover));
+            color: white;
+            border-radius: var(--rmd);
+            font-size: 15px;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            box-shadow: 0 4px 16px rgba(20,46,160,0.35);
+            transition: opacity 0.2s, transform 0.15s;
+        }
+        .btn-comprar-ahora:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* ── NOVEDADES / GALERÍA ── */
+        .novedades-section {
+            background: white;
+            padding: 80px 0;
+        }
+        .novedades-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+        .galeria-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.6fr 1fr;
+            gap: 20px;
+            align-items: center;
+            margin-top: 48px;
+        }
+        .gal-item {
+            position: relative;
+            border-radius: var(--rxl);
+            overflow: hidden;
+            box-shadow: 0 8px 28px rgba(20,46,160,0.12);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .gal-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(20,46,160,0.2);
+        }
+        .gal-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .gal-item.tall { height: 320px; }
+        .gal-item.hero { height: 420px; }
+        .gal-item.short { height: 260px; }
+        .gal-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(4,4,24,0.7) 0%, transparent 60%);
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+        }
+        .gal-overlay span {
+            font-size: 13px;
+            font-weight: 700;
+            color: white;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(4px);
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+        .gal-tag {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: var(--gold);
+            color: #0a0a0a;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* ── FOOTER ── */
+        .footer-section {
+            background: var(--color-top-bar);
+            padding: 60px 0 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .footer-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='%23ffffff' fill-opacity='0.04'/%3E%3C/svg%3E");
+        }
+        .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 40px;
+            position: relative;
+            z-index: 1;
+        }
+        .footer-top {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 48px;
+            padding-bottom: 48px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .footer-brand .fb-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+        }
+        .footer-brand .fb-title span { color: var(--gold); }
+        .footer-brand .fb-tag {
+            font-size: 10px;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        .footer-brand p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.7;
+            margin-bottom: 22px;
+        }
+        .footer-social {
+            display: flex;
+            gap: 10px;
+        }
+        .soc-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 15px;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .soc-btn:hover {
+            background: var(--gold);
+            color: #0a0a0a;
+            transform: translateY(-2px);
+        }
+        .footer-col h4 {
+            font-size: 13px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 0.5px;
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.12);
+        }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+        .footer-col ul li a {
+            font-size: 14px;
+            color: rgba(255,255,255,0.65);
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .footer-col ul li a:hover { color: var(--gold); }
+        .footer-col ul li a i { font-size: 12px; }
+        .footer-contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .footer-contact-item .fci-ico {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+            font-size: 12px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .footer-contact-item span {
+            font-size: 13px;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.5;
+        }
+        .footer-horario {
+            font-size: 13px;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.9;
+        }
+        .footer-horario strong {
+            display: block;
+            color: white;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+        /* Footer bottom */
+        .footer-bottom {
+            padding: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .footer-bottom p {
+            font-size: 13px;
+            color: rgba(255,255,255,0.45);
+        }
+        .footer-bottom a { color: var(--gold); }
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+        .footer-links a {
+            font-size: 12px;
+            color: rgba(255,255,255,0.45);
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--gold); }
+
+        /* ── CTA BANNER ── */
+        .cta-section {
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-menu-hover) 100%);
+            padding: 64px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='%23ffffff' fill-opacity='0.06'/%3E%3C/svg%3E");
+        }
+        .cta-inner {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .cta-inner h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 38px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 14px;
+            line-height: 1.2;
+        }
+        .cta-inner p {
+            font-size: 16px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+        .cta-btns {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .cta-btn-pri {
+            padding: 14px 30px;
+            background: var(--gold);
+            color: #0a0a0a;
+            border-radius: var(--rmd);
+            font-size: 15px;
+            font-weight: 800;
+            font-family: 'Outfit', sans-serif;
+            transition: transform 0.15s, box-shadow 0.2s;
+            box-shadow: 0 4px 16px rgba(241,196,15,0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .cta-btn-pri:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(241,196,15,0.5);
+        }
+        .cta-btn-sec {
+            padding: 14px 30px;
+            background: rgba(255,255,255,0.12);
+            color: white;
+            border: 1.5px solid rgba(255,255,255,0.3);
+            border-radius: var(--rmd);
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .cta-btn-sec:hover { background: rgba(255,255,255,0.22); }
+
+        /* ── RESPONSIVE SECCIONES NUEVAS ── */
+        @media (max-width: 900px) {
+            .sobre-inner,
+            .productos-layout { grid-template-columns: 1fr; gap: 40px; }
+            .sobre-visual { order: -1; }
+            .sobre-badge { left: 10px; bottom: -10px; }
+            .galeria-grid { grid-template-columns: 1fr 1fr; }
+            .gal-item.hero { grid-column: 1/-1; }
+            .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+            .servicios-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 600px) {
+            .galeria-grid { grid-template-columns: 1fr; }
+            .footer-top { grid-template-columns: 1fr; }
+            .servicios-grid { grid-template-columns: 1fr; }
+            .sobre-inner { padding: 0 20px; }
+            .servicios-inner,
+            .productos-inner,
+            .novedades-inner,
+            .footer-inner { padding: 0 20px; }
+            .cta-section { padding: 48px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══ HEADER ORIGINAL ══ -->
+<header class="header-bar">
+  <div class="logo-wrap">
+    <div class="logo-text-wrap">
+      <div class="logo-title">
+        Life<span style="color:#4a6feb">Line</span>
+        <img class="logol" src="{% static 'imagenes/Group 243 (3).png' %}" alt="logo">
+      </div>
+      <div class="logo-tagline">Comunidad &amp; Bienestar</div>
+    </div>
+  </div>
+  <div class="login-btn-container">
+    <a href="{% url 'login' %}">Iniciar Sesión</a>
+  </div>
+</header>
+
+<!-- ══ NAV ORIGINAL ══ -->
+<nav class="main-tabs">
+  <a href="{% url 'home' %}" class="active"><i class="fas fa-home"></i> Inicio</a>
+  <a href="{% url 'contactanos' %}"><i class="fas fa-envelope"></i> Contáctanos</a>
+</nav>
+
+<!-- ══ HERO ORIGINAL ══ -->
+<section class="contenido">
+    <div class="texto">
+        <h1>Conócenos</h1>
+        <p>
+            Lifeline brinda apoyo a personas diagnosticadas con cáncer y a sus familiares.
+            Ofrecemos acompañamiento emocional, comunidad, información
+            y productos en un solo espacio digital.
+        </p>
+        <div class="btn-registrar">
+            <a href="{% url 'registro' %}">Regístrate</a>
+        </div>
+    </div>
+    <div class="foto">
+        <img src="{% static 'imagenes/img3.jpg' %}" alt="Familia LifeLine">
+    </div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     SECCIONES NUEVAS — Diseño mejorado y profesional
+════════════════════════════════════════════════ -->
+
+<!-- ── SOBRE NOSOTROS ── -->
+<section class="sobre-section">
+  <div class="sobre-inner">
+
+    <div class="sobre-texto">
+      <div class="eyebrow">Quiénes somos</div>
+      <h2>Más que una plataforma,<br>somos tu red de apoyo</h2>
+      <p>
+        LifeLine es un espacio digital creado para acompañar a personas diagnosticadas
+        con cáncer y a sus familias en cada etapa del proceso. Nuestro propósito es que
+        nadie enfrente este camino solo.
+      </p>
+      <p>
+        Reunimos comunidad, información confiable, acompañamiento profesional y productos
+        de bienestar en un solo lugar, con un diseño cálido y accesible para todos.
+      </p>
+
+      <div class="sobre-pillares">
+        <div class="pilar-item">
+          <div class="pilar-ico"><i class="fas fa-heart"></i></div>
+          <div class="pilar-txt">
+            <strong>Apoyo emocional</strong>
+            <span>Acompañamiento humano y herramientas para el bienestar mental.</span>
+          </div>
+        </div>
+        <div class="pilar-item">
+          <div class="pilar-ico"><i class="fas fa-users"></i></div>
+          <div class="pilar-txt">
+            <strong>Comunidad activa</strong>
+            <span>Miles de personas compartiendo experiencias y fortaleza.</span>
+          </div>
+        </div>
+        <div class="pilar-item">
+          <div class="pilar-ico"><i class="fas fa-shield-alt"></i></div>
+          <div class="pilar-txt">
+            <strong>Información de confianza</strong>
+            <span>Contenido verificado con profesionales de la salud oncológica.</span>
+          </div>
+        </div>
+        <div class="pilar-item">
+          <div class="pilar-ico"><i class="fas fa-store"></i></div>
+          <div class="pilar-txt">
+            <strong>Productos especializados</strong>
+            <span>Artículos de cuidado personal pensados para cada etapa.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sobre-visual">
+      <img
+        src="{% static 'imagenes/img3.jpg' %}"
+        alt="Equipo LifeLine"
+        class="sobre-visual-main"
+        onerror="this.style.background='linear-gradient(135deg,#e8edf8,#c8d4f0)';this.style.minHeight='380px'">
+      <div class="sobre-badge">
+        <div class="num">+500</div>
+        <div class="lbl"><strong>Familias</strong> acompañadas en Colombia</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── SERVICIOS ── -->
+<section class="servicios-section">
+  <div class="servicios-inner">
+    <div class="section-header">
+      <div class="eyebrow">Lo que hacemos</div>
+      <h2>Servicios que ofrecemos</h2>
+      <p>Cada servicio está diseñado con empatía para acompañarte en lo que más necesitas durante tu proceso.</p>
+    </div>
+
+    <div class="servicios-grid">
+      <div class="servicio-card">
+        <div class="serv-ico"><i class="fas fa-chalkboard-teacher"></i></div>
+        <h3>Talleres Informativos</h3>
+        <p>Sesiones educativas sobre tratamientos, nutrición oncológica, cuidados en casa y manejo de efectos secundarios.</p>
+      </div>
+      <div class="servicio-card">
+        <div class="serv-ico"><i class="fas fa-hands-holding-heart"></i></div>
+        <h3>Acompañamiento Emocional</h3>
+        <p>Voluntarios capacitados y psicólogos especializados disponibles para escucharte y orientarte en cada momento.</p>
+      </div>
+      <div class="servicio-card">
+        <div class="serv-ico"><i class="fas fa-seedling"></i></div>
+        <h3>Mural Comunitario</h3>
+        <p>Un espacio seguro donde pacientes, cuidadores y profesionales comparten experiencias, consejos y mensajes de apoyo.</p>
+      </div>
+      <div class="servicio-card">
+        <div class="serv-ico"><i class="fas fa-pills"></i></div>
+        <h3>Gestión de Medicamentos</h3>
+        <p>Alertas y recordatorios personalizados para que nunca olvides una dosis durante tu tratamiento.</p>
+      </div>
+      <div class="servicio-card">
+        <div class="serv-ico"><i class="fas fa-apple-alt"></i></div>
+        <h3>Guía Nutricional</h3>
+        <p>Planes alimenticios adaptados a tu tipo de tratamiento, síntomas y necesidades específicas.</p>
+      </div>
+      <div class="servicio-card">
+        <div class="serv-ico"><i class="fas fa-dumbbell"></i></div>
+        <h3>Ejercicio Adaptado</h3>
+        <p>Rutinas de movilidad suave diseñadas para mejorar tu energía, reducir el dolor y fortalecer el ánimo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRODUCTOS DESTACADOS ── -->
+<section class="productos-section">
+  <div class="productos-inner">
+    <div class="productos-layout">
+
+      <div class="prod-visual">
+        <img
+          src="{% static 'imagenes/img3.jpg' %}"
+          alt="Productos LifeLine"
+          class="prod-img-main"
+          onerror="this.style.background='linear-gradient(135deg,#e8edf8,#c8d4f0)';this.style.minHeight='400px'">
+        <div class="prod-img-badge">
+          <span class="pib-ico">🎀</span>
+          <span class="pib-txt">Productos especializados en oncología</span>
+        </div>
+      </div>
+
+      <div class="prod-texto">
+        <div class="eyebrow">Nuestra tienda</div>
+        <h2>Productos de cuidado personal para cada etapa</h2>
+        <p>
+          Seleccionamos cuidadosamente cada producto pensando en las necesidades
+          específicas de personas en tratamiento oncológico: suavidad, comodidad,
+          seguridad y dignidad en cada artículo.
+        </p>
+        <div class="prod-cats">
+          <span class="prod-cat-chip">🧴 Cuidado de la Piel</span>
+          <span class="prod-cat-chip">🎀 Turbantes y Accesorios</span>
+          <span class="prod-cat-chip">🛏 Bienestar y Relax</span>
+          <span class="prod-cat-chip">💊 Organización y Terapia</span>
+        </div>
+        <a href="{% url 'registro' %}" class="btn-comprar-ahora">
+          <i class="fas fa-store"></i>
+          Registrarse para comprar
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── ÚLTIMAS NOVEDADES / GALERÍA ── -->
+<section class="novedades-section">
+  <div class="novedades-inner">
+    <div class="section-header">
+      <div class="eyebrow">Últimas novedades</div>
+      <h2>La comunidad LifeLine en acción</h2>
+      <p>Conoce historias reales de personas que encontraron fuerza, productos especializados y una comunidad que las acompaña.</p>
+    </div>
+
+    <div class="galeria-grid">
+      <div class="gal-item tall">
+        <img
+          src="{% static 'imagenes/img3.jpg' %}"
+          alt="Cuidado personal"
+          onerror="this.style.background='linear-gradient(135deg,#d4edda,#a8d5b5)'">
+        <div class="gal-overlay">
+          <span>Cuidado personal</span>
+        </div>
+        <div class="gal-tag">Nuevo</div>
+      </div>
+
+      <div class="gal-item hero">
+        <img
+          src="{% static 'imagenes/img3.jpg' %}"
+          alt="Tienda oncológica"
+          onerror="this.style.background='linear-gradient(135deg,#cce5ff,#90caf9)'">
+        <div class="gal-overlay">
+          <span>Colección exclusiva de turbantes</span>
+        </div>
+        <div class="gal-tag">Destacado</div>
+      </div>
+
+      <div class="gal-item short">
+        <img
+          src="{% static 'imagenes/img3.jpg' %}"
+          alt="Comunidad"
+          onerror="this.style.background='linear-gradient(135deg,#fde8d8,#f4b896)'">
+        <div class="gal-overlay">
+          <span>Momentos de comunidad</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA FINAL ── -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <h2>Únete a la comunidad<br>que te acompaña</h2>
+    <p>
+      Más de 500 familias colombianas ya son parte de LifeLine.
+      Crea tu cuenta gratis y accede a todos nuestros servicios, comunidad y tienda especializada.
+    </p>
+    <div class="cta-btns">
+      <a href="{% url 'registro' %}" class="cta-btn-pri">
+        <i class="fas fa-user-plus"></i> Crear cuenta gratis
+      </a>
+      <a href="{% url 'login' %}" class="cta-btn-sec">
+        <i class="fas fa-sign-in-alt"></i> Ya tengo cuenta
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="footer-section">
+  <div class="footer-inner">
+    <div class="footer-top">
+
+      <div class="footer-brand">
+        <div class="fb-title">Life<span>Line</span></div>
+        <div class="fb-tag">Comunidad &amp; Bienestar</div>
+        <p>Acompañando a personas con cáncer y sus familias en cada paso del camino. Porque nadie debe enfrentarlo solo.</p>
+        <div class="footer-social">
+          <a href="#" class="soc-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="soc-btn" title="Twitter / X"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="soc-btn" title="TikTok"><i class="fab fa-tiktok"></i></a>
+          <a href="#" class="soc-btn" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Plataforma</h4>
+        <ul>
+          <li><a href="{% url 'registro' %}"><i class="fas fa-user-plus"></i> Registrarse</a></li>
+          <li><a href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Iniciar sesión</a></li>
+          <li><a href="{% url 'contactanos' %}"><i class="fas fa-envelope"></i> Contáctanos</a></li>
+          <li><a href="#"><i class="fas fa-shield-alt"></i> Términos y condiciones</a></li>
+          <li><a href="#"><i class="fas fa-lock"></i> Política de privacidad</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Horarios de atención</h4>
+        <div class="footer-horario">
+          <strong>Lun – Vie</strong>
+          7:00 am – 10:00 pm
+          <strong>Sábado</strong>
+          8:00 am – 10:00 pm
+          <strong>Domingo</strong>
+          8:00 am – 6:00 pm
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contáctanos</h4>
+        <div class="footer-contact-item">
+          <div class="fci-ico"><i class="fas fa-map-marker-alt"></i></div>
+          <span>Av. Fray A. Chapinero 10,<br>Bogotá, Colombia</span>
+        </div>
+        <div class="footer-contact-item">
+          <div class="fci-ico"><i class="fas fa-envelope"></i></div>
+          <span>info@lifeline.com.co</span>
+        </div>
+        <div class="footer-contact-item">
+          <div class="fci-ico"><i class="fas fa-phone"></i></div>
+          <span>+57 301 234 5678</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 <strong>LifeLine</strong> — Todos los derechos reservados.</p>
+      <div class="footer-links">
+        <a href="#">Términos</a>
+        <a href="#">Privacidad</a>
+        <a href="#">Envíos</a>
+        <a href="#">FAQ</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

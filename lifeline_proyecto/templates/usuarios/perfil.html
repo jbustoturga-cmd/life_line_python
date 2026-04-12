@@ -1,0 +1,708 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LifeLine - Mi Perfil</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* --- 1. Definiciones Maestras (Nombres Claros) --- */
+  --color-primary:    #3d5273;
+  --color-secondary:  #5b6e94;
+  --color-accent:     #142ea0;
+  --color-menu-bg:    #526eaa;
+  --color-menu-hover: #2d3c7e;
+  --color-top-bar:    linear-gradient(135deg, #040418, #102468);
+  --color-text-dark:  #1a1a1a;
+  --color-text-light: #555;
+  --color-bg-light:   #f0f2f5;
+  --navy-deep:        #040418;
+  --navy-mid:         #102468;
+  --blue-soft:        #e8edf8;
+  --blue-glow:        rgba(20,46,160,0.12);
+  --silver:           #dce3f0;
+  --cream:            #f7f9fc;
+  --gold:             #f1c40f;
+  --gold-soft:        #fdf6da;
+  --success:          #27ae60;
+  --error-red:        #e74c3c;
+  --radius-xl:        20px;
+  --radius-md:        12px;
+  --radius-sm:        8px;
+
+  --cp:  var(--color-primary);
+  --cs:  var(--color-secondary);
+  --ca:  var(--color-accent);
+  --cmb: var(--color-menu-bg);
+  --cmh: var(--color-menu-hover);
+  --ctb: var(--color-top-bar);
+  --ctd: var(--color-text-dark);
+  --ctl: var(--color-text-light);
+  --bs:  var(--blue-soft);
+  --bg:  var(--blue-glow);
+  --sv:  var(--silver);
+  --cr:  var(--cream);
+  --gd:  var(--gold);
+  --gs:  var(--gold-soft);
+  --ok:  var(--success);
+  --er:  var(--error-red);
+  --rxl: var(--radius-xl);
+  --rmd: var(--radius-md);
+  --rsm: var(--radius-sm);
+
+  /* IMPORTANTE: Agregamos la que faltaba para el Banner */
+  --teal: #4a6feb;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:var(--cr);background-image:radial-gradient(ellipse at 0% 0%,rgba(20,46,160,.07) 0%,transparent 50%),radial-gradient(ellipse at 100% 100%,rgba(61,82,115,.05) 0%,transparent 50%);color:var(--ctd);min-height:100vh}
+a{text-decoration:none}
+/* ============================================================
+HEADER — Banda superior con acento dorado
+   ============================================================ */
+.header-bar {
+  background: white;
+  border-bottom: 4px solid var(--color-accent);
+  padding: 11px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky; top: 0; z-index: 200;
+  box-shadow: 0 2px 20px rgba(20,46,160,0.1);
+}
+
+
+.logol {
+  width: 20px; height: 20px;
+}
+
+.logo-wrap { display: flex; align-items: center; gap: 10px; }
+
+.logo-mark {
+  width: 42px; height: 42px;
+  background: var(--color-top-bar);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold); font-size: 18px;
+  box-shadow: 0 3px 12px rgba(20,46,160,0.4);
+  position: relative; overflow: hidden;
+}
+.logo-mark::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 3px; background: var(--gold);
+}
+
+.logo-text-wrap { line-height: 1.1; }
+.logo-title {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 24px; font-weight: 700;
+  color: var(--color-primary); letter-spacing: -0.3px;
+}
+.logo-tagline {
+  font-size: 10px; color: var(--color-secondary);
+  font-weight: 500; letter-spacing: 1.4px; text-transform: uppercase;
+}
+
+.search-box {
+  background: var(--blue-soft);
+  border-radius: 30px;
+  padding: 9px 18px;
+  display: flex; align-items: center;
+  border: 1.5px solid var(--silver);
+  width: 300px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-box:focus-within {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--blue-glow);
+}
+.search-box i { color: var(--color-accent); font-size: 14px; }
+.search-box input {
+  border: none; background: none; outline: none;
+  font-size: 14px; color: var(--color-text-dark);
+  width: 100%; margin-left: 8px;
+  font-family: 'Outfit', sans-serif;
+}
+.search-box input::placeholder { color: var(--color-text-light); }
+
+.header-right { display: flex; align-items: center; gap: 12px; }
+
+.hdr-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--blue-soft);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-primary); font-size: 15px;
+  transition: background 0.2s, color 0.2s; cursor: pointer;
+  border: 1.5px solid var(--silver); position: relative;
+}
+.hdr-btn:hover { background: var(--color-accent); color: white; border-color: var(--color-accent); }
+
+.cart-badge {
+  position: absolute; top: -6px; right: -6px;
+  background: var(--error-red); color: white;
+  border-radius: 50%; font-size: 10px; font-weight: 700;
+  min-width: 18px; height: 18px;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(231,76,60,0.4);
+}
+
+.user-chip {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--blue-soft);
+  border: 1.5px solid var(--silver);
+  border-radius: 30px;
+  padding: 5px 14px 5px 5px; cursor: pointer;
+  transition: border-color 0.2s;
+}
+.user-chip:hover { border-color: var(--color-accent); }
+.user-chip-av {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--color-top-bar);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold); font-size: 12px;
+}
+.user-chip span { font-size: 13px; font-weight: 600; color: var(--color-primary); }
+
+/* Badge del Admin */
+.admin-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--color-primary); /* Azul oscuro */
+  color: var(--gold); /* Exclamación dorada */
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* Efecto hover especial para Admin */
+.admin-btn:hover {
+  background: var(--color-primary) !important;
+  color: var(--gold) !important;
+  border-color: var(--color-primary) !important;
+}
+
+/* Asegura que el contenedor mantenga el espacio */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Espacio entre los botones */
+}
+/* ============================================================
+NAV TABS
+   ============================================================ */
+.main-tabs {
+  background: var(--color-primary);
+  display: flex; padding: 0 24px;
+  overflow-x: auto; gap: 2px;
+}
+.main-tabs a {
+  color: rgba(255,255,255,0.7);
+  padding: 12px 16px; font-size: 13px; font-weight: 500;
+  display: flex; align-items: center; gap: 6px;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.main-tabs a:hover { color: white; background: rgba(255,255,255,0.08); border-bottom-color: rgba(255,255,255,0.3); }
+.main-tabs a.active { color: var(--gold); border-bottom-color: var(--gold); font-weight: 700; background: rgba(255,255,255,0.06); }
+/* boton cerrar sesion */
+.btn-logout {
+            background: rgba(10, 48, 66, 0.2);
+            color: var(--coral);
+            border: 1px solid rgba(5, 5, 61, 0.35);
+            padding: 7px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            transition: all 0.2s;
+            margin-left: 380px;
+        }
+        .btn-logout:hover { background: rgba(112, 5, 103, 0.35)35); }
+
+/* PÁGINA */
+.pwrap{max-width:920px;margin:28px auto;padding:0 16px;animation:pi .5s ease both}
+@keyframes pi{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+/* CARD PERFIL */
+.pcard{background:white;border-radius:var(--rxl);border:1px solid var(--sv);box-shadow:0 4px 28px rgba(20,46,160,.1);overflow:hidden;margin-bottom:20px}
+.coverarea{height:220px;background:var(--ctb);position:relative;overflow:hidden}
+.coverarea::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='40' cy='40' r='1.5' fill='%23ffffff' fill-opacity='0.05'/%3E%3C/svg%3E")}
+.coverarea::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,transparent,var(--gd),var(--cmb),transparent)}
+.cshp{position:absolute;border-radius:50%;opacity:.07;background:white}
+.s1{width:300px;height:300px;top:-100px;right:-50px}
+.s2{width:160px;height:160px;bottom:-60px;left:120px}
+.s3{width:80px;height:80px;top:40px;left:60%}
+/* Identidad */
+.pident{padding:0 32px 24px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.avblock{display:flex;flex-direction:column;align-items:center;margin-top:-56px;flex-shrink:0;position:relative}
+.avring{width:112px;height:112px;border-radius:50%;background:var(--ctb);border:4px solid white;box-shadow:0 4px 20px rgba(20,46,160,.35);display:flex;align-items:center;justify-content:center;color:var(--gd);font-size:38px;position:relative;overflow:hidden}
+.avring img{width:100%;height:100%;object-fit:cover}
+.idinfo{flex:1;padding-top:16px;min-width:180px}
+.idinfo h1{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--cp);line-height:1.1;margin-bottom:5px}
+.rbadge{display:inline-flex;align-items:center;gap:5px;background:var(--ca);color:white;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase}
+.idbio{font-size:13px;color:var(--ctl);margin-top:7px;line-height:1.5}
+.pstrow{display:flex;gap:20px;padding-top:20px}
+.pst{text-align:center;padding:10px 16px;background:var(--bs);border-radius:var(--rmd);border:1px solid var(--sv);min-width:70px}
+.pst strong{display:block;font-size:18px;font-weight:700;color:var(--ca)}
+.pst span{font-size:11px;color:var(--ctl);text-transform:uppercase;letter-spacing:.5px}
+.pbtns{display:flex;gap:10px;padding-top:20px;flex-wrap:wrap}
+.bpri{display:flex;align-items:center;gap:8px;padding:10px 20px;background:linear-gradient(135deg,var(--ca),var(--cmh));color:white;border:none;border-radius:var(--rmd);font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;box-shadow:0 3px 10px rgba(20,46,160,.3);transition:opacity .2s,transform .15s;text-decoration:none}
+.bpri:hover{opacity:.9;transform:translateY(-1px)}
+.bsec{display:flex;align-items:center;gap:8px;padding:10px 18px;background:white;color:var(--cp);border:1.5px solid var(--sv);border-radius:var(--rmd);font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:border-color .2s,background .2s;text-decoration:none}
+.bsec:hover{border-color:var(--ca);background:var(--bs)}
+.bdang{display:flex;align-items:center;gap:8px;padding:10px 18px;background:white;color:var(--er);border:1.5px solid #f5c6c3;border-radius:var(--rmd);font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:border-color .2s,background .2s}
+.bdang:hover{border-color:var(--er);background:#fdf3f2}
+/* Tabs del perfil */
+.ptabs{border-top:1px solid var(--sv);display:flex;gap:0;padding:0 32px;overflow-x:auto}
+.ptab{padding:13px 18px;font-size:14px;font-weight:600;color:var(--ctl);border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap;transition:color .2s,border-color .2s;display:flex;align-items:center;gap:7px}
+.ptab:hover{color:var(--cp);border-bottom-color:var(--sv)}
+.ptab.active{color:var(--ca);border-bottom-color:var(--ca)}
+.ptab i{font-size:13px}
+/* CONTENIDO 2 COL */
+.pcontent{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:flex-start}
+/* INFO CARD */
+.icard{background:white;border-radius:var(--rxl);border:1px solid var(--sv);box-shadow:0 2px 18px rgba(20,46,160,.07);overflow:hidden;margin-bottom:16px}
+.ichdr{background:var(--ctb);padding:14px 18px;display:flex;align-items:center;gap:8px;position:relative}
+.ichdr::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gd),transparent)}
+.ichdr i{color:var(--gd)}
+.ichdr span{font-size:14px;font-weight:700;color:white}
+.ilist{padding:14px 0}
+.iitem{display:flex;align-items:center;gap:12px;padding:10px 18px;border-bottom:1px solid var(--bs);transition:background .15s}
+.iitem:last-child{border-bottom:none}
+.iitem:hover{background:var(--bs)}
+.iiico{width:32px;height:32px;border-radius:8px;background:var(--bs);border:1px solid var(--sv);display:flex;align-items:center;justify-content:center;color:var(--ca);font-size:13px;flex-shrink:0}
+.iilbl{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--ctl)}
+.iival{font-size:13px;font-weight:500;color:var(--ctd)}
+.inav a{display:flex;align-items:center;gap:10px;padding:9px 18px;font-size:13.5px;font-weight:500;color:var(--ctl);border-left:3px solid transparent;transition:background .15s,color .15s,border-color .15s}
+.inav a i{width:16px;text-align:center;color:var(--cs);font-size:13px}
+.inav a:hover{background:var(--bs);color:var(--ca);border-left-color:var(--ca)}
+.inav a:hover i{color:var(--ca)}
+.isep{height:1px;background:var(--sv);margin:4px 18px}
+/* FEED col */
+.feedcol{display:flex;flex-direction:column;gap:18px}
+/* Post card del perfil */
+.pfcard{background:white;border-radius:var(--rxl);border:1px solid var(--sv);box-shadow:0 2px 18px rgba(20,46,160,.07);overflow:hidden;position:relative;transition:box-shadow .25s,transform .25s;animation:cin .45s ease both}
+.pfcard:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(20,46,160,.13)}
+@keyframes cin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.pfcard::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(to bottom,var(--ca),var(--cmb))}
+.pfhdr{display:flex;align-items:center;gap:12px;padding:15px 18px 10px 20px}
+.pfav{width:44px;height:44px;border-radius:50%;background:var(--ctb);display:flex;align-items:center;justify-content:center;color:var(--gd);font-size:16px;flex-shrink:0;overflow:hidden;box-shadow:0 2px 8px rgba(20,46,160,.3)}
+.pfav img{width:100%;height:100%;object-fit:cover}
+.pfmeta{flex:1}
+.pfname{font-weight:700;font-size:14px;color:var(--cp)}
+.pfdate{font-size:12px;color:var(--ctl);margin-top:2px}
+.pftipo{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-left:6px;vertical-align:middle}
+.tAPOYO{background:var(--gs);color:#7a5c00}.tEXPERIENCIA{background:#d4edda;color:#155724}.tCONSEJO{background:#cce5ff;color:#004085}.tPREGUNTA{background:#f8d7da;color:#721c24}
+.pfhigh{margin:0 20px 12px;padding:14px 18px;background:linear-gradient(135deg,var(--gs),var(--bs));border-left:4px solid var(--gd);border-radius:0 var(--rmd) var(--rmd) 0}
+.pfhigh p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:var(--cp);line-height:1.5}
+.pfbody{padding:0 20px 14px;font-size:14.5px;color:var(--ctl);line-height:1.7;word-break:break-word}
+.pfbody .htag{color:var(--ca);font-weight:600}
+.pftagrow{padding:0 20px 10px;display:flex;gap:6px;flex-wrap:wrap}
+.pftagpill{display:inline-block;background:var(--bs);color:var(--cp);font-size:12px;font-weight:600;padding:2px 10px;border-radius:20px;border:1px solid var(--sv)}
+.pfmedia{width:100%;max-height:400px;overflow:hidden;background:var(--bs)}
+.pfmedia img{width:100%;height:auto;display:block;object-fit:cover;transition:transform .4s ease}
+.pfcard:hover .pfmedia img{transform:scale(1.02)}
+.pfstats{padding:8px 20px;display:flex;justify-content:space-between;font-size:13px;color:var(--ctl);border-top:1px solid var(--bs);border-bottom:1px solid var(--bs)}
+.rpw{display:flex;align-items:center;gap:6px}
+.rpp{width:20px;height:20px;border-radius:50%;border:2px solid white;margin-left:-6px;display:flex;align-items:center;justify-content:center;font-size:9px;color:white}
+.rpp:first-child{margin-left:0}
+.rp1{background:var(--ca)}.rp2{background:var(--cmb)}
+.pfacts{display:flex;justify-content:space-around;padding:4px 0}
+.pfab{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:10px;cursor:pointer;color:var(--ctl);font-size:13px;font-weight:500;border-radius:var(--rsm);transition:background .15s,color .15s;background:none;border:none;font-family:'Outfit',sans-serif;width:100%}
+.pfab:hover{background:var(--bs);color:var(--cp)}
+.pfab.liked{color:var(--ca)}
+.pfab.liked i{color:var(--ca)}
+.pfab.del:hover{background:#fdf3f2;color:var(--er)}
+/* Comentarios en perfil */
+.pcwrap{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.pcwrap.open{max-height:600px;border-top:1px solid var(--bs)}
+.pclist{padding:12px 20px 0;display:flex;flex-direction:column;gap:10px}
+.pcitem{display:flex;gap:10px;align-items:flex-start}
+.pcav{width:32px;height:32px;border-radius:50%;background:var(--ctb);display:flex;align-items:center;justify-content:center;color:var(--gd);font-size:12px;flex-shrink:0;overflow:hidden}
+.pcav img{width:100%;height:100%;object-fit:cover}
+.pcbub{flex:1;background:var(--bs);border-radius:0 var(--rmd) var(--rmd) var(--rmd);padding:9px 13px}
+.pcauth{font-weight:700;font-size:12px;color:var(--cp);margin-bottom:3px}
+.pctxt{font-size:13px;color:var(--ctd);line-height:1.5}
+.pcfoot{display:flex;align-items:center;justify-content:space-between;margin-top:4px}
+.pcdate{font-size:11px;color:var(--ctl)}
+.pcdelb{background:none;border:none;cursor:pointer;color:var(--ctl);font-size:11px;padding:2px 6px;border-radius:4px;transition:background .15s,color .15s;font-family:'Outfit',sans-serif}
+.pcdelb:hover{background:#fdf3f2;color:var(--er)}
+.pcform{padding:12px 20px 14px;display:flex;gap:10px;align-items:center}
+.pcfav{width:32px;height:32px;border-radius:50%;background:var(--ctb);display:flex;align-items:center;justify-content:center;color:var(--gd);font-size:12px;flex-shrink:0;overflow:hidden}
+.pcfav img{width:100%;height:100%;object-fit:cover}
+.pcinput{flex:1;padding:9px 16px;border:1.5px solid var(--sv);background:var(--bs);border-radius:25px;font-size:13px;color:var(--ctd);outline:none;font-family:'Outfit',sans-serif;transition:border-color .2s}
+.pcinput:focus{border-color:var(--ca);background:white}
+.pcinput::placeholder{color:var(--ctl)}
+.pcsend{width:34px;height:34px;border-radius:50%;background:var(--ca);color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:background .2s;flex-shrink:0}
+.pcsend:hover{background:var(--cmh)}
+/* Empty */
+.emty{text-align:center;padding:40px 20px;background:white;border-radius:var(--rxl);border:1px solid var(--sv)}
+.emty i{font-size:40px;color:var(--sv);margin-bottom:12px;display:block}
+.emty h3{color:var(--cp);font-size:18px;margin-bottom:6px}
+.emty p{color:var(--ctl);font-size:13px}
+.emty a{color:var(--ca);font-weight:600;text-decoration:underline}
+/* Mensajes */
+.djok{background:#d4edda;color:#155724;border:1px solid #c3e6cb;padding:11px 16px;border-radius:var(--rsm);margin-bottom:16px;font-size:14px;display:flex;align-items:center;gap:8px}
+.djerr{background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;padding:11px 16px;border-radius:var(--rsm);margin-bottom:16px;font-size:14px;display:flex;align-items:center;gap:8px}
+@media(max-width:900px){.pcontent{grid-template-columns:1fr}.icard{display:none}}
+@media(max-width:700px){.sbox{display:none}.pident{padding:0 16px 20px}.ptabs{padding:0 16px}.pstrow{gap:10px}.pst{min-width:55px;padding:8px 10px}.mnav a{padding:11px 12px;font-size:12px}}
+</style>
+</head>
+<body>
+
+<header class="header-bar">
+  <div class="logo-wrap">
+    <div class="logo-text-wrap">
+      <div class="logo-title">
+        Life<span style="color: #4a6feb;">Line</span>
+        <img class="logol" src="{% static 'imagenes/Group 243 (3).png' %}" alt="logo">
+      </div>
+      <div class="logo-tagline">Comunidad &amp; Bienestar</div>
+    </div>
+  </div>
+  
+  <div class="search-box">
+    <i class="fas fa-search"></i>
+    <input type="text" placeholder="Buscar en LifeLine...">
+  </div>
+
+  <div class="header-right">
+   {% if request.user.is_staff or request.user.rol == 'ADMIN' %}
+    <a class="hdr-btn admin-btn" href="{% url 'lista_productos' %}" title="Panel de Administración">
+      <i class="fas fa-user-shield"></i>
+{% endif %}
+
+    <a class="hdr-btn" href="{% url 'ver_carrito' %}" title="Carrito">
+      <i class="fas fa-shopping-cart"></i>
+<span class="cart-badge" id="cart-count">{{ carrito_count }}</span>    </a>
+    </a>
+
+    <div class="user-chip">
+      <div class="user-chip-av"><i class="fas fa-user"></i></div>
+      <span>{{ usuario.username|default:"Mi cuenta" }}</span>
+    </div>
+  </div> </header>
+
+<nav class="main-tabs">
+  <a href="{% url 'home' %}" ><i class="fas fa-home"></i> Inicio</a>
+  <a href="{% url 'mural' %}"><i class="fas fa-seedling"></i> Mural</a>
+  <a href="{% url 'perfil' %}"class="active"><i class="fas fa-user"></i> Perfil</a>
+  <a href="{% url 'tienda' %}"><i class="fas fa-store"></i> Productos</a>
+  <a href="#"><i class="fas fa-calendar-alt"></i> Calendario</a>
+  <a href="#"><i class="fas fa-apple-alt"></i> Nutrición</a>
+  <a href="{% url 'alarmas' %}"><i class="fas fa-clock"></i> Alarmas</a>
+  <a href="{% url 'contactanos' %}"><i class="fas fa-envelope"></i> Contáctanos</a>
+  {% if user.is_authenticated %}
+        <form method="post" action="{% url 'logout' %}" style="margin:0;">
+            {% csrf_token %}
+            <button type="submit" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Salir</button>
+        </form>
+        {% endif %}
+</nav>
+
+<!-- CONTENIDO -->
+<div class="pwrap">
+
+  <!-- MENSAJES DJANGO -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="{% if message.tags == 'success' %}djok{% else %}djerr{% endif %}">
+        <i class="fas fa-{% if message.tags == 'success' %}check-circle{% else %}exclamation-circle{% endif %}"></i>
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <!-- TARJETA PRINCIPAL DEL PERFIL -->
+  <div class="pcard">
+    <!-- Cover con formas decorativas -->
+    <div class="coverarea">
+      <div class="cshp s1"></div>
+      <div class="cshp s2"></div>
+      <div class="cshp s3"></div>
+    </div>
+
+    <!-- Identidad -->
+    <div class="pident">
+      <div class="avblock">
+        <div class="avring">
+          {% if usuario.foto_perfil %}
+            <img src="{{ usuario.foto_perfil.url }}" alt="{{ usuario.username }}">
+          {% else %}
+            <i class="fas fa-user"></i>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="idinfo">
+        <h1>{{ usuario.username }}</h1>
+        <span class="rbadge">
+          <i class="fas fa-{% if usuario.es_admin %}shield-alt{% else %}id-badge{% endif %}"></i>
+          {{ usuario.get_rol_display }}
+        </span>
+        <p class="idbio">
+          Miembro de la comunidad LifeLine
+          {% if usuario.fecha_nacimiento %} · {{ usuario.fecha_nacimiento|date:"d/m/Y" }}{% endif %}
+        </p>
+      </div>
+
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:14px">
+        <div class="pstrow">
+          <div class="pst"><strong>{{ mis_publicaciones.count }}</strong><span>Posts</span></div>
+          <div class="pst"><strong>{{ total_likes }}</strong><span>Apoyos</span></div>
+          <div class="pst"><strong>{{ total_comentarios }}</strong><span>Comentarios</span></div>
+        </div>
+        <div class="pbtns">
+          <a class="bpri" href="{% url 'mural' %}"><i class="fas fa-pen"></i> Publicar</a>
+          <a class="bsec" href="{% url 'editar_perfil' %}"><i class="fas fa-pencil-alt"></i> Editar perfil</a>
+          <form action="{% url 'logout' %}" method="post" style="margin:0">
+            {% csrf_token %}
+            <button type="submit" class="bdang"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="ptabs">
+      <div class="ptab active" onclick="switchTab(this,'tab-pubs')"><i class="fas fa-th-large"></i> Publicaciones</div>
+      <div class="ptab" onclick="switchTab(this,'tab-info')"><i class="fas fa-info-circle"></i> Información</div>
+            <div class="ptab"><a href="{% url 'mis_pedidos' %}" style="color:inherit;display:flex;align-items:center;gap:7px"><i class="fas fa-box"></i> Mis Pedidos</a></div>
+
+      {% if usuario.es_admin %}
+      <div class="ptab"><a href="{% url 'lista_usuarios' %}" style="color:inherit;display:flex;align-items:center;gap:7px"><i class="fas fa-users"></i> Ver usuarios</a></div>
+      {% endif %}
+    </div>
+
+
+  </div>
+
+  <!-- ═══ CONTENIDO 2 COLUMNAS ═══ -->
+  <div class="pcontent">
+
+    <!-- COLUMNA IZQUIERDA — Información -->
+    <aside>
+      <!-- Tab información -->
+      <div id="tab-info" style="display:none">
+        <div class="icard">
+          <div class="ichdr"><i class="fas fa-id-card"></i><span>Información personal</span></div>
+          <div class="ilist">
+            <div class="iitem">
+              <div class="iiico"><i class="fas fa-user"></i></div>
+              <div><div class="iilbl">Nombre</div><div class="iival">{{ usuario.username }}</div></div>
+            </div>
+            <div class="iitem">
+              <div class="iiico"><i class="fas fa-envelope"></i></div>
+              <div><div class="iilbl">Correo</div><div class="iival">{{ usuario.email }}</div></div>
+            </div>
+            {% if usuario.fecha_nacimiento %}
+            <div class="iitem">
+              <div class="iiico"><i class="fas fa-calendar"></i></div>
+              <div><div class="iilbl">Fecha de nacimiento</div><div class="iival">{{ usuario.fecha_nacimiento|date:"d/m/Y" }}</div></div>
+            </div>
+            {% endif %}
+            {% if usuario.tipo_documento and usuario.numero_documento %}
+            <div class="iitem">
+              <div class="iiico"><i class="fas fa-id-badge"></i></div>
+              <div><div class="iilbl">{{ usuario.get_tipo_documento_display }}</div><div class="iival">{{ usuario.numero_documento }}</div></div>
+            </div>
+            {% endif %}
+            <div class="iitem">
+              <div class="iiico"><i class="fas fa-shield-alt"></i></div>
+              <div><div class="iilbl">Rol</div><div class="iival">{{ usuario.get_rol_display }}</div></div>
+            </div>
+            {% if usuario.estadio %}
+            <div class="iitem">
+              <div class="iiico"><i class="fas fa-heartbeat"></i></div>
+              <div><div class="iilbl">Estadio</div><div class="iival">{{ usuario.get_estadio_display }}</div></div>
+            </div>
+            {% endif %}
+            <div class="iitem">
+              <div class="iiico"><i class="fas fa-calendar-alt"></i></div>
+              <div><div class="iilbl">Miembro desde</div><div class="iival">{{ usuario.date_joined|date:"d/m/Y" }}</div></div>
+            </div>
+          </div>
+          <div class="isep"></div>
+          <div class="inav">
+           <a href="{% url 'perfil' %}"><i class="fas fa-pencil-alt"></i> Editar perfil</a>
+            {% if usuario.es_admin %}<a href="{% url 'lista_usuarios' %}"><i class="fas fa-users"></i> Usuarios registrados</a>{% endif %}
+            <div class="isep"></div>
+            <form action="{% url 'logout' %}" method="post" style="padding:0 18px 10px">
+              {% csrf_token %}
+              <button type="submit" style="display:flex;align-items:center;gap:8px;width:100%;padding:9px 0;background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;color:var(--er);font-family:'Outfit',sans-serif">
+                <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info card siempre visible en pantallas grandes -->
+      <div class="icard" id="infocardFixed">
+        <div class="ichdr"><i class="fas fa-id-card"></i><span>Información</span></div>
+        <div class="ilist">
+          <div class="iitem"><div class="iiico"><i class="fas fa-envelope"></i></div><div><div class="iilbl">Correo</div><div class="iival">{{ usuario.email }}</div></div></div>
+          <div class="iitem"><div class="iiico"><i class="fas fa-shield-alt"></i></div><div><div class="iilbl">Rol</div><div class="iival">{{ usuario.get_rol_display }}</div></div></div>
+          {% if usuario.estadio %}<div class="iitem"><div class="iiico"><i class="fas fa-heartbeat"></i></div><div><div class="iilbl">Estadio</div><div class="iival">{{ usuario.get_estadio_display }}</div></div></div>{% endif %}
+          <div class="iitem"><div class="iiico"><i class="fas fa-calendar-alt"></i></div><div><div class="iilbl">Miembro desde</div><div class="iival">{{ usuario.date_joined|date:"d/m/Y" }}</div></div></div>
+        </div>
+        <div class="isep"></div>
+        <div class="inav">
+          <a href="{% url 'editar_perfil' %}"><i class="fas fa-pencil-alt"></i> Editar perfil</a>
+          {% if usuario.es_admin %}<a href="{% url 'lista_usuarios' %}"><i class="fas fa-users"></i> Usuarios</a>{% endif %}
+        </div>
+      </div>
+    </aside>
+
+    <!-- COLUMNA DERECHA — Publicaciones del usuario -->
+    <div class="feedcol" id="tab-pubs">
+
+      {% if mis_publicaciones %}
+        {% for pub in mis_publicaciones %}
+        <div class="pfcard">
+          <div class="pfhdr">
+            <div class="pfav">{% if usuario.foto_perfil %}<img src="{{ usuario.foto_perfil.url }}" alt="">{% else %}<i class="fas fa-user"></i>{% endif %}</div>
+            <div class="pfmeta">
+              <div class="pfname">
+                {{ usuario.username }}
+                {% if usuario.es_admin %}<span style="background:var(--ca);color:white;font-size:9px;padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:700">OFICIAL</span>{% endif %}
+                <span class="pftipo t{{ pub.tipo }}">{{ pub.get_tipo_display }}</span>
+              </div>
+              <div class="pfdate"><i class="fas fa-clock"></i> {{ pub.fecha_creacion|date:"d \d\e F \d\e Y, H:i" }}</div>
+            </div>
+            <div style="color:var(--ctl);cursor:pointer;padding:4px;border-radius:50%"><i class="fas fa-ellipsis-h"></i></div>
+          </div>
+
+          {% if usuario.es_admin %}
+          <div class="pfhigh"><p>{{ pub.contenido|truncatechars:140 }}</p></div>
+          {% endif %}
+
+          <div class="pfbody" data-raw="{{ pub.contenido }}">{{ pub.contenido }}</div>
+
+          {% if pub.hashtags_list %}
+          <div class="pftagrow">{% for tag in pub.hashtags_list %}<span class="pftagpill">#{{ tag }}</span>{% endfor %}</div>
+          {% endif %}
+
+          {% if pub.imagen %}<div class="pfmedia"><img src="{{ pub.imagen.url }}" alt="Imagen"></div>{% endif %}
+
+          <div class="pfstats">
+            <div class="rpw">
+              <div style="display:flex">
+                <span class="rpp rp1"><i class="fas fa-heart" style="font-size:8px"></i></span>
+                <span class="rpp rp2"><i class="fas fa-hands-helping" style="font-size:8px"></i></span>
+              </div>
+              &nbsp;{{ pub.total_likes }} reacciones
+            </div>
+            <span>{{ pub.comentarios.count }} comentarios</span>
+          </div>
+
+          <div class="pfacts">
+            <form method="post" action="{% url 'dar_like' pub.id %}" style="flex:1;display:contents">
+              {% csrf_token %}
+              <button type="submit" class="pfab {% if usuario in pub.likes.all %}liked{% endif %}">
+                <i class="fas fa-heart"></i>
+                {% if usuario in pub.likes.all %}Ya me gusta{% else %}Me gusta{% endif %}
+              </button>
+            </form>
+
+            <button class="pfab" type="button" onclick="togglePCom('pc{{ pub.id }}')">
+              <i class="fas fa-comment-alt"></i> Comentar ({{ pub.comentarios.count }})
+            </button>
+
+            <form method="post" action="{% url 'eliminar_publicacion' pub.id %}" style="flex:1;display:contents"
+                  onsubmit="return confirm('¿Eliminar esta publicación?')">
+              {% csrf_token %}
+              <button type="submit" class="pfab del"><i class="fas fa-trash"></i> Eliminar</button>
+            </form>
+          </div>
+
+          <!-- Comentarios -->
+          <div class="pcwrap" id="pc{{ pub.id }}">
+            <div class="pclist">
+              {% for c in pub.comentarios.all %}
+              <div class="pcitem">
+                <div class="pcav">{% if c.autor.foto_perfil %}<img src="{{ c.autor.foto_perfil.url }}" alt="">{% else %}<i class="fas fa-user"></i>{% endif %}</div>
+                <div class="pcbub">
+                  <div class="pcauth">{{ c.autor.username }}</div>
+                  <div class="pctxt">{{ c.contenido }}</div>
+                  <div class="pcfoot">
+                    <span class="pcdate">{{ c.fecha_creacion|date:"d M Y, H:i" }}</span>
+                    {% if usuario == c.autor or usuario.es_admin %}
+                    <form method="post" action="{% url 'eliminar_comentario' c.id %}" onsubmit="return confirm('¿Eliminar?')">
+                      {% csrf_token %}
+                      <button type="submit" class="pcdelb"><i class="fas fa-trash"></i> Eliminar</button>
+                    </form>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              {% empty %}
+              <p style="font-size:13px;color:var(--ctl);text-align:center;padding:10px 0">Sin comentarios aún 💙</p>
+              {% endfor %}
+            </div>
+            <form method="post" action="{% url 'agregar_comentario' pub.id %}" class="pcform">
+              {% csrf_token %}
+              <div class="pcfav">{% if usuario.foto_perfil %}<img src="{{ usuario.foto_perfil.url }}" alt="">{% else %}<i class="fas fa-user"></i>{% endif %}</div>
+              <input type="text" name="comentario" class="pcinput" placeholder="Escribe un comentario..." required maxlength="500">
+              <button type="submit" class="pcsend"><i class="fas fa-paper-plane"></i></button>
+            </form>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="emty">
+          <i class="fas fa-pen-nib"></i>
+          <h3>Aún no has publicado nada</h3>
+          <p>¡Comparte algo con la comunidad! <a href="{% url 'mural' %}">Ir al Mural</a></p>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* Resaltar hashtags */
+document.querySelectorAll('.pfbody').forEach(el => {
+  const raw = el.dataset.raw || el.textContent;
+  el.innerHTML = raw.replace(/#(\w+)/g, '<span class="htag">#$1</span>');
+});
+
+/* Tabs */
+function switchTab(tab, showId) {
+  document.querySelectorAll('.ptab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  const pubs = document.getElementById('tab-pubs');
+  const info = document.getElementById('tab-info');
+  const infoFixed = document.getElementById('infocardFixed');
+  if (showId === 'tab-pubs') {
+    pubs.style.display = '';
+    if (info) info.style.display = 'none';
+    if (infoFixed) infoFixed.style.display = '';
+  } else {
+    pubs.style.display = 'none';
+    if (info) info.style.display = '';
+    if (infoFixed) infoFixed.style.display = 'none';
+  }
+}
+
+/* Toggle comentarios */
+function togglePCom(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+</script>
+</body>
+</html>

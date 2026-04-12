@@ -1,0 +1,223 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeLine - Mi Carrito</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+    <style>
+        :root{--cp:#3d5273;--cs:#5b6e94;--ca:#142ea0;--cmb:#526eaa;--cmh:#2d3c7e;--ctb:linear-gradient(135deg,#040418,#102468);--ctd:#1a1a1a;--ctl:#555;--bs:#e8edf8;--bg:rgba(20,46,160,.12);--sv:#dce3f0;--cr:#f7f9fc;--gd:#f1c40f;--ok:#27ae60;--er:#e74c3c;--rxl:20px;--rmd:12px;--rsm:8px}
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:'Outfit',sans-serif;background:var(--cr);background-image:radial-gradient(ellipse at 0% 0%,rgba(20,46,160,.06) 0%,transparent 50%),radial-gradient(ellipse at 100% 100%,rgba(61,82,115,.04) 0%,transparent 50%);color:var(--ctd);min-height:100vh}
+        a{text-decoration:none}
+        .header-bar{background:white;border-bottom:4px solid var(--ca);padding:11px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(20,46,160,.1)}
+        .header-logo-section{display:flex;align-items:center;gap:10px}
+        .logo-text{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--cp);line-height:1.1}
+        .header-logo-section img{width:40px;height:40px;object-fit:contain}
+        .search-box{background:var(--bs);border-radius:30px;padding:9px 18px;display:flex;align-items:center;border:1.5px solid var(--sv);width:280px}
+        .search-box:focus-within{border-color:var(--ca);box-shadow:0 0 0 3px var(--bg)}
+        .search-box i{color:var(--ca);font-size:14px}
+        .search-box input{border:none;background:none;outline:none;font-size:14px;color:var(--ctd);width:100%;margin-left:8px;font-family:'Outfit',sans-serif}
+        .navbar-right{display:flex;align-items:center;gap:12px}
+        .navbar-icon a{color:var(--ctd);font-size:18px;padding:0 6px}
+        .user-photo{width:38px;height:38px;border-radius:50%;overflow:hidden;border:2px solid var(--ca)}
+        .user-photo img{width:100%;height:100%;object-fit:cover}
+        .main-tabs{background:var(--cp);display:flex;padding:0 24px;overflow-x:auto;gap:2px}
+        .main-tabs a{color:rgba(255,255,255,.7);padding:12px 16px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;white-space:nowrap;border-bottom:3px solid transparent;transition:color .2s,border-color .2s,background .2s}
+        .main-tabs a:hover{color:white;background:rgba(255,255,255,.08);border-bottom-color:rgba(255,255,255,.3)}
+        .main-tabs a.active{color:var(--gd);border-bottom-color:var(--gd);font-weight:700}
+        
+        /* CARRITO */
+        .carrito-wrapper{max-width:960px;margin:30px auto;padding:0 20px 40px;animation:pi .45s ease both}
+        @keyframes pi{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+        .breadcrumb{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ctl);margin-bottom:20px}
+        .breadcrumb a{color:var(--ca);font-weight:500}
+        .breadcrumb a:hover{text-decoration:underline}
+        .breadcrumb i{font-size:11px;color:var(--sv)}
+        .carrito-grid{display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:flex-start}
+        
+        .carrito-card{background:white;border-radius:var(--rxl);border:1px solid var(--sv);box-shadow:0 2px 18px rgba(20,46,160,.08);overflow:hidden}
+        .carrito-card-hdr{padding:18px 22px;border-bottom:1px solid var(--bs);display:flex;align-items:center;gap:8px}
+        .carrito-card-hdr h2{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--cp)}
+        .carrito-card-hdr i{color:var(--ca)}
+        table{width:100%;border-collapse:collapse}
+        thead{background:var(--ctb)}
+        th{padding:12px 16px;text-align:left;font-size:11px;font-weight:700;color:rgba(255,255,255,.85);letter-spacing:.5px;text-transform:uppercase}
+        td{padding:14px 16px;border-bottom:1px solid var(--bs);font-size:14px;color:var(--ctd);vertical-align:middle}
+        tr:last-child td{border-bottom:none}
+        tr:hover td{background:#f4f7ff}
+        .prod-img{width:52px;height:52px;object-fit:cover;border-radius:var(--rsm)}
+        .no-img{width:52px;height:52px;background:var(--bs);border-radius:var(--rsm);display:flex;align-items:center;justify-content:center;color:var(--sv);font-size:20px}
+
+        .cant-ctrl{display:flex;align-items:center;gap:6px}
+        .btn-cant{background:var(--bs);border:1.5px solid var(--sv);width:30px;height:30px;border-radius:var(--rsm);cursor:pointer;font-size:15px;font-weight:700;color:var(--cp);transition:background .2s,color .2s;display:flex;align-items:center;justify-content:center}
+        .btn-cant:hover{background:var(--ca);color:white;border-color:var(--ca)}
+        .cant-num{font-weight:700;min-width:24px;text-align:center;font-size:15px}
+        .btn-elim-item{background:none;border:none;color:var(--ctl);cursor:pointer;font-size:16px;padding:4px;border-radius:50%;transition:background .2s,color .2s}
+        .btn-elim-item:hover{background:#fdf3f2;color:var(--er)}
+
+        .resumen-card{background:white;border-radius:var(--rxl);border:1px solid var(--sv);box-shadow:0 2px 18px rgba(20,46,160,.08);overflow:hidden;position:sticky;top:84px}
+        .resumen-hdr{background:var(--ctb);padding:16px 20px;display:flex;align-items:center;gap:8px;position:relative}
+        .resumen-hdr::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gd),transparent)}
+        .resumen-hdr i{color:var(--gd)}.resumen-hdr span{font-size:14px;font-weight:700;color:white}
+        .resumen-body{padding:20px}
+        .resumen-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--bs);font-size:14px}
+        .resumen-row:last-of-type{border-bottom:none}
+        .resumen-row .label{color:var(--ctl)}
+        .resumen-row .value{font-weight:600;color:var(--ctd)}
+        .total-row{margin-top:14px;padding-top:14px;border-top:2px solid var(--bs);display:flex;justify-content:space-between;align-items:center}
+        .total-row .tlabel{font-size:13px;font-weight:700;color:var(--cp);text-transform:uppercase;letter-spacing:.5px}
+        .total-row .tvalue{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--ca)}
+        
+        .btn-comprar{background:linear-gradient(135deg,var(--ok),#1e8449);color:white;border:none;border-radius:var(--rmd);padding:13px;font-size:14px;font-weight:700;cursor:pointer;width:100%;margin-top:16px;font-family:'Outfit',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 3px 10px rgba(39,174,96,.3);transition:opacity .2s,transform .15s}
+        .btn-comprar:hover{opacity:.9;transform:translateY(-1px)}
+        .btn-vaciar{background:white;color:var(--ctl);border:1.5px solid var(--sv);border-radius:var(--rmd);padding:10px;font-size:13px;font-weight:600;cursor:pointer;width:100%;margin-top:8px;font-family:'Outfit',sans-serif;display:flex;align-items:center;justify-content:center;gap:7px;transition:border-color .2s,background .2s}
+        .btn-vaciar:hover{border-color:var(--er);background:#fdf3f2;color:var(--er)}
+        .btn-seguir{display:flex;align-items:center;justify-content:center;gap:7px;padding:10px;border:1.5px solid var(--sv);border-radius:var(--rmd);color:var(--cp);font-size:13px;font-weight:600;margin-top:8px;transition:border-color .2s,background .2s}
+        .btn-seguir:hover{border-color:var(--ca);background:var(--bs)}
+
+        .empty-carrito{text-align:center;padding:52px 20px}
+        .empty-carrito i{font-size:44px;color:var(--sv);margin-bottom:14px;display:block}
+        .empty-carrito p{color:var(--ctl);font-size:15px;margin-bottom:16px}
+        .empty-carrito a{display:inline-flex;align-items:center;gap:7px;padding:11px 22px;background:linear-gradient(135deg,var(--ca),var(--cmh));color:white;border-radius:var(--rmd);font-weight:700;font-size:13px;box-shadow:0 3px 10px rgba(20,46,160,.3)}
+
+        .dj-ok{background:#d4edda;color:#155724;border:1px solid #c3e6cb;padding:12px 16px;border-radius:var(--rsm);display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:14px}
+        @media(max-width:850px){.carrito-grid{grid-template-columns:1fr}.resumen-card{position:static}}
+        @media(max-width:700px){.search-box{display:none}.main-tabs a{padding:11px 12px;font-size:12px}}
+    </style>
+</head>
+<body>
+
+<div class="header-bar">
+<div class="header-logo-section">
+    <div class="logo-text">Life<br>Line</div>
+    <img src="{% static 'imagenes/Group 243 (3).png' %}" alt="logo">
+</div>
+<div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Buscar en LifeLine..."></div>
+<div class="navbar-right">
+    <div class="navbar-icon"><a href="{% url 'ver_carrito' %}"><i class="fas fa-shopping-cart"></i></a></div>
+    <div class="user-photo"><img src="{% static 'imagenes/Group 244.png' %}" alt="Usuario"></div>
+  </div>
+</div>
+
+<nav class="main-tabs">
+  <a href="{% url 'home' %}"><i class="fas fa-home"></i> Inicio</a>
+  <a href="{% url 'tienda' %}"><i class="fas fa-store"></i> Tienda</a>
+  <a href="{% url 'perfil' %}"><i class="fas fa-user"></i> Perfil</a>
+  <a href="{% url 'ver_carrito' %}" class="active"><i class="fas fa-shopping-cart"></i> Carrito</a>
+  <a href="{% url 'contactanos' %}"><i class="fas fa-envelope"></i> Contáctanos</a>
+</nav>
+
+<div class="carrito-wrapper">
+
+  <div class="breadcrumb">
+    <a href="{% url 'tienda' %}"><i class="fas fa-store" style="margin-right:4px"></i>Tienda</a>
+    <i class="fas fa-chevron-right"></i>
+    <span>Mi Carrito</span>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+    <div class="dj-ok"><i class="fas fa-check-circle"></i> {{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  {% if items %}
+  <div class="carrito-grid">
+
+    <div class="carrito-card">
+      <div class="carrito-card-hdr">
+        <i class="fas fa-shopping-cart"></i>
+        <h2>Mi Carrito</h2>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Imagen</th><th>Producto</th><th>Precio</th><th>Cantidad</th><th>Subtotal</th><th></th></tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          <tr>
+            <td>{% if item.producto.imagen %}<img src="{{ item.producto.imagen.url }}" class="prod-img" alt="{{ item.producto.nombre }}">{% else %}<div class="no-img"><i class="fas fa-image"></i></div>{% endif %}</td>
+            <td>
+              <strong>{{ item.producto.nombre }}</strong><br>
+              <small style="color:var(--ctl)">{{ item.producto.categoria }}</small>
+            </td>
+            <td style="color:var(--ca);font-weight:700">${{ item.producto.precio_final }}</td>
+            <td>
+              <div class="cant-ctrl">
+                <form method="post" action="{% url 'actualizar_carrito' item.id %}" style="display:inline;">
+                  {% csrf_token %}
+                  <input type="hidden" name="accion" value="disminuir">
+                  <button type="submit" class="btn-cant">−</button>
+                </form>
+                
+                <span class="cant-num">{{ item.cantidad }}</span>
+                
+                <form method="post" action="{% url 'actualizar_carrito' item.id %}" style="display:inline;">
+                  {% csrf_token %}
+                  <input type="hidden" name="accion" value="aumentar">
+                  <button type="submit" class="btn-cant">+</button>
+                </form>
+              </div>
+            </td>
+            <td style="font-weight:700">${{ item.subtotal }}</td>
+            <td>
+              <form method="post" action="{% url 'actualizar_carrito' item.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="accion" value="eliminar">
+                <button type="submit" class="btn-elim-item" title="Quitar"><i class="fas fa-trash-alt"></i></button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="resumen-card">
+      <div class="resumen-hdr"><i class="fas fa-receipt"></i><span>Resumen del pedido</span></div>
+      <div class="resumen-body">
+        {% for item in items %}
+        <div class="resumen-row">
+          <span class="label">{{ item.producto.nombre|truncatechars:22 }} ×{{ item.cantidad }}</span>
+          <span class="value">${{ item.subtotal }}</span>
+        </div>
+        {% endfor %}
+        <div class="total-row">
+          <span class="tlabel">Total</span>
+          <span class="tvalue">${{ total }}</span>
+        </div>
+        <p style="font-size:11px;color:var(--ctl);margin-top:6px;text-align:right">COP · Impuestos incluidos</p>
+
+        <button type="button" onclick="location.href='{% url 'pago' %}'" class="btn-comprar">
+          <i class="fas fa-credit-card"></i> Proceder al pago
+        </button>
+
+        <form method="post" action="{% url 'vaciar_carrito' %}">
+          {% csrf_token %}
+          <button type="submit" class="btn-vaciar"><i class="fas fa-trash"></i> Vaciar carrito</button>
+        </form>
+
+        <a href="{% url 'tienda' %}" class="btn-seguir">
+          <i class="fas fa-arrow-left"></i> Seguir comprando
+        </a>
+      </div>
+    </div>
+
+  </div>
+  {% else %}
+  <div class="carrito-card">
+    <div class="empty-carrito">
+      <i class="fas fa-shopping-cart"></i>
+      <p>Tu carrito está vacío.</p>
+      <a href="{% url 'tienda' %}"><i class="fas fa-store"></i> Ir a la tienda</a>
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+</body>
+</html>

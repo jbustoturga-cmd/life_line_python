@@ -1,0 +1,957 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LifeLine - Tienda de Bienestar</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   VARIABLES
+   ============================================================ */
+:root {
+  --color-primary:    #3d5273;
+  --color-secondary:  #5b6e94;
+  --color-accent:     #142ea0;
+  --color-menu-bg:    #526eaa;
+  --color-menu-hover: #2d3c7e;
+  --color-top-bar:    linear-gradient(135deg, #37378a, #7d90c4);
+  --color-text-dark:  #1a1a1a;
+  --color-text-light: #555;
+  --color-bg-light:   #f0f2f5;
+  --navy-deep:        #040418;
+  --navy-mid:         #102468;
+  --blue-soft:        #e8edf8;
+  --blue-glow:        rgba(20,46,160,0.12);
+  --silver:           #dce3f0;
+  --cream:            #f7f9fc;
+  --gold:             #f1c40f;
+  --gold-soft:        #fdf6da;
+  --success:          #27ae60;
+  --error-red:        #e74c3c;
+  --radius-xl:        20px;
+  --radius-md:        12px;
+  --radius-sm:        8px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Outfit', 'Segoe UI', sans-serif;
+  background: linear-gradient(400deg, #c1c5db, #727bca);
+  color: var(--color-text-dark);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+a { text-decoration: none; }
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.header-bar {
+  background: white;
+  border-bottom: 4px solid var(--color-accent);
+  padding: 11px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky; top: 0; z-index: 200;
+  box-shadow: 0 2px 20px rgba(20,46,160,0.1);
+}
+
+.logo-wrap { display: flex; align-items: center; gap: 10px; }
+.logol { width: 20px; height: 20px; vertical-align: middle; margin-left: 4px; }
+.logo-text-wrap { line-height: 1.1; }
+.logo-title {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 24px; font-weight: 700;
+  color: var(--color-primary); letter-spacing: -0.3px;
+}
+.logo-tagline {
+  font-size: 10px; color: var(--color-secondary);
+  font-weight: 500; letter-spacing: 1.4px; text-transform: uppercase;
+}
+
+.search-box {
+  background: var(--blue-soft);
+  border-radius: 30px;
+  padding: 9px 18px;
+  display: flex; align-items: center;
+  border: 1.5px solid var(--silver);
+  width: 300px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-box:focus-within {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--blue-glow);
+}
+.search-box i { color: var(--color-accent); font-size: 14px; }
+.search-box input {
+  border: none; background: none; outline: none;
+  font-size: 14px; width: 100%; margin-left: 8px;
+  font-family: 'Outfit', sans-serif;
+}
+
+.header-right { display: flex; align-items: center; gap: 12px; }
+
+.hdr-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--blue-soft);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-primary); font-size: 15px;
+  border: 1.5px solid var(--silver); position: relative;
+  transition: background 0.2s, color 0.2s;
+}
+.hdr-btn:hover { background: var(--color-accent); color: white; border-color: var(--color-accent); }
+
+.cart-badge {
+  position: absolute; top: -6px; right: -6px;
+  background: var(--error-red); color: white;
+  border-radius: 50%; font-size: 10px; font-weight: 700;
+  min-width: 18px; height: 18px;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(231,76,60,0.4);
+}
+
+.user-chip {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--blue-soft);
+  border: 1.5px solid var(--silver);
+  border-radius: 30px; padding: 5px 14px 5px 5px;
+  transition: border-color 0.2s;
+}
+.user-chip:hover { border-color: var(--color-accent); }
+.user-chip-av {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--color-top-bar);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold); font-size: 12px;
+}
+.user-chip span { font-size: 13px; font-weight: 600; color: var(--color-primary); }
+
+/* ============================================================
+   NAV TABS
+   ============================================================ */
+.main-tabs {
+  background: var(--color-primary);
+  display: flex; padding: 0 24px;
+  overflow-x: auto; gap: 2px;
+}
+.main-tabs a {
+  color: rgba(255,255,255,0.7);
+  padding: 12px 16px; font-size: 13px; font-weight: 500;
+  display: flex; align-items: center; gap: 6px;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.main-tabs a:hover { color: white; background: rgba(255,255,255,0.08); border-bottom-color: rgba(255,255,255,0.3); }
+.main-tabs a.active { color: var(--gold); border-bottom-color: var(--gold); font-weight: 700; background: rgba(255,255,255,0.06); }
+
+/* ============================================================
+   HERO TIENDA
+   ============================================================ */
+.store-hero {
+  background: var(--color-top-bar);
+  padding: 28px 36px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: relative; overflow: hidden;
+}
+.store-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='%23ffffff' fill-opacity='0.04'/%3E%3C/svg%3E");
+}
+.store-hero::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, var(--gold) 30%, var(--color-menu-bg) 70%, transparent 100%);
+}
+.hero-text { position: relative; }
+.hero-text .eyebrow {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 6px;
+  display: flex; align-items: center; gap: 7px;
+}
+.hero-text h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px; font-weight: 700;
+  color: white; line-height: 1.1;
+}
+.hero-text p {
+  font-size: 14px; color: rgba(255,255,255,0.65);
+  margin-top: 6px; max-width: 420px;
+}
+.hero-stats {
+  display: flex; gap: 28px; position: relative;
+}
+.hstat {
+  text-align: center; padding: 14px 20px;
+  background: rgba(255,255,255,0.07);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(6px);
+}
+.hstat strong { display: block; font-size: 22px; font-weight: 700; color: var(--gold); }
+.hstat span { font-size: 11px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* ============================================================
+   LAYOUT PRINCIPAL
+   ============================================================ */
+.page-layout {
+  display: flex;
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 24px 20px;
+  gap: 22px;
+  align-items: flex-start;
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+.admin-sidebar {
+  width: 240px; flex-shrink: 0;
+  background: white;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--silver);
+  box-shadow: 0 2px 18px rgba(20,46,160,0.08);
+  overflow: hidden;
+  align-self: flex-start;
+}
+
+.sidebar-header {
+  background: var(--color-top-bar);
+  padding: 16px 18px;
+  display: flex; align-items: center; gap: 10px;
+  position: relative;
+}
+.sidebar-header::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+.sidebar-header i { color: var(--gold); font-size: 16px; }
+.sidebar-header span { font-size: 14px; font-weight: 700; color: white; }
+
+.sidebar-section-label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 1.4px; text-transform: uppercase;
+  color: var(--color-secondary);
+  padding: 14px 18px 6px;
+}
+
+.admin-menu a {
+  display: flex; align-items: center; gap: 10px;
+  color: var(--color-text-light);
+  padding: 9px 18px; font-size: 13.5px; font-weight: 500;
+  border-left: 3px solid transparent;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.admin-menu a i { width: 16px; text-align: center; font-size: 13px; color: var(--color-secondary); flex-shrink: 0; }
+.admin-menu a:hover { background: var(--blue-soft); color: var(--color-accent); border-left-color: var(--color-accent); }
+.admin-menu a:hover i { color: var(--color-accent); }
+.admin-menu a.active { background: var(--blue-soft); color: var(--color-primary); border-left-color: var(--color-primary); font-weight: 600; }
+.admin-menu a.active i { color: var(--color-primary); }
+
+/* Submenú */
+.submenu-group { overflow: hidden; }
+.submenu-toggle-btn {
+  display: flex; align-items: center; gap: 10px;
+  color: var(--color-text-light);
+  padding: 9px 18px; font-size: 13.5px; font-weight: 600;
+  border-left: 3px solid transparent;
+  cursor: pointer; width: 100%;
+  background: none; border-top: none; border-bottom: none; border-right: none;
+  font-family: 'Outfit', sans-serif;
+  transition: background 0.15s, color 0.15s;
+  text-align: left;
+}
+.submenu-toggle-btn:hover { background: var(--blue-soft); color: var(--color-primary); }
+.submenu-toggle-btn .t-icon { width: 16px; text-align: center; font-size: 13px; color: var(--color-secondary); }
+.submenu-toggle-btn .t-caret { margin-left: auto; font-size: 11px; transition: transform 0.25s; }
+.submenu-toggle-btn.open .t-caret { transform: rotate(180deg); }
+.submenu-toggle-btn .t-label { flex: 1; }
+
+.submenu {
+  background: var(--blue-soft);
+  border-left: 3px solid var(--color-menu-bg);
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+.submenu.open { max-height: 400px; }
+.submenu a {
+  padding: 8px 18px 8px 32px;
+  font-size: 13px; font-weight: 400;
+  border-left: none !important;
+}
+.submenu a:hover { background: var(--silver); }
+
+.menu-sep { height: 1px; background: var(--silver); margin: 8px 18px; }
+
+.btn-logout-side {
+  display: flex; align-items: center; gap: 10px;
+  margin: 10px 18px 16px;
+  padding: 10px 14px;
+  background: none;
+  border: 1.5px solid var(--color-menu-bg);
+  color: var(--color-primary);
+  border-radius: var(--radius-sm);
+  font-size: 13px; font-weight: 600;
+  cursor: pointer; font-family: 'Outfit', sans-serif;
+  transition: background 0.2s, color 0.2s;
+  width: calc(100% - 36px);
+  text-decoration: none;
+}
+.btn-logout-side i { color: var(--color-secondary); }
+.btn-logout-side:hover { background: var(--color-menu-hover); color: white; border-color: var(--color-menu-hover); }
+.btn-logout-side:hover i { color: white; }
+
+/* ============================================================
+   CONTENIDO PRINCIPAL
+   ============================================================ */
+.main-content { flex: 1; min-width: 0; }
+
+/* Toolbar */
+.content-toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 22px; gap: 14px; flex-wrap: wrap;
+}
+.toolbar-left { display: flex; align-items: center; gap: 10px; }
+.toolbar-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px; font-weight: 700;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.product-count-pill {
+  background: rgba(255,255,255,0.25);
+  color: white;
+  font-size: 12px; font-weight: 700;
+  padding: 3px 11px; border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.3);
+  backdrop-filter: blur(4px);
+}
+
+.toolbar-search {
+  background: white;
+  border-radius: 30px;
+  padding: 9px 18px;
+  display: flex; align-items: center;
+  border: 1.5px solid var(--silver);
+  min-width: 240px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.toolbar-search:focus-within {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--blue-glow);
+}
+.toolbar-search i { color: var(--color-accent); font-size: 14px; }
+.toolbar-search input {
+  border: none; background: none; outline: none;
+  font-size: 14px; width: 100%; margin-left: 8px;
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Chips de categoría */
+.category-chips {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.chip {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 16px; border-radius: 30px;
+  font-size: 13px; font-weight: 500;
+  cursor: pointer;
+  border: 1.5px solid rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.2); color: white;
+  backdrop-filter: blur(4px);
+  transition: all 0.15s; white-space: nowrap;
+  text-decoration: none;
+}
+.chip:hover { border-color: white; background: rgba(255,255,255,0.35); color: white; }
+.chip.active {
+  background: white;
+  border-color: white;
+  color: var(--color-accent);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  font-weight: 700;
+}
+.chip i { font-size: 12px; }
+
+/* ============================================================
+   MENSAJES DJANGO
+   ============================================================ */
+.django-messages { margin-bottom: 18px; }
+.django-message {
+  padding: 12px 18px; border-radius: var(--radius-sm);
+  font-weight: 600; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 8px;
+}
+.django-message.success { background: #d4edda; color: #155724; }
+.django-message.error   { background: #f8d7da; color: #721c24; }
+.django-message.warning { background: #fff3cd; color: #856404; }
+
+/* ============================================================
+   GRID DE PRODUCTOS
+   ============================================================ */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+.product-card {
+  background: white;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--silver);
+  box-shadow: 0 2px 14px rgba(20,46,160,0.07);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: box-shadow 0.25s, transform 0.25s;
+  animation: cardIn 0.4s ease both;
+  position: relative;
+}
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(20,46,160,0.15);
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.product-card:nth-child(1) { animation-delay: 0.04s; }
+.product-card:nth-child(2) { animation-delay: 0.08s; }
+.product-card:nth-child(3) { animation-delay: 0.12s; }
+.product-card:nth-child(4) { animation-delay: 0.16s; }
+.product-card:nth-child(5) { animation-delay: 0.20s; }
+.product-card:nth-child(6) { animation-delay: 0.24s; }
+.product-card:nth-child(7) { animation-delay: 0.28s; }
+.product-card:nth-child(8) { animation-delay: 0.32s; }
+
+.product-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-menu-bg));
+  opacity: 0; transition: opacity 0.2s;
+}
+.product-card:hover::before { opacity: 1; }
+
+/* Imagen */
+.product-image-container {
+  width: 100%; height: 200px;
+  background: var(--blue-soft);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; position: relative;
+}
+.product-image {
+  max-width: 90%; max-height: 90%;
+  object-fit: contain;
+  transition: transform 0.4s ease;
+}
+.product-card:hover .product-image { transform: scale(1.06); }
+
+.no-img {
+  width: 100%; height: 200px;
+  background: var(--blue-soft);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 50px; color: var(--silver);
+}
+
+/* Overlay quick view */
+.product-quick-view {
+  position: absolute; inset: 0;
+  background: rgba(4,4,24,0.45);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.25s;
+  backdrop-filter: blur(2px);
+}
+.product-card:hover .product-quick-view { opacity: 1; }
+.quick-view-btn {
+  background: white; color: var(--color-accent);
+  border: none; border-radius: 30px;
+  padding: 8px 20px; font-size: 13px; font-weight: 700;
+  cursor: pointer; font-family: 'Outfit', sans-serif;
+  display: flex; align-items: center; gap: 7px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+  transition: background 0.15s;
+}
+.quick-view-btn:hover { background: var(--blue-soft); }
+
+/* Info */
+.product-info {
+  padding: 16px 16px 12px; flex: 1;
+}
+.product-categoria {
+  font-size: 11px; color: var(--color-secondary);
+  text-transform: uppercase; font-weight: 600; margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+.product-name {
+  font-size: 15px; font-weight: 600;
+  color: var(--color-text-dark);
+  margin-bottom: 4px; line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.product-desc {
+  font-size: 12px; color: var(--color-text-light);
+  margin-bottom: 8px; line-height: 1.4;
+}
+
+.product-price-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 8px;
+}
+.product-price {
+  font-size: 18px; font-weight: 700;
+  color: var(--color-accent);
+}
+.product-price .currency {
+  font-size: 12px; font-weight: 500;
+  color: var(--color-secondary); margin-left: 3px;
+}
+
+.product-stock {
+  font-size: 12px; color: var(--color-text-light);
+  margin-top: 4px;
+}
+.product-stock .ok { color: #27ae60; }
+.product-stock .ko { color: var(--error-red); }
+
+/* Badges */
+.badge-vence-pronto {
+  background: #fff3cd; color: #856404;
+  padding: 3px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 600;
+  display: inline-block; margin-bottom: 6px;
+}
+.badge-vencido {
+  background: #f8d7da; color: #721c24;
+  padding: 3px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 600;
+  display: inline-block; margin-bottom: 6px;
+}
+
+/* Botón carrito */
+.add-to-cart {
+  margin: 0 14px 14px;
+  padding: 11px;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-menu-hover));
+  color: white; border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer; width: calc(100% - 28px);
+  font-size: 13px; font-weight: 700;
+  font-family: 'Outfit', sans-serif;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 3px 10px rgba(20,46,160,0.3);
+  letter-spacing: 0.3px;
+}
+.add-to-cart:hover {
+  opacity: 0.92; transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(20,46,160,0.4);
+}
+.add-to-cart:active { transform: scale(0.98); }
+.add-to-cart:disabled {
+  background: #c0c8d8; cursor: not-allowed;
+  box-shadow: none; transform: none;
+}
+
+/* Estado vacío */
+.empty-state { text-align: center; padding: 60px 20px; }
+.empty-state i { font-size: 48px; color: var(--silver); margin-bottom: 16px; display: block; }
+.empty-state h3 { color: white; font-size: 20px; margin-bottom: 8px; }
+.empty-state p { color: rgba(255,255,255,0.7); font-size: 14px; }
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+.toast {
+  position: fixed; top: 22px; right: 22px;
+  padding: 14px 20px;
+  border-radius: var(--radius-md);
+  font-size: 14px; font-weight: 600;
+  color: white; z-index: 1000;
+  display: flex; align-items: center; gap: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  animation: toastIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  min-width: 260px; font-family: 'Outfit', sans-serif;
+}
+.toast.success {
+  background: linear-gradient(135deg, #27ae60, #219a52);
+  border-left: 4px solid #1e8449;
+}
+.toast.error {
+  background: linear-gradient(135deg, var(--error-red), #c0392b);
+  border-left: 4px solid #a93226;
+}
+.toast i { font-size: 16px; }
+@keyframes toastIn {
+  from { transform: translateX(120px) scale(0.9); opacity: 0; }
+  to   { transform: translateX(0) scale(1); opacity: 1; }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1100px) {
+  .admin-sidebar { display: none; }
+  .page-layout { padding: 16px; }
+  .hero-stats { display: none; }
+}
+@media (max-width: 700px) {
+  .search-box { display: none; }
+  .main-tabs a { padding: 11px 12px; font-size: 12px; }
+  .product-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .content-toolbar { flex-direction: column; align-items: flex-start; }
+  .store-hero { padding: 20px 20px; }
+  .hero-text h1 { font-size: 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header-bar">
+  <div class="logo-wrap">
+    <div class="logo-text-wrap">
+      <div class="logo-title">
+        Life<span style="color:#4a6feb;">Line</span>
+        <img class="logol" src="{% static 'imagenes/Group 243 (3).png' %}" alt="logo">
+      </div>
+      <div class="logo-tagline">Comunidad &amp; Bienestar</div>
+    </div>
+  </div>
+
+  <div class="search-box">
+    <i class="fas fa-search"></i>
+    <input type="text" placeholder="Buscar en LifeLine...">
+  </div>
+
+<div class="header-right">
+    {% if request.user.is_staff or request.user.rol == 'ADMIN' %}
+    <a class="hdr-btn admin-btn" href="{% url 'lista_productos' %}" title="Panel de Administración">
+      <i class="fas fa-user-shield"></i>
+{% endif %}
+    <a class="hdr-btn" href="{% url 'ver_carrito' %}" title="Carrito">
+      <i class="fas fa-shopping-cart"></i>
+<span class="cart-badge" id="cart-count">{{ carrito_count }}</span>    </a>
+  
+  <div class="user-chip">
+      <div class="user-chip-av"><i class="fas fa-user"></i></div>
+      <span>{{ usuario.username|default:"Mi cuenta" }}</span>
+    </div>
+  </div>
+</header>
+
+<!-- ===== NAV TABS ===== -->
+<nav class="main-tabs">
+  <a href="{% url 'home' %}" ><i class="fas fa-home"></i> Inicio</a>
+  <a href="{% url 'mural' %}"><i class="fas fa-seedling"></i> Mural</a>
+  <a href="{% url 'perfil' %}"><i class="fas fa-user"></i> Perfil</a>
+  <a href="{% url 'tienda' %}"class="active"><i class="fas fa-store"></i> Productos</a>
+  <a href="{% url 'calendario' %}"><i class="fas fa-calendar-alt"></i> Calendario</a>
+  <a href="{% url 'nutricion' %}"><i class="fas fa-apple-alt"></i> Nutrición</a>
+  <a href="{% url 'alarmas' %}"><i class="fas fa-clock"></i> Alarmas</a>
+  <a href="{% url 'contactanos' %}"><i class="fas fa-envelope"></i> Contáctanos</a>
+</nav>
+
+<!-- ===== HERO TIENDA ===== -->
+<div class="store-hero">
+  <div class="hero-text">
+    <div class="eyebrow"><i class="fas fa-store"></i> Tienda LifeLine</div>
+    <h1>Catálogo de Bienestar</h1>
+    <p>Productos pensados con amor para acompañarte en cada paso de tu proceso.</p>
+  </div>
+  <div class="hero-stats">
+    <div class="hstat">
+      <strong>{{ productos|length }}</strong>
+      <span>Productos</span>
+    </div>
+    <div class="hstat">
+      <strong>{{ categorias|length }}</strong>
+      <span>Categorías</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LAYOUT ===== -->
+<div class="page-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <i class="fas fa-cog"></i>
+      <span>Gestión de Tienda</span>
+    </div>
+
+    <div class="admin-menu">
+      <div class="sidebar-section-label">Acciones</div>
+
+      <a href="#"><i class="fas fa-plus-circle"></i> Crear nuevo producto</a>
+      <a href="#"><i class="fas fa-layer-group"></i> Gestionar bloques</a>
+
+      <div class="menu-sep"></div>
+      <div class="sidebar-section-label">Categorías</div>
+
+      <!-- Submenú Categoría -->
+      <div class="submenu-group">
+        <button class="submenu-toggle-btn {% if categoria_filtro %}open{% endif %}" onclick="toggleSubmenu(this)">
+          <i class="fas fa-tag t-icon"></i>
+          <span class="t-label">Categoría</span>
+          <i class="fas fa-chevron-down t-caret"></i>
+        </button>
+        <div class="submenu {% if categoria_filtro %}open{% endif %}">
+          <a href="{% url 'tienda' %}" class="{% if not categoria_filtro %}active{% endif %}">
+            <i class="fas fa-angle-right"></i> Todos los productos
+          </a>
+          {% for cat in categorias %}
+          <a href="{% url 'tienda' %}?categoria={{ cat }}"
+             class="{% if cat == categoria_filtro %}active{% endif %}">
+            <i class="fas fa-angle-right"></i> {{ cat }}
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Submenú Tienda -->
+      <div class="submenu-group">
+        <button class="submenu-toggle-btn" onclick="toggleSubmenu(this)">
+          <i class="fas fa-store t-icon"></i>
+          <span class="t-label">Tienda</span>
+          <i class="fas fa-chevron-down t-caret"></i>
+        </button>
+        <div class="submenu">
+          <a href="{% url 'tienda' %}" class="active"><i class="fas fa-angle-right"></i> Ver todos</a>
+          <a href="#"><i class="fas fa-angle-right"></i> Lista productos</a>
+          <a href="#"><i class="fas fa-angle-right"></i> Crear cliente nuevo</a>
+        </div>
+      </div>
+
+      <div class="menu-sep"></div>
+      <div class="sidebar-section-label">Administración</div>
+
+      <a href="#"><i class="fas fa-tags"></i> Descuentos</a>
+      <a href="#"><i class="fas fa-clipboard-list"></i> Pedidos</a>
+      <a href="#"><i class="fas fa-users"></i> Usuarios registrados</a>
+
+      <div class="menu-sep"></div>
+      <a href="{% url 'logout' %}" class="btn-logout-side">
+        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+      </a>
+    </div>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="main-content">
+
+    <!-- Toolbar -->
+    <div class="content-toolbar">
+      <div class="toolbar-left">
+        <h2 class="toolbar-title">Todos los Productos</h2>
+        <span class="product-count-pill">{{ productos|length }} producto{{ productos|length|pluralize }}</span>
+      </div>
+      <form method="get" action="{% url 'tienda' %}">
+        {% if categoria_filtro %}
+          <input type="hidden" name="categoria" value="{{ categoria_filtro }}">
+        {% endif %}
+        <div class="toolbar-search">
+          <i class="fas fa-search"></i>
+          <input type="text" name="q" placeholder="Buscar producto..." value="{{ query }}">
+        </div>
+      </form>
+    </div>
+
+    <!-- Chips de categoría -->
+    <div class="category-chips">
+      <a href="{% url 'tienda' %}{% if query %}?q={{ query }}{% endif %}"
+         class="chip {% if not categoria_filtro %}active{% endif %}">
+        <i class="fas fa-th-large"></i> Todos
+      </a>
+      {% for cat in categorias %}
+      <a href="{% url 'tienda' %}?categoria={{ cat }}{% if query %}&q={{ query }}{% endif %}"
+         class="chip {% if cat == categoria_filtro %}active{% endif %}">
+        <i class="fas fa-angle-right"></i> {{ cat }}
+      </a>
+      {% endfor %}
+    </div>
+
+    <!-- Mensajes Django como toasts -->
+    {% if messages %}
+    <div class="django-messages" style="display:none;">
+      {% for message in messages %}
+      <div class="django-message {{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Grid de productos -->
+    {% if productos %}
+    <div class="product-grid">
+      {% for producto in productos %}
+      <div class="product-card"
+           data-name="{{ producto.nombre|lower }}"
+           data-cat="{{ producto.categoria|lower }}">
+
+        <a href="#">
+          <div class="product-image-container">
+            {% if producto.imagen %}
+              <img src="{{ producto.imagen.url }}"
+                   alt="{{ producto.nombre }}"
+                   class="product-image"
+                   onerror="this.src='https://placehold.co/280x200/e8edf8/3d5273?text=LifeLine'">
+            {% else %}
+              <div class="no-img"><i class="fas fa-capsules"></i></div>
+            {% endif %}
+            <div class="product-quick-view">
+              <button class="quick-view-btn" type="button" onclick="event.preventDefault()">
+                <i class="fas fa-eye"></i> Ver detalle
+              </button>
+            </div>
+          </div>
+        </a>
+
+        <div class="product-info">
+          {% if producto.categoria %}
+            <p class="product-categoria">{{ producto.categoria }}</p>
+          {% endif %}
+
+          <p class="product-name">{{ producto.nombre }}</p>
+
+          {% if producto.descripcion %}
+            <p class="product-desc">{{ producto.descripcion|truncatechars:70 }}</p>
+          {% endif %}
+
+          {% if producto.fecha_vencimiento %}
+            {% if producto.esta_vencido %}
+              <span class="badge-vencido"><i class="fas fa-exclamation-triangle"></i> Vencido</span>
+            {% elif producto.dias_para_vencer <= 30 %}
+              <span class="badge-vence-pronto"><i class="fas fa-clock"></i> Vence en {{ producto.dias_para_vencer }} días</span>
+            {% endif %}
+          {% endif %}
+
+          <div class="product-price-row">
+            <span class="product-price">
+              ${{ producto.precio_final|floatformat:0 }}
+              <span class="currency">COP</span>
+            </span>
+          </div>
+
+          <p class="product-stock">
+            {% if producto.tiene_stock %}
+              <i class="fas fa-check-circle ok"></i> {{ producto.cantidad }} disponibles
+            {% else %}
+              <i class="fas fa-times-circle ko"></i> Agotado
+            {% endif %}
+          </p>
+        </div>
+
+        <form method="post" action="{% url 'agregar_carrito' producto.id %}" style="display:contents;">
+          {% csrf_token %}
+          <button type="submit"
+                  class="add-to-cart"
+                  {% if not producto.tiene_stock or producto.esta_vencido %}disabled{% endif %}>
+            <i class="fas fa-cart-plus"></i>
+            {% if producto.esta_vencido %}Vencido
+            {% elif not producto.tiene_stock %}Agotado
+            {% else %}Añadir al Carrito
+            {% endif %}
+          </button>
+        </form>
+
+      </div>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="empty-state">
+      <i class="fas fa-box-open"></i>
+      <h3>Sin productos disponibles</h3>
+      <p>No hay productos que coincidan con tu búsqueda.</p>
+    </div>
+    {% endif %}
+
+  </div><!-- /main-content -->
+</div><!-- /page-layout -->
+
+<script>
+/* ===== SUBMENÚ SIDEBAR ===== */
+/* ===== SUBMENÚ SIDEBAR ===== */
+function toggleSubmenu(btn) {
+  btn.classList.toggle('open');
+  const sub = btn.nextElementSibling;
+  sub.classList.toggle('open');
+}
+
+/* ===== TOAST ===== */
+function showToast(message, type = 'success') {
+  const icon = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<i class="${icon}"></i> ${message}`;
+  document.body.appendChild(toast);
+  setTimeout(() => {
+    toast.style.animation = 'toastIn 0.3s ease reverse';
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
+/* ===== MENSAJES DJANGO COMO TOASTS ===== */
+window.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.django-message').forEach(m => {
+    const type = m.classList.contains('success') ? 'success' : 'error';
+    showToast(m.innerText.trim(), type);
+  });
+
+  /* ===== AGREGAR AL CARRITO CON FETCH ===== */
+  document.querySelectorAll('.add-to-cart').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      if (this.disabled) return;
+      e.preventDefault();
+      const form = this.closest('form');
+      const url = form.action;
+      const csrfToken = form.querySelector('[name=csrfmiddlewaretoken]').value;
+
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': csrfToken,
+          'X-Requested-With': 'XMLHttpRequest',
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.ok) {
+          showToast('¡Producto agregado al carrito!', 'success');
+          // Actualizar contador
+          const badge = document.getElementById('cart-count');
+          if (badge && data.total !== undefined) {
+            badge.textContent = data.total;
+            badge.style.animation = 'none';
+            badge.offsetHeight; // reflow
+            badge.style.animation = 'badgePop 0.3s ease';
+          }
+        } else {
+          showToast(data.error || 'Error al agregar', 'error');
+        }
+      })
+      .catch(() => showToast('Error de conexión', 'error'));
+    });
+  });
+});
+</script>
+
+</body>
+</html>

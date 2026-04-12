@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>LifeLine - Eliminar Usuario</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+    <style>
+        body { background: linear-gradient(135deg, #ffffff, #d2daf5); }
+        .confirm-card { max-width: 480px; margin: 80px auto; background: white; border-radius: 16px; padding: 45px; text-align: center; box-shadow: 0 8px 25px rgba(0,0,0,0.12); }
+        .confirm-icon { font-size: 58px; color: #dc3545; margin-bottom: 18px; }
+        .confirm-titulo { font-size: 22px; font-weight: bold; color: #1D3461; margin-bottom: 10px; }
+        .confirm-nombre { font-size: 20px; font-weight: bold; color: #dc3545; margin: 12px 0 8px; }
+        .confirm-texto { color: #555; font-size: 15px; margin-bottom: 6px; }
+        .advertencia { color: #dc3545; font-size: 13px; margin-bottom: 25px; }
+        .botones { display: flex; gap: 14px; justify-content: center; }
+        .btn-confirmar { background: #dc3545; color: white; padding: 12px 28px; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .btn-confirmar:hover { background: #c82333; }
+        .btn-cancelar { background: #f0f0f0; color: #555; padding: 12px 28px; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; }
+        .btn-cancelar:hover { background: #e0e0e0; }
+    </style>
+</head>
+<body>
+
+<div class="confirm-card">
+    <div class="confirm-icon"><i class="fas fa-user-times"></i></div>
+    <div class="confirm-titulo">¿Eliminar Usuario?</div>
+    <p class="confirm-texto">Estás a punto de eliminar permanentemente al usuario:</p>
+    <div class="confirm-nombre">"{{ usuario.username }}"</div>
+    <p class="confirm-texto" style="font-size:13px;color:#888;">{{ usuario.email }}</p>
+    <p class="advertencia"><i class="fas fa-exclamation-triangle"></i> Esta acción no se puede deshacer.</p>
+
+    <form method="post" action="{% url 'eliminar_usuario' usuario.id %}">
+        {% csrf_token %}
+        <div class="botones">
+            <button type="submit" class="btn-confirmar"><i class="fas fa-trash"></i> Sí, eliminar</button>
+            <a href="{% url 'lista_usuarios' %}" class="btn-cancelar">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

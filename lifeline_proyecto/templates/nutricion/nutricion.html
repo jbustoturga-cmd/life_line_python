@@ -1,0 +1,366 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LifeLine - Nutrición</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+<style>
+:root{--cp:#3d5273;--cs:#5b6e94;--ca:#142ea0;--cmb:#526eaa;--cmh:#2d3c7e;--ctb:linear-gradient(135deg,#040418,#102468);--ctd:#1a1a1a;--ctl:#555;--bs:#e8edf8;--bg:rgba(20,46,160,.12);--sv:#dce3f0;--cr:#f7f9fc;--gd:#f1c40f;--ok:#27ae60;--er:#e74c3c;--rxl:20px;--rmd:12px;--rsm:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:var(--cr);background-image:radial-gradient(ellipse at 0% 0%,rgba(20,46,160,.06) 0%,transparent 50%),radial-gradient(ellipse at 100% 100%,rgba(61,82,115,.04) 0%,transparent 50%);color:var(--ctd);min-height:100vh}
+a{text-decoration:none}
+.header-bar{background:white;border-bottom:4px solid var(--ca);padding:11px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(20,46,160,.1)}
+.header-logo-section{display:flex;align-items:center;gap:10px}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--cp);line-height:1.1}
+.header-logo-section img{width:40px;height:40px;object-fit:contain}
+.search-box{background:var(--bs);border-radius:30px;padding:9px 18px;display:flex;align-items:center;border:1.5px solid var(--sv);width:280px}
+.search-box i{color:var(--ca);font-size:14px}
+.search-box input{border:none;background:none;outline:none;font-size:14px;color:var(--ctd);width:100%;margin-left:8px;font-family:'Outfit',sans-serif}
+.navbar-right{display:flex;align-items:center;gap:12px}
+.navbar-icon a{color:var(--ctd);font-size:18px;padding:0 6px}
+.user-photo{width:38px;height:38px;border-radius:50%;overflow:hidden;border:2px solid var(--ca)}
+.user-photo img{width:100%;height:100%;object-fit:cover}
+.btn-logout{background:none;border:1.5px solid var(--sv);color:var(--ctl);border-radius:var(--rsm);padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;gap:6px}
+.btn-logout:hover{border-color:var(--er);color:var(--er)}
+.main-tabs{background:var(--cp);display:flex;padding:0 24px;overflow-x:auto;gap:2px}
+.main-tabs a{color:rgba(255,255,255,.7);padding:12px 16px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;white-space:nowrap;border-bottom:3px solid transparent;transition:color .2s,border-color .2s,background .2s}
+.main-tabs a:hover{color:white;background:rgba(255,255,255,.08);border-bottom-color:rgba(255,255,255,.3)}
+.main-tabs a.active{color:var(--gd);border-bottom-color:var(--gd);font-weight:700}
+/* NUT LAYOUT */
+.nut-wrapper{max-width:1100px;margin:0 auto;padding:28px 20px}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--cp);margin-bottom:4px}
+.page-sub{font-size:14px;color:var(--ctl);margin-bottom:28px}
+/* Sección card */
+.seccion-card{background:white;border-radius:var(--rxl);border:1px solid var(--sv);box-shadow:0 2px 18px rgba(20,46,160,.08);overflow:hidden;margin-bottom:22px}
+.seccion-hdr{background:var(--ctb);padding:16px 24px;display:flex;align-items:center;gap:10px;position:relative}
+.seccion-hdr::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gd),var(--cmb),transparent)}
+.seccion-hdr i{color:var(--gd);font-size:16px}
+.seccion-hdr h2{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:white}
+.seccion-hdr p{font-size:12px;color:rgba(255,255,255,.65);margin-top:2px}
+.seccion-body{padding:24px}
+/* Síntomas grid */
+.sintomas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:18px}
+.sintoma-btn{padding:14px;border-radius:var(--rmd);border:1.5px solid var(--sv);text-align:center;cursor:pointer;transition:all .2s;text-decoration:none;color:var(--ctd);display:block;background:var(--bs);font-size:14px;font-weight:600}
+.sintoma-btn:hover{border-color:var(--ca);background:white;color:var(--ca);transform:translateY(-1px)}
+.sintoma-btn.activo{background:var(--ctb);color:var(--gd);border-color:var(--ca);box-shadow:0 4px 14px rgba(20,46,160,.25)}
+.sintoma-emoji{font-size:26px;display:block;margin-bottom:6px}
+/* Sugerencia resultado */
+.sug-resultado{background:var(--bs);border:1.5px solid var(--sv);border-radius:var(--rmd);padding:20px;margin-top:16px;border-left:4px solid var(--ok)}
+.sug-titulo{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--cp);margin-bottom:12px}
+.alimento-item{padding:8px 0;border-bottom:1px solid var(--sv);font-size:14px;color:var(--ctd);display:flex;align-items:center;gap:8px}
+.alimento-item::before{content:'';width:6px;height:6px;background:var(--ok);border-radius:50%;flex-shrink:0}
+.alimento-item:last-child{border-bottom:none}
+.evitar-box{background:#fdf3f2;border:1px solid #f5c6c3;border-radius:var(--rsm);padding:12px 16px;margin-top:14px}
+.evitar-box h4{color:var(--er);font-size:13px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.evitar-box li{font-size:13px;color:var(--ctl);margin-left:16px;margin-bottom:4px}
+.consejo-box{background:var(--bs);border-radius:var(--rsm);padding:12px 16px;margin-top:12px;font-size:13px;color:var(--cp);border:1px solid var(--sv)}
+/* Planes */
+.planes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:16px}
+.plan-btn{padding:14px;border-radius:var(--rmd);border:1.5px solid var(--sv);text-align:center;cursor:pointer;transition:all .2s;text-decoration:none;color:var(--ctd);display:block;font-weight:600;font-size:14px;background:var(--bs)}
+.plan-btn:hover{border-color:var(--ca);color:var(--ca);background:white;transform:translateY(-1px)}
+.plan-btn.activo{background:var(--ctb);color:var(--gd);border-color:var(--ca);box-shadow:0 4px 14px rgba(20,46,160,.25)}
+.plan-resultado{background:var(--bs);border:1.5px solid var(--sv);border-radius:var(--rmd);padding:20px;margin-top:16px}
+.plan-dia{background:white;border-radius:var(--rsm);padding:14px;margin-bottom:10px;border:1px solid var(--sv)}
+.plan-dia h4{color:var(--cp);font-size:14px;font-weight:700;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--bs)}
+.comida-row{display:flex;gap:10px;font-size:13px;color:var(--ctl);margin-bottom:5px}
+.comida-label{font-weight:700;color:var(--cp);min-width:75px;flex-shrink:0}
+/* Semáforo */
+.semaforo-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.semaforo-col{border-radius:var(--rmd);padding:18px;border:1.5px solid}
+.s-verde{background:#e8f5e9;border-color:#a5d6a7}
+.s-amarillo{background:#fff8e1;border-color:#ffe082}
+.s-rojo{background:#ffebee;border-color:#ef9a9a}
+.semaforo-titulo{font-weight:700;margin-bottom:12px;font-size:14px;display:flex;align-items:center;gap:6px}
+.semaforo-titulo.verde{color:#1b5e20}.semaforo-titulo.amarillo{color:#f57f17}.semaforo-titulo.rojo{color:#b71c1c}
+.semaforo-item{font-size:13px;padding:5px 0;color:#444;border-bottom:1px solid rgba(0,0,0,.06);display:flex;align-items:center;gap:7px}
+.semaforo-item:last-child{border-bottom:none}
+.semaforo-item::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.s-verde .semaforo-item::before{background:#2e7d32}
+.s-amarillo .semaforo-item::before{background:#f57f17}
+.s-rojo .semaforo-item::before{background:#b71c1c}
+/* Registro */
+.registro-card{background:white;border-radius:var(--rxl);border:1px solid var(--sv);box-shadow:0 2px 18px rgba(20,46,160,.08);overflow:hidden;margin-bottom:22px}
+.registro-card .seccion-hdr{background:linear-gradient(135deg,var(--cp),var(--cs))}
+.reg-body{padding:24px}
+.reg-body label{font-size:12px;font-weight:700;color:var(--cs);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:7px}
+.reg-body select,.reg-body textarea{width:100%;padding:11px 14px;border:1.5px solid var(--sv);border-radius:var(--rsm);font-size:14px;color:var(--ctd);font-family:'Outfit',sans-serif;outline:none;background:var(--bs);transition:border-color .2s;margin-bottom:14px}
+.reg-body select:focus,.reg-body textarea:focus{border-color:var(--ca);background:white}
+.reg-body textarea{resize:vertical;min-height:70px}
+.btn-registrar{background:linear-gradient(135deg,var(--ok),#1e8449);color:white;border:none;border-radius:var(--rmd);padding:12px 24px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;gap:8px;box-shadow:0 3px 10px rgba(39,174,96,.3);transition:opacity .2s}
+.btn-registrar:hover{opacity:.88}
+/* Alert */
+.dj-ok{background:#d4edda;color:#155724;border:1px solid #c3e6cb;padding:12px 16px;border-radius:var(--rsm);display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:16px}
+@media(max-width:800px){.semaforo-grid{grid-template-columns:1fr}}
+@media(max-width:700px){.search-box{display:none}.sintomas-grid{grid-template-columns:1fr 1fr}.main-tabs a{padding:11px 12px;font-size:12px}}
+.logo-wrap { display: flex; align-items: center; gap: 10px; }
+.logol { width: 25px; height: 25px; margin-left: 5px; }
+
+.logo-text-wrap { line-height: 1.1; }
+.logo-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--cp);
+}
+.logo-tagline {
+    font-size: 10px;
+    color: var(--cs);
+    font-weight: 500;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+}
+
+.header-right { display: flex; align-items: center; gap: 12px; }
+
+.hdr-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--bs);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--cp);
+    border: 1.5px solid var(--sv);
+    position: relative;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: var(--er);
+    color: white;
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bs);
+    border: 1.5px solid var(--sv);
+    border-radius: 30px;
+    padding: 5px 14px 5px 5px;
+}
+
+.user-chip-av {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--ctb);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gd);
+}
+</style>
+</head>
+<body>
+
+<header class="header-bar">
+  <div class="logo-wrap">
+    <div class="logo-text-wrap">
+      <div class="logo-title">
+        Life<span style="color: #4a6feb;">Line</span>
+        <img class="logol" src="{% static 'imagenes/Group 243 (3).png' %}" alt="logo">
+      </div>
+      <div class="logo-tagline">Comunidad &amp; Bienestar</div>
+    </div>
+  </div>
+  
+  <div class="search-box">
+    <i class="fas fa-search"></i>
+    <input type="text" placeholder="Buscar en LifeLine...">
+  </div>
+
+  <div class="header-right">
+    {% if request.user.is_staff or request.user.rol == 'ADMIN' %}
+    <a class="hdr-btn admin-btn" href="{% url 'lista_productos' %}" title="Panel de Administración">
+      <i class="fas fa-user-shield"></i>
+    </a>
+    {% endif %}
+
+    <a class="hdr-btn" href="{% url 'ver_carrito' %}" title="Carrito">
+      <i class="fas fa-shopping-cart"></i>
+      <span class="cart-badge" id="cart-count">{{ carrito_count }}</span>
+    </a>
+
+    <div class="user-chip">
+      <div class="user-chip-av"><i class="fas fa-user"></i></div>
+      <span>{{ request.user.username|default:"Mi cuenta" }}</span>
+    </div>
+  </div>
+</header>
+<nav class="main-tabs">
+  <a href="{% url 'home' %}"><i class="fas fa-home"></i> Inicio</a>
+  <a href="{% url 'mural' %}"><i class="fas fa-seedling"></i> Mural</a>
+  <a href="{% url 'perfil' %}"><i class="fas fa-user"></i> Perfil</a>
+  <a href="{% url 'tienda' %}"><i class="fas fa-store"></i> Tienda</a>
+  <a href="{% url 'calendario' %}"><i class="fas fa-calendar-alt"></i> Calendario</a>
+  <a href="{% url 'nutricion' %}" class="active"><i class="fas fa-apple-alt"></i> Nutrición</a>
+   <a href="{% url 'ejercicio' %}"><i class="fas fa-dumbbell"></i> Ejercicio</a>
+
+  <a href="{% url 'alarmas' %}"><i class="fas fa-clock"></i> Alarmas</a>
+  <a href="{% url 'contactanos' %}"><i class="fas fa-envelope"></i> Contáctanos</a>
+</nav>
+
+{% if messages %}
+<div style="max-width:1100px;margin:14px auto;padding:0 20px">
+  {% for m in messages %}<div class="dj-ok"><i class="fas fa-check-circle"></i> {{ m }}</div>{% endfor %}
+</div>
+{% endif %}
+
+<div class="nut-wrapper">
+
+  <div class="page-title"><i class="fas fa-leaf" style="color:var(--ok);margin-right:8px"></i>Nutrición Oncológica Personalizada</div>
+  <p class="page-sub">Tu guía dietética para mantener la fuerza y manejar los efectos secundarios.</p>
+
+  <!-- ASISTENCIA RÁPIDA -->
+  <div class="seccion-card">
+    <div class="seccion-hdr">
+      <div>
+        <i class="fas fa-bolt"></i>
+        <h2 style="display:inline;margin-left:6px">Asistencia Rápida</h2>
+        <p>Selecciona tu síntoma y obtén sugerencias alimenticias inmediatas.</p>
+      </div>
+    </div>
+    <div class="seccion-body">
+      <div class="sintomas-grid">
+        {% for key, val in sintomas.items %}
+        <a href="?sintoma={{ key }}{% if tratamiento_seleccionado %}&tratamiento={{ tratamiento_seleccionado }}{% endif %}"
+           class="sintoma-btn {% if sintoma_seleccionado == key %}activo{% endif %}">
+          <span class="sintoma-emoji">{{ val.emoji }}</span>
+          {{ val.titulo|truncatechars:24 }}
+        </a>
+        {% endfor %}
+      </div>
+
+      {% if sugerencia %}
+      <div class="sug-resultado">
+        <div class="sug-titulo">{{ sugerencia.emoji }} {{ sugerencia.titulo }}</div>
+        {% for alimento in sugerencia.alimentos %}
+        <div class="alimento-item">{{ alimento }}</div>
+        {% endfor %}
+        <div class="evitar-box">
+          <h4><i class="fas fa-times-circle"></i> Evitar:</h4>
+          {% for e in sugerencia.evitar %}<li>{{ e }}</li>{% endfor %}
+        </div>
+        <div class="consejo-box"><i class="fas fa-lightbulb" style="color:var(--gd)"></i> <strong>Consejo:</strong> {{ sugerencia.consejo }}</div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- PLANES POR TRATAMIENTO -->
+  <div class="seccion-card">
+    <div class="seccion-hdr">
+      <div>
+        <i class="fas fa-calendar-week"></i>
+        <h2 style="display:inline;margin-left:6px">Planes por Tratamiento</h2>
+        <p>Menús adaptados a tu fase actual.</p>
+      </div>
+    </div>
+    <div class="seccion-body">
+      <div class="planes-grid">
+        {% for key, plan in planes.items %}
+        <a href="?tratamiento={{ key }}{% if sintoma_seleccionado %}&sintoma={{ sintoma_seleccionado }}{% endif %}"
+           class="plan-btn {% if tratamiento_seleccionado == key %}activo{% endif %}">
+          {{ plan.titulo }}
+        </a>
+        {% endfor %}
+      </div>
+      {% if plan %}
+      <div class="plan-resultado">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--cp);margin-bottom:6px">{{ plan.titulo }}</h3>
+        <p style="font-size:13px;color:var(--ctl);margin-bottom:16px">{{ plan.descripcion }}</p>
+        {% for dia in plan.semana %}
+        <div class="plan-dia">
+          <h4>{{ dia.dia }}</h4>
+          <div class="comida-row"><span class="comida-label">Desayuno:</span>{{ dia.desayuno }}</div>
+          <div class="comida-row"><span class="comida-label">Almuerzo:</span>{{ dia.almuerzo }}</div>
+          <div class="comida-row"><span class="comida-label">Cena:</span>{{ dia.cena }}</div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- SEMÁFORO NUTRICIONAL -->
+  <div class="seccion-card">
+    <div class="seccion-hdr">
+      <div>
+        <i class="fas fa-traffic-light"></i>
+        <h2 style="display:inline;margin-left:6px">Semáforo Nutricional</h2>
+      </div>
+    </div>
+    <div class="seccion-body">
+      <div class="semaforo-grid">
+        <div class="semaforo-col s-verde">
+          <div class="semaforo-titulo verde">✅ Recomendados</div>
+          <div class="semaforo-item">Frutas blandas (banano, melón)</div>
+          <div class="semaforo-item">Verduras cocidas al vapor</div>
+          <div class="semaforo-item">Arroz, papa, yuca cocida</div>
+          <div class="semaforo-item">Pollo y pescado a la plancha</div>
+          <div class="semaforo-item">Agua, jugos naturales sin azúcar</div>
+        </div>
+        <div class="semaforo-col s-amarillo">
+          <div class="semaforo-titulo amarillo">⚠️ Con moderación</div>
+          <div class="semaforo-item">Lácteos (según tolerancia)</div>
+          <div class="semaforo-item">Legumbres bien cocidas</div>
+          <div class="semaforo-item">Carnes rojas magras</div>
+          <div class="semaforo-item">Pan integral</div>
+          <div class="semaforo-item">Café (1 taza al día máximo)</div>
+        </div>
+        <div class="semaforo-col s-rojo">
+          <div class="semaforo-titulo rojo">🚫 Evitar</div>
+          <div class="semaforo-item">Alcohol</div>
+          <div class="semaforo-item">Frituras y grasas trans</div>
+          <div class="semaforo-item">Azúcares refinados en exceso</div>
+          <div class="semaforo-item">Embutidos y ultraprocesados</div>
+          <div class="semaforo-item">Alimentos crudos de riesgo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REGISTRAR SÍNTOMA -->
+  <div class="registro-card">
+    <div class="seccion-hdr">
+      <div>
+        <i class="fas fa-pencil-alt"></i>
+        <h2 style="display:inline;margin-left:6px">Registrar mi síntoma de hoy</h2>
+      </div>
+    </div>
+    <div class="reg-body">
+      <form method="post" action="{% url 'registrar_sintoma' %}">
+        {% csrf_token %}
+        <label>¿Cómo me sentí hoy?</label>
+        <select name="sintoma">
+          <option value="general">General — Sin síntomas específicos</option>
+          <option value="nauseas">Náuseas y vómitos</option>
+          <option value="fatiga">Fatiga / pérdida de apetito</option>
+          <option value="diarrea">Diarrea o estreñimiento</option>
+          <option value="boca_seca">Boca seca y llagas</option>
+          <option value="cambio_gusto">Cambios en el gusto</option>
+        </select>
+        <label>Nota del día (opcional)</label>
+        <textarea name="nota" rows="2" placeholder="¿Qué comiste hoy? ¿Cómo te sentiste?"></textarea>
+        <button type="submit" class="btn-registrar"><i class="fas fa-save"></i> Guardar registro</button>
+      </form>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

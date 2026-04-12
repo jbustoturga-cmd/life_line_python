@@ -1,0 +1,888 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LifeLine - Mural</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Variables del Sistema (Design Tokens) */
+:root {
+  /* Paleta de Azules (Principales y Primarios) */
+  --cp:  #3d5273;
+  --cs:  #100349;
+  --ca:  #370472;
+  --cmb: #526eaa;
+  --cmh: #2d3c7e;
+  
+  /* Fondos y Gradientes */
+  --ctb: linear-gradient(135deg, #5321af, #8f7dbb);
+  --bg:  rgba(20, 46, 160, 0.12);
+  --bs:  #e8edf8;
+  --cr:  #f7f9fc;
+  --sv:  #dce3f0;
+
+  /* Tipografía y Contrastes */
+  --ctd: #1a1a1a;
+  --ctl: #555;
+
+  /* Estados y Acentos (Feedback) */
+  --gd:  #f1c40f; /* Dorado/Alerta */
+  --gs:  #fdf6da; /* Dorado Suave */
+  --ok:  #27ae60; /* Éxito */
+  --er:  #e74c3c; /* Error */
+
+  /* Border Radius (Redondeado) */
+  --rxl: 20px;
+  --rmd: 12px;
+  --rsm: 8px;
+
+
+  --color-primary:    #3d5273;
+  --color-secondary:  #5b6e94;
+  --color-accent:     #142ea0;
+  --color-menu-bg:    #526eaa;
+  --color-menu-hover: #2d3c7e;
+  --color-top-bar:    linear-gradient(135deg, #040418, #102468);
+  --color-text-dark:  #1a1a1a;
+  --color-text-light: #555;
+  --color-bg-light:   #f0f2f5;
+
+  /* Extensiones de diseño (mismo tono azul) */
+  --navy-deep:    #040418;
+  --navy-mid:     #102468;
+  --blue-soft:    #e8edf8;
+  --blue-glow:    rgba(20,46,160,0.12);
+  --silver:       #dce3f0;
+  --cream:        #f7f9fc;
+  --gold:         #f1c40f;
+  --gold-soft:    #fdf6da;
+  --success:      #27ae60;
+  --error-red:    #e74c3c;
+
+  --radius-xl: 20px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+}
+
+/* Reset Global */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body{font-family:'Outfit',sans-serif;background:var(--cr);background-image:radial-gradient(ellipse at 0% 0%,rgba(20,46,160,.07) 0%,transparent 50%),radial-gradient(ellipse at 100% 100%,rgba(61,82,115,.05) 0%,transparent 50%);color:var(--ctd);line-height:1.6;min-height:100vh
+}
+a{text-decoration:none}
+/* ============================================================
+   HEADER — Banda superior con acento dorado
+   ============================================================ */
+.header-bar {
+  background: white;
+  border-bottom: 4px solid var(--color-accent);
+  padding: 11px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky; top: 0; z-index: 200;
+  box-shadow: 0 2px 20px rgba(20,46,160,0.1);
+}
+
+
+.logol {
+  width: 20px; height: 20px;
+}
+
+.logo-wrap { display: flex; align-items: center; gap: 10px; }
+
+.logo-mark {
+  width: 42px; height: 42px;
+  background: var(--color-top-bar);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold); font-size: 18px;
+  box-shadow: 0 3px 12px rgba(20,46,160,0.4);
+  position: relative; overflow: hidden;
+}
+.logo-mark::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 3px; background: var(--gold);
+}
+
+.logo-text-wrap { line-height: 1.1; }
+.logo-title {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 24px; font-weight: 700;
+  color: var(--color-primary); letter-spacing: -0.3px;
+}
+.logo-tagline {
+  font-size: 10px; color: var(--color-secondary);
+  font-weight: 500; letter-spacing: 1.4px; text-transform: uppercase;
+}
+
+.search-box {
+  background: var(--blue-soft);
+  border-radius: 30px;
+  padding: 9px 18px;
+  display: flex; align-items: center;
+  border: 1.5px solid var(--silver);
+  width: 300px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-box:focus-within {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--blue-glow);
+}
+.search-box i { color: var(--color-accent); font-size: 14px; }
+.search-box input {
+  border: none; background: none; outline: none;
+  font-size: 14px; color: var(--color-text-dark);
+  width: 100%; margin-left: 8px;
+  font-family: 'Outfit', sans-serif;
+}
+.search-box input::placeholder { color: var(--color-text-light); }
+
+.header-right { display: flex; align-items: center; gap: 12px; }
+
+.hdr-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--blue-soft);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-primary); font-size: 15px;
+  transition: background 0.2s, color 0.2s; cursor: pointer;
+  border: 1.5px solid var(--silver); position: relative;
+}
+.hdr-btn:hover { background: var(--color-accent); color: white; border-color: var(--color-accent); }
+
+.cart-badge {
+  position: absolute; top: -6px; right: -6px;
+  background: var(--error-red); color: white;
+  border-radius: 50%; font-size: 10px; font-weight: 700;
+  min-width: 18px; height: 18px;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(231,76,60,0.4);
+}
+
+.user-chip {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--blue-soft);
+  border: 1.5px solid var(--silver);
+  border-radius: 30px;
+  padding: 5px 14px 5px 5px; cursor: pointer;
+  transition: border-color 0.2s;
+}
+.user-chip:hover { border-color: var(--color-accent); }
+.user-chip-av {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--color-top-bar);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold); font-size: 12px;
+}
+.user-chip span { font-size: 13px; font-weight: 600; color: var(--color-primary); }
+
+/* Badge del Admin */
+.admin-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--color-primary); /* Azul oscuro */
+  color: var(--gold); /* Exclamación dorada */
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* Efecto hover especial para Admin */
+.admin-btn:hover {
+  background: var(--color-primary) !important;
+  color: var(--gold) !important;
+  border-color: var(--color-primary) !important;
+}
+
+/* Asegura que el contenedor mantenga el espacio */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Espacio entre los botones */
+}
+/* ============================================================
+   NAV TABS
+   ============================================================ */
+.main-tabs {
+  background: var(--color-primary);
+  display: flex; padding: 0 24px;
+  overflow-x: auto; gap: 2px;
+}
+.main-tabs a {
+  color: rgba(255,255,255,0.7);
+  padding: 12px 16px; font-size: 13px; font-weight: 500;
+  display: flex; align-items: center; gap: 6px;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.main-tabs a:hover { color: white; background: rgba(255,255,255,0.08); border-bottom-color: rgba(255,255,255,0.3); }
+.main-tabs a.active { color: var(--gold); border-bottom-color: var(--gold); font-weight: 700; background: rgba(255,255,255,0.06); }
+/* boton cerrar sesion */
+ .btn-logout {
+            background: rgba(10, 48, 66, 0.2);
+            color: var(--coral);
+            border: 1px solid rgba(5, 5, 61, 0.35);
+            padding: 7px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            transition: all 0.2s;
+            margin-left: 380px;
+        }
+        .btn-logout:hover { background: rgba(112, 5, 103, 0.35)35); }
+
+
+/* ============================================================
+   FRASE MOTIVACIONAL BANNER
+   ============================================================ */
+/* Busca esta sección en tu CSS y cámbiala así: */
+.motivation-banner {
+  /* He cambiado var(--teal) por un azul suave para que combine con tu diseño */
+  background: linear-gradient(135deg, rgb(238, 133, 150) 0%, purple 60%, #4a6feb 100%);
+  padding: 22px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.motivation-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.06'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.motivation-banner p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 17px;
+  color: white;
+  position: relative;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  max-width: 700px;
+  margin: 0 auto;
+  letter-spacing: 0.3px;
+}
+
+.motivation-banner p strong {
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* LAYOUT */
+.fcon{max-width:1180px;margin:28px auto;padding:0 20px;display:flex;gap:22px;align-items:flex-start}
+/* SIDEBAR IZQ */
+.lsb{width:235px;flex-shrink:0}
+.pmini{background:white;border-radius:var(--rxl);overflow:hidden;margin-bottom:16px;border:1px solid var(--sv);box-shadow:0 2px 18px rgba(20,46,160,.08)}
+.pmhd{background:var(--ctb);height:52px;position:relative;display:flex;align-items:flex-end;justify-content:center}
+.pmav{width:58px;height:58px;border-radius:50%;background:var(--ctb);border:3px solid white;display:flex;align-items:center;justify-content:center;color:var(--gd);font-size:20px;position:absolute;bottom:-29px;box-shadow:0 4px 14px rgba(20,46,160,.35);overflow:hidden}
+.pmav img{width:100%;height:100%;object-fit:cover}
+.pmbody{padding:38px 18px 18px;text-align:center}
+.pmbody h3{font-size:15px;font-weight:700;color:var(--cp)}
+.pmbody p{font-size:12px;color:var(--ctl);margin-top:3px}
+.pmst{display:flex;justify-content:space-around;margin-top:14px;padding-top:14px;border-top:1px solid var(--bs)}
+.pmst strong{display:block;font-size:16px;font-weight:700;color:var(--ca)}
+.pmst span{font-size:11px;color:var(--ctl)}
+/* Toggle mis posts */
+.ftog{display:flex;align-items:center;justify-content:space-between;padding:10px 18px;margin-bottom:10px;background:var(--bs);border-radius:var(--rsm);cursor:pointer;border:1px solid var(--sv);font-size:13px;font-weight:600;color:var(--cp);transition:background .15s;user-select:none}
+.ftog:hover{background:var(--sv)}
+.tsw{width:36px;height:20px;border-radius:10px;background:var(--sv);position:relative;transition:background .2s;flex-shrink:0}
+.tsw::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:white;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.ftog.on .tsw{background:var(--ca)}
+.ftog.on .tsw::after{transform:translateX(16px)}
+/* Left nav */
+.lnav{background:white;border-radius:var(--rxl);padding:12px 0;border:1px solid var(--sv);box-shadow:0 2px 18px rgba(20,46,160,.08);overflow:hidden}
+.lnlbl{font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--cs);padding:6px 18px 10px}
+.lnav a{display:flex;align-items:center;gap:10px;color:var(--ctl);padding:9px 18px;font-size:13.5px;font-weight:500;border-left:3px solid transparent;transition:background .15s,color .15s,border-color .15s}
+.lnav a i{width:16px;text-align:center;font-size:13px;color:var(--cs)}
+.lnav a:hover,.lnav a.active{background:var(--bs);color:var(--ca);border-left-color:var(--ca)}
+.lnav a:hover i,.lnav a.active i{color:var(--ca)}
+.nsep{height:1px;background:var(--sv);margin:7px 18px}
+.bloout{display:flex;align-items:center;gap:10px;margin:10px 18px 16px;padding:10px 14px;width:calc(100% - 36px);background:none;border:1.5px solid var(--cmb);color:var(--cp);border-radius:var(--rsm);font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .2s,color .2s}
+.bloout:hover{background:var(--cmh);color:white;border-color:var(--cmh)}
+/* FEED */
+.fcol{flex:1;min-width:0;max-width:600px}
+/* CREADOR */
+.pcreator{background:white;border-radius:var(--rxl);padding:18px 20px;margin-bottom:20px;border:1px solid var(--sv);box-shadow:0 2px 18px rgba(20,46,160,.07)}
+.ctop{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--bs)}
+.cav{width:42px;height:42px;border-radius:50%;background:var(--ctb);display:flex;align-items:center;justify-content:center;color:var(--gd);font-size:16px;flex-shrink:0;overflow:hidden}
+.cav img{width:100%;height:100%;object-fit:cover}
+.cfake{flex:1;padding:11px 18px;border:1.5px solid var(--sv);background:var(--bs);border-radius:25px;font-size:14px;color:var(--ctl);cursor:pointer;font-family:'Outfit',sans-serif;transition:border-color .2s;user-select:none}
+.cfake:hover{border-color:var(--ca);background:white}
+/* Panel del formulario de nueva pub */
+.cpanel{display:none;padding-top:14px;border-top:1px solid var(--bs);margin-top:0}
+.cpanel.open{display:block;animation:fd .25s ease}
+@keyframes fd{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.cpanel textarea{width:100%;padding:12px 16px;border:1.5px solid var(--sv);background:var(--bs);border-radius:var(--rmd);font-size:14px;font-family:'Outfit',sans-serif;color:var(--ctd);outline:none;resize:vertical;min-height:90px;transition:border-color .2s;margin-bottom:10px}
+.cpanel textarea:focus{border-color:var(--ca);background:white}
+.cpanel textarea::placeholder{color:var(--ctl)}
+.tchips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.tchip{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--sv);background:white;color:var(--ctl);transition:all .15s;user-select:none}
+.tchip:hover{border-color:var(--ca);color:var(--ca)}
+.tchip.sel{background:var(--ca);border-color:var(--ca);color:white}
+.hhint{font-size:12px;color:var(--ctl);margin-bottom:10px}
+.hhint span{color:var(--ca);font-weight:600}
+.photolbl{display:flex;align-items:center;gap:8px;padding:8px 14px;border:1.5px dashed var(--sv);border-radius:var(--rmd);cursor:pointer;color:var(--ctl);font-size:13px;font-weight:500;transition:border-color .2s,color .2s;margin-bottom:12px}
+.photolbl:hover{border-color:var(--ca);color:var(--ca)}
+.photoprev{margin-bottom:12px;display:none}
+.photoprev img{max-width:100%;border-radius:var(--rmd);max-height:200px;object-fit:cover}
+.bpublish{background:linear-gradient(135deg,var(--ca),var(--cmh));color:white;border:none;border-radius:var(--rmd);padding:11px 24px;font-size:14px;font-weight:700;font-family:'Outfit',sans-serif;cursor:pointer;box-shadow:0 3px 10px rgba(20,46,160,.3);transition:opacity .2s,transform .15s;display:flex;align-items:center;gap:8px}
+.bpublish:hover{opacity:.9;transform:translateY(-1px)}
+.copts{display:flex;justify-content:space-around;margin-top:14px}
+.copt{display:flex;align-items:center;gap:7px;padding:8px 14px;border-radius:var(--rsm);font-size:13px;font-weight:500;color:var(--ctl);cursor:pointer;transition:background .15s,color .15s;user-select:none}
+.copt:hover{background:var(--bs);color:var(--cp)}
+/* POST CARD */
+.pcard{background:white;border-radius:var(--rxl);margin-bottom:20px;overflow:hidden;border:1px solid var(--sv);box-shadow:0 2px 18px rgba(20,46,160,.07);position:relative;transition:box-shadow .25s,transform .25s;animation:cin .45s ease both}
+.pcard:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(20,46,160,.13)}
+@keyframes cin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.pcard:nth-child(2){animation-delay:.08s}.pcard:nth-child(3){animation-delay:.16s}
+.pcard::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(to bottom,var(--ca),var(--cmb))}
+.phdr{display:flex;align-items:center;gap:12px;padding:15px 18px 10px 20px}
+.pav{width:44px;height:44px;border-radius:50%;background:var(--ctb);display:flex;align-items:center;justify-content:center;color:var(--gd);font-size:16px;flex-shrink:0;overflow:hidden;box-shadow:0 2px 8px rgba(20,46,160,.3)}
+.pav img{width:100%;height:100%;object-fit:cover}
+.pmeta{flex:1}
+.pname{font-weight:700;font-size:14px;color:var(--cp)}
+.bofic{background:var(--ca);color:white;font-size:9px;padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:700;letter-spacing:.5px;vertical-align:middle}
+.pdate{font-size:12px;color:var(--ctl);margin-top:2px}
+.ptipo{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-left:6px;vertical-align:middle}
+.tAPOYO{background:var(--gs);color:#7a5c00}.tEXPERIENCIA{background:#d4edda;color:#155724}.tCONSEJO{background:#cce5ff;color:#004085}.tPREGUNTA{background:#f8d7da;color:#721c24}
+.pmore{color:var(--ctl);cursor:pointer;padding:4px;border-radius:50%;transition:background .2s}
+.pmore:hover{background:var(--bs)}
+.phighlight{margin:0 20px 12px;padding:14px 18px;background:linear-gradient(135deg,var(--gs),var(--bs));border-left:4px solid var(--gd);border-radius:0 var(--rmd) var(--rmd) 0}
+.phighlight p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:var(--cp);line-height:1.5}
+.pbody{padding:0 20px 14px;font-size:14.5px;color:var(--ctl);line-height:1.7;word-break:break-word}
+.pbody .htag{color:var(--ca);font-weight:600}
+.ptagrow{padding:0 20px 10px;display:flex;gap:6px;flex-wrap:wrap}
+.ptagpill{display:inline-block;background:var(--bs);color:var(--cp);font-size:12px;font-weight:600;padding:2px 10px;border-radius:20px;border:1px solid var(--sv)}
+.pmedia{width:100%;max-height:420px;overflow:hidden;background:var(--bs)}
+.pmedia img{width:100%;height:auto;display:block;object-fit:cover;transition:transform .4s ease}
+.pcard:hover .pmedia img{transform:scale(1.015)}
+.pstats{padding:8px 20px;display:flex;justify-content:space-between;font-size:13px;color:var(--ctl);border-top:1px solid var(--bs);border-bottom:1px solid var(--bs)}
+.rpw{display:flex;align-items:center;gap:6px}
+.rpp{width:20px;height:20px;border-radius:50%;border:2px solid white;margin-left:-6px;display:flex;align-items:center;justify-content:center;font-size:9px;color:white}
+.rpp:first-child{margin-left:0}
+.rp1{background:var(--ca)}.rp2{background:var(--cmb)}
+.pacts{display:flex;justify-content:space-around;padding:4px 0}
+.pab{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:10px;cursor:pointer;color:var(--ctl);font-size:13px;font-weight:500;border-radius:var(--rsm);transition:background .15s,color .15s;background:none;border:none;font-family:'Outfit',sans-serif;width:100%}
+.pab:hover{background:var(--bs);color:var(--cp)}
+.pab.like-liked{color:var(--ca)}
+.pab.like-liked i{color:var(--ca)}
+.pab.del:hover{background:#fdf3f2;color:var(--er)}
+/* COMENTARIOS */
+.comwrap{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.comwrap.open{max-height:800px;border-top:1px solid var(--bs)}
+.comlist{padding:12px 20px 0;display:flex;flex-direction:column;gap:10px}
+.comitem{display:flex;gap:10px;align-items:flex-start;animation:fd .2s ease}
+.comav{width:32px;height:32px;border-radius:50%;background:var(--ctb);display:flex;align-items:center;justify-content:center;color:var(--gd);font-size:12px;flex-shrink:0;overflow:hidden}
+.comav img{width:100%;height:100%;object-fit:cover}
+.combubble{flex:1;background:var(--bs);border-radius:0 var(--rmd) var(--rmd) var(--rmd);padding:9px 13px}
+.comauth{font-weight:700;font-size:12px;color:var(--cp);margin-bottom:3px}
+.comtxt{font-size:13px;color:var(--ctd);line-height:1.5}
+.comfoot{display:flex;align-items:center;justify-content:space-between;margin-top:4px}
+.comdate{font-size:11px;color:var(--ctl)}
+.comdelb{background:none;border:none;cursor:pointer;color:var(--ctl);font-size:11px;padding:2px 6px;border-radius:4px;transition:background .15s,color .15s;font-family:'Outfit',sans-serif}
+.comdelb:hover{background:#fdf3f2;color:var(--er)}
+.comform{padding:12px 20px 14px;display:flex;gap:10px;align-items:center}
+.cfav{width:32px;height:32px;border-radius:50%;background:var(--ctb);display:flex;align-items:center;justify-content:center;color:var(--gd);font-size:12px;flex-shrink:0;overflow:hidden}
+.cfav img{width:100%;height:100%;object-fit:cover}
+.cominput{flex:1;padding:9px 16px;border:1.5px solid var(--sv);background:var(--bs);border-radius:25px;font-size:13px;color:var(--ctd);outline:none;font-family:'Outfit',sans-serif;transition:border-color .2s}
+.cominput:focus{border-color:var(--ca);background:white}
+.cominput::placeholder{color:var(--ctl)}
+.comsend{width:34px;height:34px;border-radius:50%;background:var(--ca);color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:background .2s;flex-shrink:0}
+.comsend:hover{background:var(--cmh)}
+/* SIDEBAR DER */
+.rscol{width:280px;flex-shrink:0}
+.qwidget{background:var(--ctb);border-radius:var(--rxl);padding:22px 20px;margin-bottom:16px;position:relative;overflow:hidden;border:1px solid rgba(241,196,15,.15);box-shadow:0 4px 22px rgba(4,4,24,.3)}
+.qwidget::before{content:'"';position:absolute;top:-16px;left:14px;font-family:'Cormorant Garamond',serif;font-size:110px;color:rgba(255,255,255,.06);line-height:1}
+.qlbl{font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--gd);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.qwidget p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:rgba(255,255,255,.95);line-height:1.55;position:relative}
+.qauthor{font-family:'Outfit',sans-serif;font-style:normal;font-size:11px;color:rgba(255,255,255,.55);margin-top:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;display:block}
+.ecard{background:white;border-radius:var(--rxl);padding:22px 20px;margin-bottom:16px;border:2px solid var(--cmb);box-shadow:0 4px 20px rgba(20,46,160,.12);position:relative;overflow:hidden}
+.ecard::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--ca),var(--cmb),var(--gd))}
+.ecard h2{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cp);margin-bottom:6px;margin-top:4px;line-height:1.3}
+.esub{font-size:12px;color:var(--ctl);margin-bottom:16px;line-height:1.5}
+.dbtn{background:linear-gradient(135deg,var(--ca),var(--cmh));color:white;padding:13px 18px;border:none;border-radius:var(--rmd);font-size:13px;font-weight:700;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Outfit',sans-serif;box-shadow:0 4px 16px rgba(20,46,160,.4);transition:transform .2s,box-shadow .2s}
+.dbtn:hover{transform:translateY(-2px);box-shadow:0 7px 22px rgba(20,46,160,.55)}
+.crow{display:flex;align-items:center;gap:10px;margin-top:13px;padding:10px 12px;background:var(--bs);border-radius:var(--rsm);cursor:pointer;border:1px solid var(--sv);transition:background .15s}
+.crow:hover{background:var(--sv)}
+.crow i{color:var(--ca);font-size:14px}
+.crow span{font-size:12px;font-weight:500;color:var(--cp)}
+.scrd{background:white;border-radius:var(--rxl);padding:18px;margin-bottom:16px;border:1px solid var(--sv);box-shadow:0 2px 18px rgba(20,46,160,.07)}
+.scrd h4{font-size:13px;font-weight:700;color:var(--cp);margin-bottom:14px;display:flex;align-items:center;gap:7px;padding-bottom:10px;border-bottom:2px solid var(--bs)}
+.scrd h4 i{color:var(--ca)}
+.grow{display:flex;align-items:center;gap:11px;padding:8px 0;border-bottom:1px solid var(--bs);cursor:pointer;transition:opacity .15s}
+.grow:last-child{border-bottom:none}
+.grow:hover{opacity:.78}
+.gico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;color:white;flex-shrink:0}
+.gi1{background:linear-gradient(135deg,var(--cp),var(--cs))}.gi2{background:linear-gradient(135deg,var(--cmb),var(--ca))}.gi3{background:linear-gradient(135deg,var(--ca),var(--cmh))}.gi4{background:linear-gradient(135deg,#040418,var(--cmb))}
+.gnm{font-size:13px;font-weight:600;color:var(--cp)}.gmem{font-size:11px;color:var(--ctl)}
+.gjoin{font-size:11px;font-weight:700;color:var(--ca);white-space:nowrap;flex:1;text-align:right}
+.trow{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bs);cursor:pointer}
+.trow:last-child{border-bottom:none}
+.trow:hover{background:var(--bs);border-radius:var(--rsm);padding-left:6px}
+.ttag{font-size:14px;font-weight:700;color:var(--ca)}
+.tcnt{font-size:11px;color:var(--ctl)}
+/* MODO DIFÍCIL */
+body.dm{background-color:#1f1f3a;color:#ecf0f1}
+body.dm .hbar,body.dm .mnav{background:#12112a;border-color:rgba(241,196,15,.2)}
+body.dm .mnav a{color:rgba(236,240,241,.6)}
+body.dm .mnav a.active{color:var(--gd);border-bottom-color:var(--gd)}
+body.dm .pcreator,body.dm .pcard,body.dm .scrd,body.dm .lnav,body.dm .pmini,body.dm .ecard{background:#2b2a40;border-color:#3a385a}
+body.dm .mbanner{background:linear-gradient(135deg,#0a0920,#142050)}
+/* MODAL */
+.mover{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;justify-content:center;align-items:center;z-index:1000;backdrop-filter:blur(6px)}
+.mover.active{display:flex}
+.mcon{background:white;padding:36px 32px;border-radius:var(--rxl);box-shadow:0 12px 40px rgba(20,46,160,.25);max-width:380px;width:90%;text-align:center;transform:scale(.88);opacity:0;transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .3s;border-top:4px solid var(--ca)}
+.mover.active .mcon{transform:scale(1);opacity:1}
+.mico{width:54px;height:54px;border-radius:50%;background:var(--ctb);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:var(--gd);font-size:20px}
+.mcon h3{font-family:'Cormorant Garamond',serif;color:var(--cp);margin-bottom:10px;font-size:22px}
+.mcon p{color:var(--ctl);font-size:14px;line-height:1.6}
+.mcon button{background:linear-gradient(135deg,var(--ca),var(--cmh));color:white;padding:11px 28px;border:none;border-radius:30px;cursor:pointer;margin-top:20px;font-weight:700;font-family:'Outfit',sans-serif}
+/* TOAST */
+.toast{position:fixed;top:22px;right:22px;padding:14px 20px;border-radius:var(--rmd);font-size:14px;font-weight:600;color:white;z-index:2000;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.2);animation:tin .35s cubic-bezier(.34,1.56,.64,1);min-width:260px;font-family:'Outfit',sans-serif}
+.toast.ok{background:linear-gradient(135deg,var(--ok),#219a52);border-left:4px solid #1e8449}
+.toast.err{background:linear-gradient(135deg,var(--er),#c0392b);border-left:4px solid #a93226}
+@keyframes tin{from{transform:translateX(120px) scale(.9);opacity:0}to{transform:none;opacity:1}}
+/* MENSAJES DJANGO */
+.djmsg{max-width:620px;margin:14px auto;padding:0 20px}
+.djok{background:#d4edda;color:#155724;border:1px solid #c3e6cb;padding:11px 16px;border-radius:var(--rsm);margin-bottom:8px;font-size:14px;display:flex;align-items:center;gap:8px}
+.djerr{background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;padding:11px 16px;border-radius:var(--rsm);margin-bottom:8px;font-size:14px;display:flex;align-items:center;gap:8px}
+/* EMPTY */
+.emural{text-align:center;padding:60px 20px}
+.emural i{font-size:48px;color:var(--sv);margin-bottom:16px;display:block}
+.emural h3{color:var(--cp);font-size:20px;margin-bottom:8px}
+.emural p{color:var(--ctl);font-size:14px}
+@media(max-width:1100px){.lsb,.rscol{display:none}.fcon{justify-content:center}.fcol{max-width:100%}}
+@media(max-width:700px){.sbox{display:none}.mnav a{padding:11px 12px;font-size:12px}}
+
+</style>
+</head>
+<body>
+
+</head>
+<body>
+
+<header class="header-bar">
+  <div class="logo-wrap">
+    <div class="logo-text-wrap">
+      <div class="logo-title">
+        Life<span style="color: #4a6feb;">Line</span>
+        <img class="logol" src="{% static 'imagenes/Group 243 (3).png' %}" alt="logo">
+      </div>
+      <div class="logo-tagline">Comunidad &amp; Bienestar</div>
+    </div>
+  </div>
+  
+  <div class="search-box">
+    <i class="fas fa-search"></i>
+    <input type="text" placeholder="Buscar en LifeLine...">
+  </div>
+
+  <div class="header-right">
+    {% if request.user.is_staff or request.user.rol == 'ADMIN' %}
+    <a class="hdr-btn admin-btn" href="{% url 'lista_productos' %}" title="Panel de Administración">
+      <i class="fas fa-user-shield"></i>
+{% endif %}
+    </a>
+
+    <a class="hdr-btn" href="{% url 'ver_carrito' %}" title="Carrito">
+      <i class="fas fa-shopping-cart"></i>
+<span class="cart-badge" id="cart-count">{{ carrito_count }}</span>    </a>
+    </a>
+
+    <div class="user-chip">
+      <div class="user-chip-av"><i class="fas fa-user"></i></div>
+      <span>{{ usuario.username|default:"Mi cuenta" }}</span>
+    </div>
+  </div> </header>
+
+<nav class="main-tabs">
+  <a href="{% url 'home' %}" ><i class="fas fa-home"></i> Inicio</a>
+  <a href="{% url 'mural' %}"class="active"><i class="fas fa-seedling"></i> Mural</a>
+  <a href="{% url 'perfil' %}"><i class="fas fa-user"></i> Perfil</a>
+  <a href="{% url 'tienda' %}"><i class="fas fa-store"></i> Productos</a>
+  <a href="#"><i class="fas fa-calendar-alt"></i> Calendario</a>
+  <a href="#"><i class="fas fa-apple-alt"></i> Nutrición</a>
+  <a href="{% url 'alarmas' %}"><i class="fas fa-clock"></i> Alarmas</a>
+  <a href="{% url 'contactanos' %}"><i class="fas fa-envelope"></i> Contáctanos</a>
+  {% if user.is_authenticated %}
+        <form method="post" action="{% url 'logout' %}" style="margin:0;">
+            {% csrf_token %}
+            <button type="submit" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Salir</button>
+        </form>
+        {% endif %}
+</nav>
+<!-- ===== BANNER MOTIVACIONAL ===== -->
+<div class="motivation-banner">
+  <p><strong>Hoy es un nuevo día de valentía.</strong> Cada amanecer que vives es una victoria que merece ser celebrada. 🌸</p>
+</div>
+
+<!-- MENSAJES DJANGO -->
+{% if messages %}
+<div class="djmsg">
+  {% for message in messages %}
+    <div class="{% if message.tags == 'success' %}djok{% else %}djerr{% endif %}">
+      <i class="fas fa-{% if message.tags == 'success' %}check-circle{% else %}exclamation-circle{% endif %}"></i>
+      {{ message }}
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<!-- LAYOUT -->
+<div class="fcon">
+
+  <!-- SIDEBAR IZQ -->
+  <aside class="lsb">
+    <div class="pmini">
+      <div class="pmhd">
+        <div class="pmav">{% if usuario.foto_perfil %}<img src="{{ usuario.foto_perfil.url }}" alt="">{% else %}<i class="fas fa-user"></i>{% endif %}</div>
+      </div>
+      <div class="pmbody">
+        <h3>{{ usuario.username }}</h3>
+        <p>{{ usuario.get_rol_display }}</p>
+        <div class="pmst">
+          <div><strong>{{ mis_publicaciones_count|default:"0" }}</strong><span>Posts</span></div>
+          <div><strong>{{ total_likes|default:"0" }}</strong><span>Apoyos</span></div>
+          <div><strong>{{ total_comentarios|default:"0" }}</strong><span>Comentarios</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ftog" id="myToggle" onclick="toggleMyPosts()">
+      <span><i class="fas fa-filter" style="margin-right:6px"></i>Solo mis posts</span>
+      <div class="tsw"></div>
+    </div>
+
+    <div class="lnav">
+      <div class="lnlbl">Navegación</div>
+      <a href="#" class="active"><i class="fas fa-layer-group"></i> Todas las Publicaciones</a>
+      <a href="#"><i class="fas fa-plus-circle"></i> Crear Publicación</a>
+      <a href="#"><i class="fas fa-book-medical"></i> Artículos de Salud</a>
+      <a href="#"><i class="fas fa-hands-helping"></i> Grupos de Apoyo</a>
+      <a href="#"><i class="fas fa-calendar-alt"></i> Eventos Locales</a>
+      <div class="nsep"></div>
+      <a href="#"><i class="fas fa-tags"></i> Mis Descuentos</a>
+      <a href="#"><i class="fas fa-clipboard-list"></i> Mis Pedidos</a>
+      <div class="nsep"></div>
+      <form action="{% url 'logout' %}" method="post" style="padding:0 18px 6px">
+        {% csrf_token %}
+        <button type="submit" class="bloout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+      </form>
+    </div>
+  </aside>
+
+  <!-- FEED CENTRAL -->
+  <main class="fcol">
+
+    <!-- ═══ CREADOR DE PUBLICACIÓN ═══ -->
+    <div class="pcreator">
+      <div class="ctop">
+        <div class="cav">{% if usuario.foto_perfil %}<img src="{{ usuario.foto_perfil.url }}" alt="">{% else %}<i class="fas fa-user"></i>{% endif %}</div>
+        <div class="cfake" onclick="abrirCreador()">¿Qué quieres compartir hoy con tu comunidad?</div>
+      </div>
+
+      <!-- Panel expandible con formulario POST real -->
+      <div class="cpanel" id="cpanel">
+        <form method="post" action="{% url 'crear_publicacion' %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" name="tipo" id="tipoHid" value="APOYO">
+
+          <div class="tchips">
+            <div class="tchip sel" onclick="selTipo(this,'APOYO')">💙 Apoyo</div>
+            <div class="tchip" onclick="selTipo(this,'EXPERIENCIA')">🌱 Experiencia</div>
+            <div class="tchip" onclick="selTipo(this,'CONSEJO')">💡 Consejo</div>
+            <div class="tchip" onclick="selTipo(this,'PREGUNTA')">❓ Pregunta</div>
+          </div>
+
+          <textarea name="contenido" id="postTA"
+                    placeholder="Comparte algo con la comunidad LifeLine... Usa #hashtags para categorizar tu publicación 🌟"
+                    required></textarea>
+
+          <p class="hhint">Usa <span>#hashtags</span> en tu texto · Se mostrarán como etiquetas en tu publicación</p>
+
+          <label class="photolbl" for="postImg">
+            <i class="fas fa-image" style="color:var(--cs)"></i> Añadir foto
+          </label>
+          <input type="file" id="postImg" name="imagen" accept="image/*" style="display:none" onchange="prevImg(this)">
+          <div class="photoprev" id="photoprev">
+            <img id="previmgel" src="" alt="Vista previa">
+          </div>
+
+          <button type="submit" class="bpublish">
+            <i class="fas fa-paper-plane"></i> Publicar
+          </button>
+        </form>
+      </div>
+
+      <div class="copts">
+        <div class="copt" onclick="abrirCreador()"><i class="fas fa-magic" style="color:var(--cp)"></i><span>Novedad</span></div>
+        <div class="copt" onclick="abrirCreador()"><i class="fas fa-image" style="color:var(--cs)"></i><span>Fotos</span></div>
+        <div class="copt" onclick="abrirCreador()"><i class="fas fa-heartbeat" style="color:var(--ca)"></i><span>Sentimiento</span></div>
+      </div>
+    </div>
+
+    <!-- ═══ PUBLICACIONES ═══ -->
+    {% if publicaciones %}
+      {% for pub in publicaciones %}
+      <div class="pcard" data-autor="{{ pub.autor.id }}">
+
+        <div class="phdr">
+          <div class="pav">{% if pub.autor.foto_perfil %}<img src="{{ pub.autor.foto_perfil.url }}" alt="">{% else %}<i class="fas fa-{% if pub.autor.es_admin %}shield-alt{% else %}user{% endif %}"></i>{% endif %}</div>
+          <div class="pmeta">
+            <div class="pname">
+              {{ pub.autor.username }}
+              {% if pub.autor.es_admin %}<span class="bofic">OFICIAL</span>{% endif %}
+              <span class="ptipo t{{ pub.tipo }}">{{ pub.get_tipo_display }}</span>
+            </div>
+            <!-- FECHA de la publicación -->
+            <div class="pdate">
+              <i class="fas fa-clock"></i>
+              {{ pub.fecha_creacion|date:"d \d\e F \d\e Y, H:i" }}
+            </div>
+          </div>
+          <div class="pmore"><i class="fas fa-ellipsis-h"></i></div>
+        </div>
+
+        <!-- Cita destacada para posts de admin -->
+        {% if pub.autor.es_admin %}
+        <div class="phighlight">
+          <p>{{ pub.contenido|truncatechars:140 }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Cuerpo — hashtags resaltados por JS -->
+        <div class="pbody" data-raw="{{ pub.contenido }}">{{ pub.contenido }}</div>
+
+        <!-- Hashtags como pills -->
+        {% if pub.hashtags_list %}
+        <div class="ptagrow">
+          {% for tag in pub.hashtags_list %}<span class="ptagpill">#{{ tag }}</span>{% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Imagen si existe -->
+        {% if pub.imagen %}
+        <div class="pmedia"><img src="{{ pub.imagen.url }}" alt="Imagen"></div>
+        {% endif %}
+
+        <div class="pstats">
+          <div class="rpw">
+            <div style="display:flex">
+              <span class="rpp rp1"><i class="fas fa-heart" style="font-size:8px"></i></span>
+              <span class="rpp rp2"><i class="fas fa-hands-helping" style="font-size:8px"></i></span>
+            </div>
+            &nbsp;{{ pub.total_likes }} reacciones
+          </div>
+          <span>{{ pub.comentarios.count }} comentarios</span>
+        </div>
+
+        <div class="pacts">
+          <!-- LIKE — formulario POST real (guarda en BD) -->
+          <form method="post" action="{% url 'dar_like' pub.id %}" style="flex:1;display:contents">
+            {% csrf_token %}
+            <button type="submit" class="pab {% if usuario in pub.likes.all %}like-liked{% endif %}">
+              <i class="fas fa-heart"></i>
+              {% if usuario in pub.likes.all %}Ya me gusta{% else %}Me gusta{% endif %}
+            </button>
+          </form>
+
+          <!-- COMENTAR — toggle sección -->
+          <button class="pab" type="button" onclick="toggleCom('c{{ pub.id }}')">
+            <i class="fas fa-comment-alt"></i> Comentar ({{ pub.comentarios.count }})
+          </button>
+
+          <!-- ELIMINAR (solo autor o admin) -->
+          {% if usuario == pub.autor or usuario.es_admin %}
+          <form method="post" action="{% url 'eliminar_publicacion' pub.id %}" style="flex:1;display:contents"
+                onsubmit="return confirm('¿Eliminar esta publicación?')">
+            {% csrf_token %}
+            <button type="submit" class="pab del"><i class="fas fa-trash"></i> Eliminar</button>
+          </form>
+          {% endif %}
+        </div>
+
+        <!-- ═══ SECCIÓN DE COMENTARIOS ═══ -->
+        <div class="comwrap" id="c{{ pub.id }}">
+          <div class="comlist">
+            {% for c in pub.comentarios.all %}
+            <div class="comitem">
+              <div class="comav">{% if c.autor.foto_perfil %}<img src="{{ c.autor.foto_perfil.url }}" alt="">{% else %}<i class="fas fa-user"></i>{% endif %}</div>
+              <div class="combubble">
+                <div class="comauth">{{ c.autor.username }}</div>
+                <div class="comtxt">{{ c.contenido }}</div>
+                <div class="comfoot">
+                  <span class="comdate">{{ c.fecha_creacion|date:"d M Y, H:i" }}</span>
+                  {% if usuario == c.autor or usuario.es_admin %}
+                  <form method="post" action="{% url 'eliminar_comentario' c.id %}"
+                        onsubmit="return confirm('¿Eliminar comentario?')">
+                    {% csrf_token %}
+                    <button type="submit" class="comdelb"><i class="fas fa-trash"></i> Eliminar</button>
+                  </form>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            {% empty %}
+            <p style="font-size:13px;color:var(--ctl);text-align:center;padding:10px 0">Sé el primero en comentar 💙</p>
+            {% endfor %}
+          </div>
+
+          <!-- Formulario comentario — POST real -->
+          <form method="post" action="{% url 'agregar_comentario' pub.id %}" class="comform">
+            {% csrf_token %}
+            <div class="cfav">{% if usuario.foto_perfil %}<img src="{{ usuario.foto_perfil.url }}" alt="">{% else %}<i class="fas fa-user"></i>{% endif %}</div>
+            <input type="text" name="comentario" class="cominput"
+                   placeholder="Escribe un comentario..." required maxlength="500">
+            <button type="submit" class="comsend"><i class="fas fa-paper-plane"></i></button>
+          </form>
+        </div>
+
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="emural">
+        <i class="fas fa-seedling"></i>
+        <h3>Aún no hay publicaciones</h3>
+        <p>¡Sé el primero en compartir algo con la comunidad! 🌸</p>
+      </div>
+    {% endif %}
+
+  </main>
+
+  <!-- SIDEBAR DER -->
+  <aside class="rscol">
+    <div class="qwidget">
+      <div class="qlbl"><i class="fas fa-star"></i> Frase del día</div>
+      <p>"La valentía no es la ausencia del miedo, sino la decisión de que algo más importante merece tu energía."
+        <span class="qauthor">— LifeLine Comunidad</span>
+      </p>
+    </div>
+
+    <div class="ecard">
+      <h2>¿Necesitas un respiro ahora mismo?</h2>
+      <p class="esub">Activa el modo calmado y accede a apoyo instantáneo.</p>
+      <button class="dbtn" onclick="toggleDM()"><i class="fas fa-cloud-moon"></i> DÍA DIFÍCIL — Presiona aquí</button>
+      <div class="crow"><i class="fas fa-comments"></i><span>Chat con Voluntarios Capacitados</span></div>
+    </div>
+
+    <div class="scrd">
+      <h4><i class="fas fa-users"></i> Grupos Populares</h4>
+      <div class="grow"><div class="gico gi1"><i class="fas fa-heart"></i></div><div style="flex:1"><div class="gnm">Apoyo Emocional</div><div class="gmem">8.5K miembros</div></div><div class="gjoin">+ Unirse</div></div>
+      <div class="grow"><div class="gico gi2"><i class="fas fa-apple-alt"></i></div><div style="flex:1"><div class="gnm">Recetas Saludables</div><div class="gmem">5.2K miembros</div></div><div class="gjoin">+ Unirse</div></div>
+      <div class="grow"><div class="gico gi3"><i class="fas fa-spa"></i></div><div style="flex:1"><div class="gnm">Yoga y Meditación</div><div class="gmem">3.1K miembros</div></div><div class="gjoin">+ Unirse</div></div>
+      <div class="grow"><div class="gico gi4"><i class="fas fa-hand-holding-heart"></i></div><div style="flex:1"><div class="gnm">Cuidados Post-Cirugía</div><div class="gmem">1.9K miembros</div></div><div class="gjoin">+ Unirse</div></div>
+    </div>
+
+    <div class="scrd">
+      <h4><i class="fas fa-fire"></i> Tendencias Hoy</h4>
+      <div class="trow"><span class="ttag">#DiaDeLucha</span><span class="tcnt">1.2K posts</span></div>
+      <div class="trow"><span class="ttag">#FuerzaYEsperanza</span><span class="tcnt">874 posts</span></div>
+      <div class="trow"><span class="ttag">#GraciasLifeLine</span><span class="tcnt">523 posts</span></div>
+    </div>
+  </aside>
+</div>
+
+<!-- MODAL -->
+<div class="mover" id="modal">
+  <div class="mcon">
+    <div class="mico" id="mico"><i class="fas fa-moon"></i></div>
+    <h3 id="mtitle"></h3><p id="mmsg"></p>
+    <button onclick="closeModal()">Entendido</button>
+  </div>
+</div>
+
+<script>
+const CUID = {{ usuario.id }};
+
+/* Resaltar hashtags */
+document.querySelectorAll('.pbody').forEach(el => {
+  const raw = el.dataset.raw || el.textContent;
+  el.innerHTML = raw.replace(/#(\w+)/g, '<span class="htag">#$1</span>');
+});
+
+/* Abrir/cerrar creador */
+function abrirCreador() {
+  const p = document.getElementById('cpanel');
+  p.classList.toggle('open');
+  if (p.classList.contains('open')) document.getElementById('postTA').focus();
+}
+
+/* Seleccionar tipo */
+function selTipo(chip, t) {
+  document.querySelectorAll('.tchip').forEach(c => c.classList.remove('sel'));
+  chip.classList.add('sel');
+  document.getElementById('tipoHid').value = t;
+}
+
+/* Preview imagen */
+function prevImg(input) {
+  if (input.files && input.files[0]) {
+    const r = new FileReader();
+    r.onload = e => {
+      document.getElementById('previmgel').src = e.target.result;
+      document.getElementById('photoprev').style.display = 'block';
+    };
+    r.readAsDataURL(input.files[0]);
+  }
+}
+
+/* Toggle sección comentarios */
+function toggleCom(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+/* Toggle solo mis posts */
+let myOnly = false;
+function toggleMyPosts() {
+  myOnly = !myOnly;
+  document.getElementById('myToggle').classList.toggle('on', myOnly);
+  document.querySelectorAll('.pcard[data-autor]').forEach(c => {
+    c.style.display = (myOnly && parseInt(c.dataset.autor) !== CUID) ? 'none' : '';
+  });
+}
+
+/* Modo difícil */
+let dm = false;
+const dBtn = document.querySelector('.dbtn');
+function toggleDM() {
+  dm = !dm;
+  document.body.classList.toggle('dm', dm);
+  dBtn.innerHTML = dm
+    ? '<i class="fas fa-sun"></i> MODO CALMADO ACTIVO — Presiona para salir'
+    : '<i class="fas fa-cloud-moon"></i> DÍA DIFÍCIL — Presiona aquí';
+  showModal(
+    dm ? '¡Modo Calmado Activado!' : 'Modo Estándar Restaurado',
+    dm ? 'Respira profundo. Eres suficiente. Este espacio es tuyo.' : 'Volviendo a los colores brillantes. Siempre estamos aquí para ti. 🌸',
+    dm ? 'fas fa-moon' : 'fas fa-sun'
+  );
+}
+function showModal(t, m, ico) {
+  document.getElementById('mtitle').innerText = t;
+  document.getElementById('mmsg').innerText = m;
+  document.getElementById('mico').innerHTML = `<i class="${ico}"></i>`;
+  document.getElementById('modal').classList.add('active');
+}
+function closeModal() { document.getElementById('modal').classList.remove('active'); }
+</script>
+</body>
+</html>

@@ -1,0 +1,333 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LifeLine - Finalizar Compra</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+<style>
+:root{--cp:#3d5273;--cs:#5b6e94;--ca:#142ea0;--cmh:#2d3c7e;--ctb:linear-gradient(135deg,#040418,#102468);--ctd:#1a1a1a;--ctl:#555;--bs:#e8edf8;--bg:rgba(20,46,160,.12);--sv:#dce3f0;--cr:#f7f9fc;--gd:#f1c40f;--ok:#27ae60;--er:#e74c3c;--rxl:20px;--rmd:12px;--rsm:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:var(--cr);color:var(--ctd);min-height:100vh}
+a{text-decoration:none}
+.header-bar{background:white;border-bottom:4px solid var(--ca);padding:11px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(20,46,160,.1)}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--cp);line-height:1.1}
+.header-logo-section{display:flex;align-items:center;gap:10px}
+.header-logo-section img{width:40px;height:40px;object-fit:contain}
+.main-tabs{background:var(--cp);display:flex;padding:0 24px;overflow-x:auto;gap:2px}
+.main-tabs a{color:rgba(255,255,255,.7);padding:12px 16px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;white-space:nowrap;border-bottom:3px solid transparent;transition:color .2s,border-color .2s,background .2s}
+.main-tabs a:hover{color:white;background:rgba(255,255,255,.08)}
+.main-tabs a.active{color:var(--gd);border-bottom-color:var(--gd);font-weight:700}
+
+/* Layout */
+.pago-wrapper{max-width:1100px;margin:28px auto;padding:0 20px 50px}
+.pago-grid{display:grid;grid-template-columns:1fr 330px;gap:22px;align-items:flex-start}
+.steps{display:flex;align-items:center;gap:8px;margin-bottom:22px;font-size:13px;color:var(--ctl)}
+.step{display:flex;align-items:center;gap:6px;font-weight:600}
+.step.done{color:var(--ok)}.step.active{color:var(--ca)}
+.step-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;background:var(--bs);color:var(--ctl);border:1.5px solid var(--sv)}
+.step.done .step-num{background:var(--ok);color:white;border-color:var(--ok)}
+.step.active .step-num{background:var(--ca);color:white;border-color:var(--ca)}
+.step-sep{flex:1;height:1px;background:var(--sv)}
+
+/* Secciones del form */
+.seccion{background:white;border-radius:var(--rxl);border:1px solid var(--sv);box-shadow:0 2px 18px rgba(20,46,160,.07);overflow:hidden;margin-bottom:18px}
+.sec-hdr{background:var(--ctb);padding:14px 20px;display:flex;align-items:center;gap:10px;position:relative}
+.sec-hdr::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gd),transparent)}
+.sec-hdr i{color:var(--gd)}.sec-hdr span{font-size:14px;font-weight:700;color:white}
+.sec-body{padding:22px}
+.fg{margin-bottom:16px}
+.fg label{display:block;font-size:11px;font-weight:700;color:var(--cs);letter-spacing:.4px;text-transform:uppercase;margin-bottom:6px}
+.fg input,.fg select{width:100%;padding:11px 14px;border:1.5px solid var(--sv);border-radius:var(--rsm);font-size:14px;color:var(--ctd);font-family:'Outfit',sans-serif;outline:none;background:var(--bs);transition:border-color .2s,box-shadow .2s}
+.fg input:focus,.fg select:focus{border-color:var(--ca);background:white;box-shadow:0 0 0 3px var(--bg)}
+.fg.error input,.fg.error select{border-color:var(--er)}
+.error-msg{color:var(--er);font-size:12px;margin-top:4px;display:flex;align-items:center;gap:4px}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fg-row-3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:14px}
+
+/* Tarjeta visual */
+.card-preview{background:linear-gradient(135deg,#1D3461,#3d5273);border-radius:14px;padding:22px 22px 18px;margin-bottom:20px;position:relative;overflow:hidden;color:white}
+.card-preview::before{content:'';position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:rgba(255,255,255,.06);border-radius:50%}
+.card-chip{width:36px;height:26px;background:linear-gradient(135deg,#f1c40f,#d4ac0d);border-radius:5px;margin-bottom:16px}
+.card-num-preview{font-family:monospace;font-size:18px;font-weight:700;letter-spacing:3px;margin-bottom:14px}
+.card-foot{display:flex;justify-content:space-between;align-items:flex-end}
+.card-foot-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.5px;opacity:.7;margin-bottom:2px}
+.card-foot-val{font-size:13px;font-weight:600}
+
+/* Resumen lateral */
+.resumen{background:white;border-radius:var(--rxl);border:1px solid var(--sv);box-shadow:0 2px 18px rgba(20,46,160,.07);overflow:hidden;position:sticky;top:84px}
+.res-hdr{background:var(--ctb);padding:14px 18px;display:flex;align-items:center;gap:8px;position:relative}
+.res-hdr::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gd),transparent)}
+.res-hdr i{color:var(--gd)}.res-hdr span{font-size:14px;font-weight:700;color:white}
+.res-body{padding:18px}
+.res-item{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--bs);font-size:13px}
+.res-item:last-of-type{border-bottom:none}
+.res-item .nom{color:var(--ctl);flex:1;padding-right:8px}
+.res-item .val{font-weight:700;color:var(--ctd);flex-shrink:0}
+.res-total{margin-top:14px;padding-top:14px;border-top:2px solid var(--bs);display:flex;justify-content:space-between}
+.res-total .tl{font-size:13px;font-weight:700;color:var(--cp);text-transform:uppercase;letter-spacing:.5px}
+.res-total .tv{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--ca)}
+.seguro{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--ctl);margin-top:14px;padding:10px;background:var(--bs);border-radius:var(--rsm)}
+.seguro i{color:var(--ok)}
+
+/* Botón pagar */
+.btn-pagar{background:linear-gradient(135deg,var(--ok),#1e8449);color:white;border:none;border-radius:var(--rmd);padding:14px;font-size:15px;font-weight:700;cursor:pointer;width:100%;margin-top:16px;font-family:'Outfit',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 3px 12px rgba(39,174,96,.35);transition:opacity .2s,transform .15s}
+.btn-pagar:hover{opacity:.9;transform:translateY(-1px)}
+.btn-volver{display:flex;align-items:center;justify-content:center;gap:7px;padding:10px;border:1.5px solid var(--sv);border-radius:var(--rmd);color:var(--cp);font-size:13px;font-weight:600;margin-top:8px;transition:border-color .2s,background .2s;background:white}
+.btn-volver:hover{border-color:var(--ca);background:var(--bs)}
+.hint{font-size:11px;color:var(--ctl);margin-top:5px;display:block}
+
+@media(max-width:900px){.pago-grid{grid-template-columns:1fr}.resumen{position:static}.fg-row,.fg-row-3{grid-template-columns:1fr}}
+@media(max-width:700px){.main-tabs a{padding:11px 12px;font-size:12px}}
+</style>
+</head>
+<body>
+
+<div class="header-bar">
+  <div class="header-logo-section">
+    <div class="logo-text">Life<br>Line</div>
+    <img src="{% static 'imagenes/Group 243 (3).png' %}" alt="logo">
+  </div>
+  <div style="font-size:13px;font-weight:600;color:var(--cp);display:flex;align-items:center;gap:6px;">
+    <i class="fas fa-lock" style="color:var(--ok)"></i> Compra segura
+  </div>
+</div>
+
+<nav class="main-tabs">
+  <a href="{% url 'home' %}"><i class="fas fa-home"></i> Inicio</a>
+  <a href="{% url 'tienda' %}"><i class="fas fa-store"></i> Tienda</a>
+  <a href="{% url 'ver_carrito' %}"><i class="fas fa-shopping-cart"></i> Carrito</a>
+  <a href="{% url 'pago' %}" class="active"><i class="fas fa-credit-card"></i> Pago</a>
+</nav>
+
+<div class="pago-wrapper">
+
+  <div class="steps">
+    <div class="step done"><div class="step-num"><i class="fas fa-check" style="font-size:9px"></i></div> Carrito</div>
+    <div class="step-sep"></div>
+    <div class="step active"><div class="step-num">2</div> Datos de envío y pago</div>
+    <div class="step-sep"></div>
+    <div class="step"><div class="step-num">3</div> Confirmación</div>
+  </div>
+
+  <form method="post" action="{% url 'pago' %}">
+    {% csrf_token %}
+    <div class="pago-grid">
+
+      <div>
+        <div class="seccion">
+          <div class="sec-hdr"><i class="fas fa-map-marker-alt"></i><span>Dirección de envío</span></div>
+          <div class="sec-body">
+
+            <div class="fg {% if errores.nombre_completo %}error{% endif %}">
+              <label>Nombre completo del destinatario *</label>
+              <input type="text" name="nombre_completo"
+                     value="{{ datos_form.nombre_completo|default:'' }}"
+                     placeholder="Ej: María García Rodríguez" maxlength="100">
+              {% if errores.nombre_completo %}
+              <div class="error-msg"><i class="fas fa-exclamation-circle"></i>{{ errores.nombre_completo }}</div>
+              {% endif %}
+            </div>
+
+            <div class="fg {% if errores.telefono %}error{% endif %}">
+              <label>Teléfono de contacto *</label>
+              <input type="tel" name="telefono" value="{{ datos_form.telefono|default:'' }}"
+                     placeholder="Ej: 3001234567" maxlength="15">
+              {% if errores.telefono %}
+              <div class="error-msg"><i class="fas fa-exclamation-circle"></i>{{ errores.telefono }}</div>
+              {% endif %}
+            </div>
+
+            <div class="fg {% if errores.direccion %}error{% endif %}">
+              <label>Dirección completa *</label>
+              <input type="text" name="direccion" value="{{ datos_form.direccion|default:'' }}"
+                     placeholder="Ej: Calle 123 #45-67, Apartamento 302" maxlength="200">
+              {% if errores.direccion %}
+              <div class="error-msg"><i class="fas fa-exclamation-circle"></i>{{ errores.direccion }}</div>
+              {% endif %}
+            </div>
+
+            <div class="fg-row">
+              <div class="fg {% if errores.ciudad %}error{% endif %}">
+                <label>Ciudad *</label>
+                <input type="text" name="ciudad" value="{{ datos_form.ciudad|default:'' }}"
+                       placeholder="Ej: Bogotá" maxlength="80">
+                {% if errores.ciudad %}
+                <div class="error-msg"><i class="fas fa-exclamation-circle"></i>{{ errores.ciudad }}</div>
+                {% endif %}
+              </div>
+              <div class="fg {% if errores.departamento %}error{% endif %}">
+                <label>Departamento *</label>
+                <select name="departamento">
+                  <option value="">Seleccionar...</option>
+                  <option value="Amazonas" {% if datos_form.departamento == "Amazonas" %}selected{% endif %}>Amazonas</option>
+                  <option value="Antioquia" {% if datos_form.departamento == "Antioquia" %}selected{% endif %}>Antioquia</option>
+                  <option value="Arauca" {% if datos_form.departamento == "Arauca" %}selected{% endif %}>Arauca</option>
+                  <option value="Atlántico" {% if datos_form.departamento == "Atlántico" %}selected{% endif %}>Atlántico</option>
+                  <option value="Bogotá D.C." {% if datos_form.departamento == "Bogotá D.C." %}selected{% endif %}>Bogotá D.C.</option>
+                  <option value="Bolívar" {% if datos_form.departamento == "Bolívar" %}selected{% endif %}>Bolívar</option>
+                  <option value="Boyacá" {% if datos_form.departamento == "Boyacá" %}selected{% endif %}>Boyacá</option>
+                  <option value="Caldas" {% if datos_form.departamento == "Caldas" %}selected{% endif %}>Caldas</option>
+                  <option value="Caquetá" {% if datos_form.departamento == "Caquetá" %}selected{% endif %}>Caquetá</option>
+                  <option value="Casanare" {% if datos_form.departamento == "Casanare" %}selected{% endif %}>Casanare</option>
+                  <option value="Cauca" {% if datos_form.departamento == "Cauca" %}selected{% endif %}>Cauca</option>
+                  <option value="Cesar" {% if datos_form.departamento == "Cesar" %}selected{% endif %}>Cesar</option>
+                  <option value="Chocó" {% if datos_form.departamento == "Chocó" %}selected{% endif %}>Chocó</option>
+                  <option value="Córdoba" {% if datos_form.departamento == "Córdoba" %}selected{% endif %}>Córdoba</option>
+                  <option value="Cundinamarca" {% if datos_form.departamento == "Cundinamarca" %}selected{% endif %}>Cundinamarca</option>
+                  <option value="Huila" {% if datos_form.departamento == "Huila" %}selected{% endif %}>Huila</option>
+                  <option value="La Guajira" {% if datos_form.departamento == "La Guajira" %}selected{% endif %}>La Guajira</option>
+                  <option value="Magdalena" {% if datos_form.departamento == "Magdalena" %}selected{% endif %}>Magdalena</option>
+                  <option value="Meta" {% if datos_form.departamento == "Meta" %}selected{% endif %}>Meta</option>
+                  <option value="Nariño" {% if datos_form.departamento == "Nariño" %}selected{% endif %}>Nariño</option>
+                  <option value="Norte de Santander" {% if datos_form.departamento == "Norte de Santander" %}selected{% endif %}>Norte de Santander</option>
+                  <option value="Quindío" {% if datos_form.departamento == "Quindío" %}selected{% endif %}>Quindío</option>
+                  <option value="Risaralda" {% if datos_form.departamento == "Risaralda" %}selected{% endif %}>Risaralda</option>
+                  <option value="Santander" {% if datos_form.departamento == "Santander" %}selected{% endif %}>Santander</option>
+                  <option value="Sucre" {% if datos_form.departamento == "Sucre" %}selected{% endif %}>Sucre</option>
+                  <option value="Tolima" {% if datos_form.departamento == "Tolima" %}selected{% endif %}>Tolima</option>
+                  <option value="Valle del Cauca" {% if datos_form.departamento == "Valle del Cauca" %}selected{% endif %}>Valle del Cauca</option>
+                </select>
+                {% if errores.departamento %}
+                <div class="error-msg"><i class="fas fa-exclamation-circle"></i>{{ errores.departamento }}</div>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="fg">
+              <label>Código postal (opcional)</label>
+              <input type="text" name="codigo_postal" value="{{ datos_form.codigo_postal|default:'' }}"
+                     placeholder="Ej: 110111" maxlength="10">
+            </div>
+
+          </div>
+        </div>
+
+        <div class="seccion">
+          <div class="sec-hdr"><i class="fas fa-credit-card"></i><span>Información de pago</span></div>
+          <div class="sec-body">
+
+            <div class="card-preview" id="cardPreview">
+              <div class="card-chip"></div>
+              <div class="card-num-preview" id="prevNum">•••• •••• •••• ••••</div>
+              <div class="card-foot">
+                <div>
+                  <div class="card-foot-lbl">Titular</div>
+                  <div class="card-foot-val" id="prevNom">NOMBRE APELLIDO</div>
+                </div>
+                <div>
+                  <div class="card-foot-lbl">Vence</div>
+                  <div class="card-foot-val" id="prevExp">MM/YY</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="fg {% if errores.numero_tarjeta %}error{% endif %}">
+              <label>Número de tarjeta *</label>
+              <input type="text" name="numero_tarjeta" id="inpNum"
+                     placeholder="1234 5678 9012 3456" maxlength="19"
+                     autocomplete="cc-number" inputmode="numeric">
+              {% if errores.numero_tarjeta %}
+              <div class="error-msg"><i class="fas fa-exclamation-circle"></i>{{ errores.numero_tarjeta }}</div>
+              {% endif %}
+            </div>
+
+            <div class="fg {% if errores.nombre_tarjeta %}error{% endif %}">
+              <label>Nombre en la tarjeta *</label>
+              <input type="text" name="nombre_tarjeta" id="inpNom"
+                     value="{{ datos_form.nombre_tarjeta|default:'' }}"
+                     placeholder="Como aparece en la tarjeta" maxlength="60">
+              {% if errores.nombre_tarjeta %}
+              <div class="error-msg"><i class="fas fa-exclamation-circle"></i>{{ errores.nombre_tarjeta }}</div>
+              {% endif %}
+            </div>
+
+            <div class="fg-row">
+              <div class="fg {% if errores.fecha_exp %}error{% endif %}">
+                <label>Fecha de vencimiento *</label>
+                <input type="text" name="fecha_exp" id="inpExp"
+                       value="{{ datos_form.fecha_exp|default:'' }}"
+                       placeholder="MM/YY" maxlength="5" inputmode="numeric">
+                {% if errores.fecha_exp %}
+                <div class="error-msg"><i class="fas fa-exclamation-circle"></i>{{ errores.fecha_exp }}</div>
+                {% endif %}
+              </div>
+              <div class="fg {% if errores.cvv %}error{% endif %}">
+                <label>CVV *</label>
+                <input type="password" name="cvv" placeholder="•••" maxlength="4" inputmode="numeric">
+                <span class="hint">3 o 4 dígitos al dorso de la tarjeta</span>
+                {% if errores.cvv %}
+                <div class="error-msg"><i class="fas fa-exclamation-circle"></i>{{ errores.cvv }}</div>
+                {% endif %}
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div>
+        <div class="resumen">
+          <div class="res-hdr"><i class="fas fa-receipt"></i><span>Resumen del pedido</span></div>
+          <div class="res-body">
+            {% for item in items %}
+            <div class="res-item">
+              <span class="nom">{{ item.producto.nombre|truncatechars:30 }} ×{{ item.cantidad }}</span>
+              <span class="val">${{ item.subtotal }}</span>
+            </div>
+            {% endfor %}
+            <div class="res-total">
+              <span class="tl">Total</span>
+              <span class="tv">${{ total }}</span>
+            </div>
+            <p style="font-size:11px;color:var(--ctl);text-align:right;margin-top:4px">COP · Impuestos incluidos</p>
+
+            <div class="seguro">
+              <i class="fas fa-shield-alt"></i>
+              <span>Pago 100% seguro. Tus datos están cifrados y protegidos.</span>
+            </div>
+
+            <button type="submit" class="btn-pagar">
+              <i class="fas fa-lock"></i> Pagar ${{ total }} COP
+            </button>
+            <a href="{% url 'ver_carrito' %}" class="btn-volver">
+              <i class="fas fa-arrow-left"></i> Volver al carrito
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+<script>
+const inpNum = document.getElementById('inpNum');
+const inpNom = document.getElementById('inpNom');
+const inpExp = document.getElementById('inpExp');
+const prevNum = document.getElementById('prevNum');
+const prevNom = document.getElementById('prevNom');
+const prevExp = document.getElementById('prevExp');
+
+inpNum.addEventListener('input', function() {
+  let v = this.value.replace(/\D/g,'').slice(0,16);
+  this.value = v.match(/.{1,4}/g)?.join(' ') || v;
+  prevNum.textContent = (v + '•'.repeat(Math.max(0,16-v.length))).match(/.{1,4}/g)?.join(' ') || '•••• •••• •••• ••••';
+});
+
+inpNom.addEventListener('input', function() {
+  prevNom.textContent = this.value.toUpperCase() || 'NOMBRE APELLIDO';
+});
+
+inpExp.addEventListener('input', function() {
+  let v = this.value.replace(/\D/g,'');
+  if(v.length >= 2) v = v.slice(0,2) + '/' + v.slice(2,4);
+  this.value = v;
+  prevExp.textContent = v || 'MM/YY';
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Registro de Usuarios - Ejercicio Clase</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; }
+    h1 { color: #3d5273; }
+    input { padding: 10px; margin: 5px 0 15px; width: 100%; border: 1px solid #ccc; border-radius: 6px; }
+    button { background: #5b6e94; color: white; padding: 12px 20px; border: none; border-radius: 6px; cursor: pointer; }
+    button:hover { background: #3d5273; }
+    .mensaje { color: green; font-weight: bold; margin: 10px 0; }
+    li { padding: 5px 0; border-bottom: 1px solid #eee; }
+  </style>
+</head>
+<body>
+  <h1>Registro de Usuarios (Ejercicio de Clase)</h1>
+
+  <!-- Formulario simple como pide la guía del profesor -->
+  <form method="post" action="{% url 'registro_txt' %}">
+    {% csrf_token %}
+    Nombre: <input type="text" name="nombre" required><br>
+    Email: <input type="email" name="email" required><br>
+    <button type="submit">Registrar</button>
+  </form>
+
+  <!-- Mensaje de resultado -->
+  {% if mensaje %}
+    <p class="mensaje">{{ mensaje }}</p>
+  {% endif %}
+
+  <!-- Lista de usuarios del archivo .txt -->
+  <h2>Usuarios Registrados en usuarios.txt:</h2>
+  <ul>
+    {% for usuario in usuarios %}
+      <li>{{ usuario.nombre }} - {{ usuario.email }} ({{ usuario.fecha_registro }})</li>
+    {% empty %}
+      <li>No hay usuarios registrados aún.</li>
+    {% endfor %}
+  </ul>
+
+  <br>
+  <a href="{% url 'home' %}" style="color: #3d5273;">← Volver al inicio</a>
+</body>
+</html>

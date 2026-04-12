@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login LifeLine</title>
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+.container { display: flex; height: 100vh; }
+.left-panel {
+  flex: 1;
+  background: linear-gradient(135deg, #1a2c54, #3d5273);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 30px; gap: 20px;
+}
+.left-panel img { border-radius: 10px; width: 500px; height: auto; object-fit: cover; }
+.right-panel {
+  flex: 1; background-color: #f0f0f0;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center; padding: 50px;
+}
+.logo {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 55px; font-weight: bold;
+  margin-bottom: 5px; color: #3d5273; margin-top: 30px;
+}
+.logi { width: 55px; height: auto; margin-left: 8px; }
+.contac {
+  font-size: 38px; font-weight: bold; color: #0a0e22;
+  margin: -10px 0 30px; text-align: center;
+}
+.form-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px; }
+.right-panel form {
+  width: 100%; max-width: 300px;
+  display: flex; flex-direction: column; gap: 15px;
+}
+label { font-weight: 600; color: #3d5273; font-size: 17px; margin-left: -60px; }
+.form-input {
+  padding: 16px 20px; border: 1.5px solid #d0d0d0;
+  border-radius: 8px; font-size: 15px;
+  background-color: white; width: 140%; margin-left: -60px;
+}
+.form-input:focus { border-color: #3d5273; outline: none; }
+.alert-error {
+  color: #e74c3c; font-size: 14px; margin-top: -8px;
+  margin-left: -60px; font-weight: 600;
+}
+.alert-success {
+  color: rgb(12, 160, 12); font-size: 14px;
+  margin-left: -60px; font-weight: 600;
+}
+.btn {
+  background-color: #5b6e94; color: white;
+  padding: 15px; border: none; border-radius: 8px;
+  cursor: pointer; transition: .3s ease;
+  font-size: 17px; font-weight: 600;
+  margin-top: 17px; width: 120%; margin-left: -30px;
+}
+.btn:hover { background-color: #4a5a7a; }
+.right-panel a { text-align: center; color: #5b7fd6; font-size: 14px; text-decoration: none; }
+.right-panel a:hover { text-decoration: underline; }
+.back-link, .back-link2 { text-align: center; margin-top: 20px; }
+.back-arrow {
+  position: absolute; top: 25px; left: 25px;
+  font-size: 32px; color: #2d3e5f;
+  cursor: pointer; text-decoration: none;
+}
+</style>
+</head>
+
+<body>
+<a href="{% url 'logi' %}" class="back-arrow">←</a>
+
+<div class="container">
+
+  <!-- Panel izquierdo con imagen -->
+  <div class="left-panel">
+   <img src="{% static 'imagenes/Group 67.png' %}" alt="familia feliz">
+  </div>
+
+  <!-- Panel derecho con formulario -->
+  <div class="right-panel">
+    <div class="logo">
+      LifeLine
+     <img src="{% static 'imagenes/Group 243 (3).png' %}" class="logi" alt="Logo">
+    </div>
+
+    <div class="contac">Inicio de Sesión</div>
+
+    <!-- FORMULARIO DE LOGIN - usa {% csrf_token %} obligatorio en Django -->
+    <form id="loginForm" method="post" action="{% url 'login' %}">
+      {% csrf_token %}
+
+      <!-- Campo usuario -->
+      <div class="form-group">
+        <label for="id_username">Usuario</label>
+        {{ formulario.username }}
+        {% if formulario.errors %}
+          <span class="alert-error">Usuario o contraseña incorrectos.</span>
+        {% endif %}
+      </div>
+
+      <!-- Campo contraseña -->
+      <div class="form-group">
+        <label for="id_password">Contraseña</label>
+        {{ formulario.password }}
+      </div>
+
+      <!-- Mensajes de Django (logout exitoso, acceso denegado) -->
+      {% if messages %}
+        {% for message in messages %}
+          {% if message.tags == 'success' %}
+            <p class="alert-success">{{ message }}</p>
+          {% else %}
+            <p class="alert-error">{{ message }}</p>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+
+      <button class="btn" type="submit">Iniciar Sesión</button>
+
+      <div class="back-link2">
+        <a href="#">¿Olvidaste tu contraseña?</a>
+      </div>
+
+      <p>¿No tienes una cuenta? <a href="{% url 'registro' %}">Regístrate</a></p>
+
+      <div class="back-link">
+        <a href="{% url 'logi' %}">Volver al Inicio</a>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>LifeLine</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f0f2f5; }
+        
+        .header-bar {
+            background: linear-gradient(135deg, #040418, #102468);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+        .logo-container { display: flex; align-items: center; gap: 10px; }
+        .logo-text { font-size: 24px; font-weight: bold; line-height: 1.1; }
+        
+        .search-box {
+            background: white;
+            border-radius: 20px;
+            padding: 6px 15px;
+            display: flex;
+            align-items: center;
+            width: 350px;
+        }
+        .search-box input { border: none; outline: none; margin-left: 10px; width: 100%; color: #333; }
+
+        .header-right { display: flex; align-items: center; gap: 20px; }
+        
+        .main-tabs { background: #2d3e5f; display: flex; align-items: center; }
+        .main-tabs a { 
+            color: white; 
+            padding: 12px 18px; 
+            text-decoration: none; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            transition: 0.3s;
+        }
+        .main-tabs a:hover { background: #3d5273; }
+        
+        .btn-logout { background: #a83232 !important; margin-left: auto; }
+        .user-photo img { border-radius: 50%; border: 2px solid white; }
+    </style>
+</head>
+<body>
+
+<div class="header-bar">
+    <div class="logo-container">
+        <div class="logo-text">Life<br>Line</div>
+        <img src="{% static 'imagenes/Group 243 (3).png' %}" width="45">
+    </div>
+    
+    <div class="search-box">
+        <i class="fas fa-search" style="color: #666;"></i>
+        <input type="text" placeholder="Buscar en LifeLine...">
+    </div>
+
+    <div class="header-right">
+        <a href="#" style="color: white; font-size: 20px;"><i class="fas fa-shopping-cart"></i></a>
+        <div class="user-photo">
+            <img src="{% static 'imagenes/Group 244.png' %}" width="40" height="40">
+        </div>
+    </div>
+</div>
+
+<nav class="main-tabs">
+    <a href="{% url 'home' %}"><i class="fas fa-home"></i> Inicio</a>
+    
+    <a href="#"><i class="fas fa-user-friends"></i> Mural</a>
+    
+    <a href="{% url 'perfil' %}"><i class="fas fa-user"></i> Perfil</a>
+    
+   <a href="/admin/productos/producto/"><i class="fas fa-store"></i> Productos</a>
+    <a href="{% url 'contactanos' %}"><i class="fas fa-envelope"></i> Contáctanos</a>
+
+    <a href="{% url 'logout' %}" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Salir</a>
+</nav>
+
+<main>
+    {% if messages %}
+        <div style="background: #d4edda; color: #155724; padding: 10px; text-align: center;">
+            {% for message in messages %}{{ message }}{% endfor %}
+        </div>
+    {% endif %}
+
+    {% block contenido %}{% endblock %}
+</main>
+
+</body>
+</html>

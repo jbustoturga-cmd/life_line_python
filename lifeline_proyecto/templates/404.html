@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LifeLine — Página no encontrada</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--cp:#3d5273;--ca:#142ea0;--cmb:#526eaa;--ctb:linear-gradient(135deg,#040418,#102468);--gd:#f1c40f;--bs:#e8edf8;--sv:#dce3f0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:var(--ctb);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;position:relative;overflow:hidden}
+/* Decoración de fondo */
+.bg-circle{position:absolute;border-radius:50%;background:rgba(255,255,255,.04)}
+.bc1{width:500px;height:500px;top:-150px;right:-100px}
+.bc2{width:300px;height:300px;bottom:-80px;left:-60px}
+.bc3{width:120px;height:120px;top:40%;left:15%}
+/* Línea dorada inferior del header */
+.top-bar{position:fixed;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,transparent,var(--gd),var(--cmb),transparent)}
+/* CARD */
+.card{background:rgba(255,255,255,.06);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:52px 44px;max-width:560px;width:100%;text-align:center;box-shadow:0 16px 60px rgba(0,0,0,.4);animation:cardIn .6s cubic-bezier(.34,1.56,.64,1) both;position:relative;z-index:1}
+@keyframes cardIn{from{opacity:0;transform:scale(.88) translateY(20px)}to{opacity:1;transform:none}}
+/* Logo */
+.logo-wrap{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:32px}
+.logo-mark{width:50px;height:50px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:14px;display:flex;align-items:center;justify-content:center;color:var(--gd);font-size:22px;position:relative}
+.logo-mark::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--gd);border-radius:0 0 4px 4px}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:white;line-height:1}
+/* 404 */
+.code{font-family:'Cormorant Garamond',serif;font-size:100px;font-weight:700;color:white;line-height:1;text-shadow:0 4px 24px rgba(0,0,0,.3);position:relative;display:inline-block;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.code-accent{color:var(--gd)}
+.divider{width:60px;height:3px;background:linear-gradient(90deg,transparent,var(--gd),transparent);margin:20px auto}
+.titulo{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:white;margin-bottom:12px}
+.emoji{font-size:48px;display:block;margin:16px 0;animation:bounce 1.5s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.desc{font-size:15px;color:rgba(255,255,255,.75);line-height:1.7;margin-bottom:36px;max-width:380px;margin-left:auto;margin-right:auto}
+.desc strong{color:rgba(255,255,255,.95)}
+/* Botones */
+.btn-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-main{padding:13px 26px;background:var(--gd);color:#0a0a0a;font-size:14px;font-weight:700;border-radius:12px;display:flex;align-items:center;gap:8px;transition:transform .15s,box-shadow .2s;box-shadow:0 4px 16px rgba(241,196,15,.35)}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(241,196,15,.5)}
+.btn-sec{padding:13px 26px;background:rgba(255,255,255,.1);color:white;font-size:14px;font-weight:600;border-radius:12px;border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;gap:8px;transition:background .2s,border-color .2s}
+.btn-sec:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.3)}
+/* Separador */
+.sep{color:rgba(255,255,255,.3);font-size:12px;margin-top:28px}
+</style>
+</head>
+<body>
+
+<div class="top-bar"></div>
+<div class="bg-circle bc1"></div>
+<div class="bg-circle bc2"></div>
+<div class="bg-circle bc3"></div>
+
+<div class="card">
+
+  <div class="logo-wrap">
+    <div class="logo-mark"><i class="fas fa-heartbeat"></i></div>
+    <div class="logo-text">LifeLine</div>
+  </div>
+
+  <div class="code">4<span class="code-accent">0</span>4</div>
+  <div class="divider"></div>
+  <div class="titulo">¡Página no encontrada!</div>
+
+  <span class="emoji">🔍</span>
+
+  <p class="desc">
+    Lo sentimos, la página que buscas <strong>no existe</strong> o fue movida.<br>
+    Pero no te preocupes — <strong>LifeLine</strong> sigue aquí para acompañarte.
+  </p>
+
+  <div class="btn-row">
+    <a href="{% url 'logi' %}" class="btn-main">
+      <i class="fas fa-home"></i> Volver al inicio
+    </a>
+    {% if user.is_authenticated %}
+    <a href="{% url 'home' %}" class="btn-sec">
+      <i class="fas fa-th-large"></i> Ir al panel
+    </a>
+    {% else %}
+    <a href="{% url 'login' %}" class="btn-sec">
+      <i class="fas fa-sign-in-alt"></i> Iniciar sesión
+    </a>
+    {% endif %}
+  </div>
+
+  <p class="sep">LifeLine · Comunidad &amp; Bienestar</p>
+
+</div>
+</body>
+</html>
