@@ -5,7 +5,7 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 
-
+#models.py
 class SesionEjercicio(models.Model):
 
     NIVEL_CHOICES = [
