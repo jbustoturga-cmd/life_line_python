@@ -4,7 +4,7 @@
 from django.db import models
 from django.conf import settings
 
-
+#models.py
 class PlanNutricional(models.Model):
     """Plan semanal según el tipo de tratamiento."""
 
