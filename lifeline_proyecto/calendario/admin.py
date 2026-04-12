@@ -7,3 +7,4 @@ class CitaAdmin(admin.ModelAdmin):
     list_filter   = ('tipo','estado')
     search_fields = ('titulo','usuario__username')
     ordering      = ('fecha','hora')
+    #admin.py
