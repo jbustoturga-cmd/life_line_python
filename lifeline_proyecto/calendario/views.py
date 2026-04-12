@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import CitaMedica
 from .forms import FormularioCita
-
+#views.py
 
 @login_required
 def vista_calendario(request):
