@@ -8,3 +8,4 @@ urlpatterns = [
     path('marcar/<int:alarma_id>/',   views.vista_marcar_dosis,   name='marcar_dosis'),
     path('eliminar/<int:alarma_id>/', views.vista_eliminar_alarma,name='eliminar_alarma'),
 ]
+#urls.py 
