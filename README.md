@@ -1,0 +1,5 @@
+LifeLine es una aplicación desarrollada en Python orientada a la gestión y organización de información relacionada con el bienestar personal. Su objetivo principal es permitir a los usuarios registrar, consultar y administrar datos como rutinas, actividades y seguimiento de hábitos, facilitando un control más claro y estructurado de su día a día.
+
+El sistema está diseñado bajo una arquitectura basada en Django, lo que permite una organización modular del proyecto, manejo de bases de datos y posibilidad de escalabilidad. A través de esta aplicación, se busca centralizar la información del usuario en un solo lugar, optimizando procesos de registro y consulta, y ofreciendo una herramienta útil para mejorar la planificación y el seguimiento de objetivos personales.
+
+Además, LifeLine está pensado como un proyecto adaptable, que puede ampliarse con nuevas funcionalidades según las necesidades, como recomendaciones personalizadas, análisis de datos o integración con otros sistemas. Su enfoque combina simplicidad en el uso con una base técnica sólida, lo que lo convierte en una solución práctica para la gestión del bienestar.
