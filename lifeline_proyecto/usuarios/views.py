@@ -11,7 +11,7 @@ from .models import Usuario
 # ── Página pública de inicio (landing) ────────────────────────────────────
 def vista_logi(request):
     return render(request, 'usuarios/logi.html')
-
+#views.py
 
 # ── Registro ───────────────────────────────────────────────────────────────
 def vista_registro(request):
