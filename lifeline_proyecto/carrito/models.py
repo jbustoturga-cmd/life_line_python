@@ -5,7 +5,7 @@ from django.db import models
 from django.conf import settings
 from productos.models import Producto
 import uuid
-
+#models.py
 
 class CarritoItem(models.Model):
     usuario = models.ForeignKey(
