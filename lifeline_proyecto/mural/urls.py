@@ -10,7 +10,7 @@ from . import views   # Ajusta el import según tu estructura de apps
 urlpatterns = [
     # Mural principal
     path('mural/', views.vista_mural, name='mural'),
-
+#urls.py
     # Publicaciones
     path('mural/crear/', views.crear_publicacion, name='crear_publicacion'),
     path('mural/eliminar/<int:pub_id>/', views.eliminar_publicacion, name='eliminar_publicacion'),
