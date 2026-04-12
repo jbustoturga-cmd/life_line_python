@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from .models import Publicacion, Comentario
-
+#views.py
 
 # ── Lista de palabras no permitidas (básico) ───────────────────────────────
 PALABRAS_PROHIBIDAS = [
