@@ -11,3 +11,4 @@ class AlarmaAdmin(admin.ModelAdmin):
 class HistorialAdmin(admin.ModelAdmin):
     list_display = ('alarma','estado','fecha','hora')
     list_filter  = ('estado','fecha')
+    #admin.py
