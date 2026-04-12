@@ -8,7 +8,7 @@ from django.utils import timezone
 from .models import Alarma, HistorialDosis
 from .forms import FormularioAlarma, FormularioRegistrarDosis
 
-
+#views.py
 @login_required
 def vista_alarmas(request):
     """Página principal de alarmas: activas, pendientes e historial."""
