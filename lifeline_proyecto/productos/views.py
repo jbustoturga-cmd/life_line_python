@@ -10,7 +10,7 @@ from django.contrib import messages
 
 from .models import Producto, Categoria
 from .forms import FormularioProducto, FormularioCategoria
-
+#views.py
 
 # ── CRUD ADMIN ────────────────────────────────────────────────────────────
 
