@@ -6,7 +6,7 @@ from django.utils import timezone
 class Categoria(models.Model):
     """
     NUEVO FASE 3 — Categoría como modelo propio (FK).
-    """
+    """#models.py
     nombre = models.CharField(max_length=100, unique=True, verbose_name='Nombre')
     descripcion = models.TextField(blank=True, verbose_name='Descripción')
 
