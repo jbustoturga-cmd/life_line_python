@@ -16,4 +16,4 @@ urlpatterns = [
     path('pedidos/',                     views.mis_pedidos,       name='mis_pedidos'),
     path('seguimiento/',                 views.seguimiento_envio, name='seguimiento_envio'),
     path('facturas/',                    views.facturas,          name='facturas'),
-]
+] #urls.py
