@@ -5,7 +5,7 @@ from .models import PlanNutricional, SugerenciaRapida, RegistroNutricional
 @admin.register(PlanNutricional)
 class PlanAdmin(admin.ModelAdmin):
     list_display = ('tratamiento', 'descripcion')
-
+#admin.py
 @admin.register(SugerenciaRapida)
 class SugerenciaAdmin(admin.ModelAdmin):
     list_display = ('sintoma', 'sugerencia')
