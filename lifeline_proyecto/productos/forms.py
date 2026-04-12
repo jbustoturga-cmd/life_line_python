@@ -8,7 +8,7 @@ from django.utils import timezone
 from .models import Producto, Categoria
 import re
 
-
+#forms.py
 class FormularioProducto(forms.ModelForm):
 
     # ✅ Campo variantes — OPCIONAL, no es campo del modelo (se guarda en descripcion o extra)
