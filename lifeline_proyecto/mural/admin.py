@@ -3,7 +3,7 @@
 
 from django.contrib import admin
 from .models import Publicacion, Comentario
-
+#admin.py
 @admin.register(Publicacion)
 class PublicacionAdmin(admin.ModelAdmin):
     list_display = ('autor', 'tipo', 'fecha_creacion', 'total_likes')
