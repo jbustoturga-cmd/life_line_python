@@ -7,7 +7,7 @@
 import re
 from django.db import models
 from django.conf import settings
-
+#models.py
 
 class Publicacion(models.Model):
     """Publicación del mural de la comunidad"""
