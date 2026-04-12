@@ -1,7 +1,7 @@
 # productos/urls.py — ACTUALIZADO
 from django.urls import path
 from . import views
-
+#urls.py
 urlpatterns = [
     # CRUD admin
     path('',                              views.vista_lista_productos,  name='lista_productos'),
