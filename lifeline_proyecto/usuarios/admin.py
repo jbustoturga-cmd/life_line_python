@@ -4,7 +4,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import Usuario
-
+#admin.py
 
 @admin.register(Usuario)
 class UsuarioAdmin(UserAdmin):
