@@ -8,7 +8,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 import datetime
-
+#models.py
 
 def validar_fecha_nacimiento(fecha):
     """Valida que la fecha de nacimiento sea real y no futura"""
