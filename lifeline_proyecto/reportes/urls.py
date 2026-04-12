@@ -11,4 +11,4 @@ urlpatterns = [
     path('medicamentos/',      views.vista_reporte_medicamentos, name='reporte_medicamentos'),
     path('emocional/',         views.vista_reporte_emocional,  name='reporte_emocional'),
     path('tienda/',            views.vista_reporte_tienda,     name='reporte_tienda'),
-]
+]#urls.py
