@@ -140,3 +140,11 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # PRIMARY KEY
 # ============================================================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+ALLOWED_HOSTS = [
+    "lifelinepython-production.up.railway.app",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://lifelinepython-production.up.railway.app",
+]
