@@ -1,0 +1,6 @@
+.env
+db.sqlite3
+datos_backup.json
+venv/
+__pycache__/
+*.pyc

@@ -81,16 +81,21 @@ WSGI_APPLICATION = 'lifeline.wsgi.application'
 # ============================================================
 # BASE DE DATOS
 # ============================================================
+
 import os
 import dj_database_url
+from dotenv import load_dotenv
+
+load_dotenv()
 
 DATABASES = {
     'default': dj_database_url.parse(
-        'postgresql://postgres:hmQZTOZdsopLCRgKbQfdZlmfgXjTXqWn@acela.proxy.rlwy.net:46669/railway',
+        os.environ.get('DATABASE_URL'),
         conn_max_age=600,
         ssl_require=True
     )
 }
+
 # ============================================================
 # MODELO DE USUARIO PERSONALIZADO
 # ⚠️ CRÍTICO: debe estar configurado ANTES de la primera migración
@@ -144,7 +149,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ALLOWED_HOSTS = [
-    "lifelinepython-production.up.railway.app",
+    '127.0.0.1',
+    'localhost',
+    'lifelinepython-production.up.railway.app',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
