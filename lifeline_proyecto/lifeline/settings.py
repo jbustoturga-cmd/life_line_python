@@ -92,11 +92,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Intenta DATABASE_PUBLIC_URL primero, luego DATABASE_URL
-DATABASE_URL = (
+DATABASE_URL = str(
     os.environ.get('DATABASE_PUBLIC_URL') or
-    os.environ.get('DATABASE_URL')
-)
+    os.environ.get('DATABASE_URL') or ''
+).strip()
 
 DATABASES = {
     'default': dj_database_url.parse(
