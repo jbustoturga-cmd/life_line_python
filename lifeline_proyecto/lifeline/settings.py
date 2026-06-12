@@ -86,24 +86,35 @@ WSGI_APPLICATION = 'lifeline.wsgi.application'
 # BASE DE DATOS
 # ============================================================
 
+# ============================================================
+# BASE DE DATOS
+# ============================================================
 import os
 import dj_database_url
 from dotenv import load_dotenv
 
 load_dotenv()
 
-DATABASE_URL = str(
-    os.environ.get('DATABASE_PUBLIC_URL') or
-    os.environ.get('DATABASE_URL') or ''
-).strip()
+# Local usa .env, Railway usa la URL directa
+DATABASE_URL = os.environ.get('DATABASE_PUBLIC_URL') or os.environ.get('DATABASE_URL')
 
-DATABASES = {
-    'default': dj_database_url.parse(
-        DATABASE_URL,
-        conn_max_age=600,
-        ssl_require=True
-    )
-}
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=True
+        )
+    }
+else:
+    # Fallback con URL hardcodeada por si fallan las variables
+    DATABASES = {
+        'default': dj_database_url.parse(
+            'postgresql://postgres:hmQZTOZdsopLCRgKbQfdZlmfgXjTXqWn@acela.proxy.rlwy.net:46669/railway',
+            conn_max_age=600,
+            ssl_require=True
+        )
+    }
 
 # ============================================================
 # MODELO DE USUARIO PERSONALIZADO
