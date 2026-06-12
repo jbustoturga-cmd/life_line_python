@@ -82,15 +82,25 @@ WSGI_APPLICATION = 'lifeline.wsgi.application'
 # BASE DE DATOS
 # ============================================================
 
+# ============================================================
+# BASE DE DATOS
+# ============================================================
+
 import os
 import dj_database_url
 from dotenv import load_dotenv
 
 load_dotenv()
 
+# Intenta DATABASE_PUBLIC_URL primero, luego DATABASE_URL
+DATABASE_URL = (
+    os.environ.get('DATABASE_PUBLIC_URL') or
+    os.environ.get('DATABASE_URL')
+)
+
 DATABASES = {
     'default': dj_database_url.parse(
-        os.environ.get('DATABASE_URL'),
+        DATABASE_URL,
         conn_max_age=600,
         ssl_require=True
     )
